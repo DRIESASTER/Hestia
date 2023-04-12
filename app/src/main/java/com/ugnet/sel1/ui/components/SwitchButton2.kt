@@ -12,6 +12,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -32,28 +33,28 @@ fun SwitchButton2(
     modifier: Modifier = Modifier
 ) {
     val (currentState, setCurrentState) = remember { mutableStateOf(initialState) }
-
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(30.dp))
-            .background(AccentLicht)
-            .clickable {
-                setCurrentState(!currentState)
-                onStateChanged(!currentState)
-            }
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        ToggleButton(
-            options = listOf("Issues", "Properties"),
-            selectedOption = if (currentState) "Properties" else "Issues",
-            onOptionSelected = {
-                setCurrentState(it == "Properties")
-                onStateChanged(it == "Properties")
-            },
-            modifier = Modifier.weight(1f)
-        )
+    Card(modifier= Modifier.clip(RoundedCornerShape(30.dp)),
+        elevation = 16.dp) {
+        Row(
+            modifier = modifier
+                .clip(RoundedCornerShape(30.dp))
+                .clickable {
+                    setCurrentState(!currentState)
+                    onStateChanged(!currentState)
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            ToggleButton(
+                options = listOf("Issues", "Properties"),
+                selectedOption = if (currentState) "Properties" else "Issues",
+                onOptionSelected = {
+                    setCurrentState(it == "Properties")
+                    onStateChanged(it == "Properties")
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 
@@ -70,22 +71,11 @@ fun ToggleButton(
             .width(180.dp) // set a fixed width for the box
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
-            .border(
-                width = 1.dp,
-                color = Color.Gray,
-                shape = RoundedCornerShape(30.dp)
-
-            )
             .padding(4.dp)
     ) {
         Row(
             modifier = modifier
                 .background(Color.Transparent)
-                .border(
-                    width = 2.dp,
-                    color = AccentLicht,
-                    shape = RoundedCornerShape(20.dp)
-                )
                 .padding(4.dp)
         ) {
             options.forEach { option ->

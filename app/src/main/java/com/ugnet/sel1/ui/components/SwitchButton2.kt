@@ -8,14 +8,16 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,14 +25,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun SwitchButton2(
+    modifier: Modifier = Modifier,
+    option1 : String = "Issues",
+    option2 : String = "Properties",
     initialState: Boolean,
     onStateChanged: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val (currentState, setCurrentState) = remember { mutableStateOf(initialState) }
     Card(modifier= Modifier.clip(RoundedCornerShape(30.dp)),
@@ -46,11 +49,11 @@ fun SwitchButton2(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             ToggleButton(
-                options = listOf("Issues", "Properties"),
-                selectedOption = if (currentState) "Properties" else "Issues",
+                options = listOf(option1,option2),
+                selectedOption = if (currentState) option1 else option2,
                 onOptionSelected = {
-                    setCurrentState(it == "Properties")
-                    onStateChanged(it == "Properties")
+                    setCurrentState(it == option1)
+                    onStateChanged(it == option2)
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -68,7 +71,7 @@ fun ToggleButton(
     Box(
         modifier = Modifier
             .height(55.dp)
-            .width(180.dp) // set a fixed width for the box
+            .width(190.dp) // set a fixed width for the box
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
             .padding(4.dp)
@@ -129,5 +132,5 @@ fun ToggleButton(
 @Preview
 @Composable
 fun SwitchButton2Preview() {
-    SwitchButton2(initialState = true, onStateChanged = {})
+    SwitchButton2(initialState = true) {}
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.ui.theme.GreenProgress
 import com.ugnet.sel1.ui.theme.OrangeProgress
 import com.ugnet.sel1.ui.theme.RedProgress
@@ -85,7 +86,7 @@ fun SwitchOption(
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
     ) {
-        options.forEachIndexed { index, option ->
+        options.forEachIndexed { index, option:String ->
             val isSelected = index == selectedIndex
             val isFirst = index == 0
             val isLast = index == totalOptions - 1
@@ -140,12 +141,12 @@ fun SwitchOption(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    modifier = Modifier.padding(horizontal = 2.dp),
                     text = option,
-                    style = MaterialTheme.typography.overline,
+                    style = MaterialTheme.typography.body1,
+                    fontSize = 10.sp,
                     textAlign = TextAlign.Center,
                     color = textColor,
-                    softWrap = true
+                    modifier = Modifier.padding(horizontal = 2.dp)
                 )
             }
         }

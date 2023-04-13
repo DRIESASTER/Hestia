@@ -23,9 +23,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
-import com.ugnet.sel1.authenticatoin.GoogleAuthUiClient
-import com.ugnet.sel1.authenticatoin.SignInScreen
-import com.ugnet.sel1.authenticatoin.SignInViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.sign
 import android.content.Context
@@ -42,81 +39,14 @@ fun MyNavGraph(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = context,
-            oneTapClient = Identity.getSignInClient(context)
-        )
-    }
+
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(MyDestinations.LOGIN_ROUTE) {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "sign_in") {
                 composable("sign_in") {
-                    val viewModel = viewModel<SignInViewModel>()
-                    val state by viewModel.state.collectAsState();
 
-                    LaunchedEffect(key1 = Unit) {
-                        if (googleAuthUiClient.getSignedInUser() != null) {
-                            navController.navigate("profile")
-                        }
-                    }
-
-                    val launcher = rememberLauncherForActivityResult(
-                        contract = ActivityResultContracts.StartIntentSenderForResult(),
-                        onResult = { result ->
-                            if (result.resultCode == RESULT_OK) {
-                                coroutineScope.launch {
-                                    val signInResult = googleAuthUiClient.signInWithIntent(
-                                        intent = result.data ?: return@launch
-                                    )
-                                    viewModel.onSignInResult(signInResult)
-                                }
-                            }
-                        }
-                    )
-
-                    LaunchedEffect(key1 = state.isSignInSuccessful) {
-                        if (state.isSignInSuccessful) {
-                            Toast.makeText(
-                                context,
-                                "Sign in successful",
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                            navController.navigate("profile")
-                            viewModel.resetState()
-                        }
-                    }
-
-                    SignInScreen(
-                        state = state,
-                        onSignInClick = {
-                            coroutineScope.launch {
-                                val signInIntentSender = googleAuthUiClient.signIn()
-                                launcher.launch(
-                                    IntentSenderRequest.Builder(
-                                        signInIntentSender ?: return@launch
-                                    ).build()
-                                )
-                            }
-                        }
-                    )
-
-/*                    SignInScreen(
-                        state = state,
-                        onSignInClick = {
-                            lifecycleScope.launch {
-                                val signInIntentSender = googleAuthUiClient.signIn()
-                                launcher.launch(
-                                    IntentSenderRequest.Builder(
-                                        signInIntentSender ?: return@launch
-                                    ).build()
-                                )
-                            }
-                        }
-                    )*/
                 }
             }
 

@@ -162,6 +162,7 @@ dependencies {
     // Hilt
     implementation 'com.google.dagger:hilt-android:2.44'
     kapt 'com.google.dagger:hilt-compiler:2.44'
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
 
     // Authentication
     implementation 'com.google.firebase:firebase-auth-ktx:21.2.0'

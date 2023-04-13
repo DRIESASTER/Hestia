@@ -18,31 +18,23 @@ import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
-fun ResidentTopBar(barTitle: String) {
-    val context = LocalContext.current
-
+fun ResidentTopBar(
+    onNavigationIconClick: () -> Unit,
+    topBarTitle: String
+) {
     TopAppBar (
-        title = { Text(text = barTitle, color = AccentLicht) },
+        title = { Text(text = topBarTitle, color = AccentLicht) },
+        backgroundColor = MainGroen,
+        contentColor = AccentLicht,
         navigationIcon = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = onNavigationIconClick) {
                 Icon(imageVector = Icons.Rounded.Menu,
-                    contentDescription = "Drawer Icon",
+                    contentDescription = "Toggle drawer",
                     tint = AccentLicht)
             }
         },
-        actions = {
-
-        },
-        backgroundColor = MainGroen
     )
 }
-
-@Preview
-@Composable
-fun ResidentTopBarPreview() {
-    ResidentTopBar("Events")
-}
-
 
 fun showMessage(context: Context, message:String){
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

@@ -13,6 +13,9 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,8 +30,14 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun IssueCard(title: String,
               tennant:String,
               room:String,
-              description:IssueKind,
+              description:String,
               status: Int, modifier: Modifier = Modifier) {
+    val currentStatus = remember { mutableStateOf(status)}
+
+    DisposableEffect(currentStatus.value) {
+        println("Current status is: ${getStatus(currentStatus.value)}")
+        onDispose { }
+    }
     Card(modifier = modifier
         .padding(10.dp)
         .background(Color.Transparent)
@@ -102,7 +111,7 @@ fun IssueCard(title: String,
                                 .size(10.dp)
                         )
                         Text(
-                            text = description.value,
+                            text = description,
                             color = Color.Black,
                             style = MaterialTheme.typography.body1,
                             fontSize = 10.sp,
@@ -117,8 +126,13 @@ fun IssueCard(title: String,
                     .align(Alignment.CenterVertically)) {
                     //right side with progressswitch
                     ProgressSwitch(
-                        initialState = getStatus(status),
-                        onStateChanged = {},
+                        initialState = getStatus(currentStatus.value),
+                        onStateChanged = { currentStatus.value = when (it){
+                            "Not Started"-> 0
+                            "In Progress" -> 1
+                            "Finished" -> 2
+                            else -> 0
+                        } }
                     )
                 }
             }
@@ -134,17 +148,10 @@ fun getStatus(status: Int): String {
     }
 }
 
-enum class IssueKind(val value: String) {
-    ELECTRICITY("Electricity"),
-    WATER("Water"),
-    GAS("Gas"),
-    SOCIAL("Social"),
-    Question("Question"),
-    OTHER("Other")
-}
+
 
 @Preview
 @Composable
 fun IssueCardPreview() {
-    IssueCard(title = "leaky faucet", tennant = "Ben De Meurichy", room = "room 001", description = IssueKind.GAS, status = 0)
+    IssueCard(title = "leaky faucet", tennant = "Ben De Meurichy", room = "room 001", description = "gas", status = 0)
 }

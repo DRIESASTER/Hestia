@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AdresTestVM @Inject constructor(private val backed : AdresBackend): ViewModel() {
+class AdresTestVM @Inject constructor(private val getAdresUseCase : GetAdresUseCase): ViewModel() {
 
-    fun getAdres() : Adres? = backed.readAdres("1HfbWeoiU6bIP5eBZ3Wt")
-
-
+    fun getAdres() : Adres = getAdresUseCase.invoke("1HfbWeoiU6bIP5eBZ3Wt")
 
 
-//    private val data = MutableStateFlow(getAdresUseCase.invoke("1HfbWeoiU6bIP5eBZ3Wt"))
+
+
+    private val data = MutableStateFlow(getAdresUseCase.invoke("1HfbWeoiU6bIP5eBZ3Wt"))
 
 
 //    fun refreshQuote() {

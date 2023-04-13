@@ -17,7 +17,7 @@ class AdresRepo @Inject constructor(
         if(adres != null) {
             return adres
         }
-        return Adres(null, null, null, null, null)
+        return Adres("", null, null, null, null)
     }
 
     fun addAdres(straat : String, huisnummer : Int, postcode : Int, gemeente : String, land : String) {

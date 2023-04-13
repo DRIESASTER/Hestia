@@ -1,5 +1,6 @@
 package com.ugnet.sel1
 
+import android.app.Fragment
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +11,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ugnet.sel1.data.AdresTestVM
+import com.ugnet.sel1.data.repositories.GetAdresUseCase
 import com.ugnet.sel1.ui.theme.Sel1Theme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +37,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
+
 }
 
 @Preview(showBackground = true)

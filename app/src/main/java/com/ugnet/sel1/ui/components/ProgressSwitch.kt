@@ -21,17 +21,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.ui.theme.GreenProgress
-import com.ugnet.sel1.ui.theme.MainGroen
 import com.ugnet.sel1.ui.theme.OrangeProgress
 import com.ugnet.sel1.ui.theme.RedProgress
 
 @Composable
-fun SwitchButton(
+fun ProgressSwitch(
     modifier: Modifier = Modifier,
-    option1 : String = "Issues",
-    option2 : String = "Properties",
-    option3 : String = "Search",
+    option1 : String = "Not Started",
+    option2 : String = "In Progress",
+    option3 : String = "Finished",
     initialState: String,
     onStateChanged: (String) -> Unit,
 ) {
@@ -40,8 +40,8 @@ fun SwitchButton(
         elevation = 16.dp) {
         Row(
             modifier = modifier
-                .width(250.dp)
-                .height(45.dp)
+                .width(180.dp)
+                .height(40.dp)
                 .clip(RoundedCornerShape(30.dp))
                 .clickable {
                     setCurrentState(
@@ -82,12 +82,11 @@ fun SwitchOption(
 
     Row(
         modifier = modifier
-            .fillMaxSize()
+            .width(150.dp)
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
-            .padding(4.dp)
     ) {
-        options.forEachIndexed { index, option ->
+        options.forEachIndexed { index, option:String ->
             val isSelected = index == selectedIndex
             val isFirst = index == 0
             val isLast = index == totalOptions - 1
@@ -117,7 +116,8 @@ fun SwitchOption(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .height(40.dp)
+                    .height(35.dp)
+                    .padding(horizontal = 2.dp)
                     .clip(
                         when {
                             isFirst -> RoundedCornerShape(
@@ -141,12 +141,12 @@ fun SwitchOption(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    modifier = Modifier.padding(horizontal = 5.dp),
                     text = option,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.body1,
+                    fontSize = 10.sp,
                     textAlign = TextAlign.Center,
                     color = textColor,
-                    softWrap = true
+                    modifier = Modifier.padding(horizontal = 2.dp)
                 )
             }
         }
@@ -156,7 +156,7 @@ fun SwitchOption(
 @Preview
 @Composable
 fun SwitchButtonPreview() {
-    SwitchButton(
+    ProgressSwitch(
         option1 = "Yet to Start",
         option2 = "In Progress",
         option3 = "Finished",

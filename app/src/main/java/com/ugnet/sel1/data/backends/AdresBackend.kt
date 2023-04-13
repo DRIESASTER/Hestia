@@ -1,19 +1,22 @@
-package com.ugnet.sel1.data
+package com.ugnet.sel1.data.backends
 
 import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.data.models.Adres
+import javax.inject.Inject
 
 
-class AdresBackend {
+class AdresBackend @Inject constructor() {
+
 
     private lateinit var dbRef: DatabaseReference
+
+    init{
+        initializeDbRef()
+    }
 
 
     fun initializeDbRef() {

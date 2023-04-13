@@ -68,4 +68,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
 
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
 }

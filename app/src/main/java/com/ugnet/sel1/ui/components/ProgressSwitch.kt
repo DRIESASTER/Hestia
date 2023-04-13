@@ -22,16 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ugnet.sel1.ui.theme.GreenProgress
-import com.ugnet.sel1.ui.theme.MainGroen
 import com.ugnet.sel1.ui.theme.OrangeProgress
 import com.ugnet.sel1.ui.theme.RedProgress
 
 @Composable
-fun SwitchButton(
+fun ProgressSwitch(
     modifier: Modifier = Modifier,
-    option1 : String = "Issues",
-    option2 : String = "Properties",
-    option3 : String = "Search",
+    option1 : String = "Not Started",
+    option2 : String = "In Progress",
+    option3 : String = "Finished",
     initialState: String,
     onStateChanged: (String) -> Unit,
 ) {
@@ -82,7 +81,7 @@ fun SwitchOption(
 
     Row(
         modifier = modifier
-            .fillMaxSize()
+            .width(150.dp)
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
             .padding(4.dp)
@@ -156,7 +155,7 @@ fun SwitchOption(
 @Preview
 @Composable
 fun SwitchButtonPreview() {
-    SwitchButton(
+    ProgressSwitch(
         option1 = "Yet to Start",
         option2 = "In Progress",
         option3 = "Finished",

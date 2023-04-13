@@ -39,8 +39,8 @@ fun ProgressSwitch(
         elevation = 16.dp) {
         Row(
             modifier = modifier
-                .width(250.dp)
-                .height(45.dp)
+                .width(180.dp)
+                .height(40.dp)
                 .clip(RoundedCornerShape(30.dp))
                 .clickable {
                     setCurrentState(
@@ -84,7 +84,6 @@ fun SwitchOption(
             .width(150.dp)
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
-            .padding(4.dp)
     ) {
         options.forEachIndexed { index, option ->
             val isSelected = index == selectedIndex
@@ -116,7 +115,8 @@ fun SwitchOption(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .height(40.dp)
+                    .height(35.dp)
+                    .padding(horizontal = 2.dp)
                     .clip(
                         when {
                             isFirst -> RoundedCornerShape(
@@ -140,9 +140,9 @@ fun SwitchOption(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    modifier = Modifier.padding(horizontal = 5.dp),
+                    modifier = Modifier.padding(horizontal = 2.dp),
                     text = option,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.overline,
                     textAlign = TextAlign.Center,
                     color = textColor,
                     softWrap = true

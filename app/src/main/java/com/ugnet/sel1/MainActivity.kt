@@ -20,10 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
-import com.ugnet.hestia.presentation.profile.ProfileScreen
-import com.ugnet.hestia.presentation.sign_in.GoogleAuthUiClient
-import com.ugnet.hestia.presentation.sign_in.SignInScreen
-import com.ugnet.hestia.presentation.sign_in.SignInViewModel
+import com.ugnet.sel1.presentation.profile.ProfileScreen
+import com.ugnet.sel1.presentation.sign_in.GoogleAuthUiClient
+import com.ugnet.sel1.presentation.sign_in.SignInScreen
+import com.ugnet.sel1.presentation.sign_in.SignInViewModel
 
 import kotlinx.coroutines.launch
 

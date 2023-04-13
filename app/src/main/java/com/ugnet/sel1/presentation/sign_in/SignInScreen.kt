@@ -1,4 +1,4 @@
-package com.ugnet.hestia.presentation.sign_in
+package com.ugnet.sel1.presentation.sign_in
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box

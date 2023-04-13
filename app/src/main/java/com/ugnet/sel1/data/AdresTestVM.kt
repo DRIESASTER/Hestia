@@ -1,13 +1,10 @@
 package com.ugnet.sel1.data
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.data.models.Adres
-import com.ugnet.sel1.data.repositories.GetAdresUseCase
+import com.ugnet.sel1.data.useCases.GetAdresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel

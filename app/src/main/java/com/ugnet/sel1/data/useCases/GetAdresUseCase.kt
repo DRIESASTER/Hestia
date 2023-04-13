@@ -1,5 +1,6 @@
-package com.ugnet.sel1.data.repositories
+package com.ugnet.sel1.data.useCases
 
+import com.ugnet.sel1.data.repositories.AdresRepo
 import javax.inject.Inject
 
 class GetAdresUseCase @Inject constructor(

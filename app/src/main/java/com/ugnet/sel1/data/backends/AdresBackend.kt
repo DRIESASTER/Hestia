@@ -6,11 +6,17 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.data.models.Adres
+import javax.inject.Inject
 
 
-class AdresBackend {
+class AdresBackend @Inject constructor() {
+
 
     private lateinit var dbRef: DatabaseReference
+
+    init{
+        initializeDbRef()
+    }
 
 
     fun initializeDbRef() {

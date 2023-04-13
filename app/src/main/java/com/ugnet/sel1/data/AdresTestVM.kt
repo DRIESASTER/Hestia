@@ -12,9 +12,6 @@ class AdresTestVM @Inject constructor(private val getAdresUseCase : GetAdresUseC
 
     fun getAdres() : Adres = getAdresUseCase.invoke("1HfbWeoiU6bIP5eBZ3Wt")
 
-
-
-
     private val data = MutableStateFlow(getAdresUseCase.invoke("1HfbWeoiU6bIP5eBZ3Wt"))
 
 

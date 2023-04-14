@@ -31,7 +31,7 @@ fun IssueCard(title: String,
               tennant:String,
               room:String,
               description:String,
-              status: Int, modifier: Modifier = Modifier) {
+              status: Int, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val currentStatus = remember { mutableStateOf(status)}
 
     DisposableEffect(currentStatus.value) {
@@ -153,5 +153,5 @@ fun getStatus(status: Int): String {
 @Preview
 @Composable
 fun IssueCardPreview() {
-    IssueCard(title = "leaky faucet", tennant = "Ben De Meurichy", room = "room 001", description = "gas", status = 0)
+    IssueCard(title = "leaky faucet", tennant = "Ben De Meurichy", room = "room 001", description = "gas", status = 0, onClick = {})
 }

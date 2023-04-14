@@ -45,14 +45,13 @@ fun PropertyCard(propName: String,
                 .background(MainGroen)
                 .clip(RoundedCornerShape(10.dp))
                 .wrapContentWidth()
-                .height(100.dp)
+                .height(105.dp)
         ) {
             Column(
                 modifier = Modifier
                     .width(200.dp)
                     .padding(10.dp)
             ) {
-                //left side
                 //name
                 Row() {
                     Spacer(modifier = Modifier.width(5.dp))
@@ -64,7 +63,7 @@ fun PropertyCard(propName: String,
                 Row(
                     verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                         .clip(RoundedCornerShape(30.dp))
-                        .background(AccentLicht)
+                        .background(AccentLicht).padding(horizontal = 5.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.LocationOn,
@@ -117,7 +116,7 @@ fun PropertyCard(propName: String,
                         contentDescription = "person",
                         tint = Color.Red,
                         modifier = Modifier
-                            .padding(2.dp)
+                            .padding(3.dp)
                             .size(10.dp)
                     )
                     Text(
@@ -125,7 +124,7 @@ fun PropertyCard(propName: String,
                         color = Color.Black,
                         style = MaterialTheme.typography.body1,
                         fontSize = 10.sp,
-                        modifier = Modifier.padding(2.dp)
+                        modifier = Modifier.padding(1.dp)
                     )
                 }
 

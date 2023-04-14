@@ -13,19 +13,3 @@ data class Adres(
     var gemeente: String? = null,
     var land: String? = null
 )
-
-
-//data class Adres(val straat : String, val huisnummer : Int, val postcode : Int, val gemeente : String, val land : String) {
-//    // Null default values create a no-argument default constructor, which is needed
-//    // for deserialization from a DataSnapshot.
-//    @Exclude
-//    fun toMap(): Map<String, Any?> {
-//        return mapOf(
-//            "gemeente" to gemeente,
-//            "huisnummer" to huisnummer,
-//            "land" to land,
-//            "postcode" to postcode,
-//            "straat" to straat
-//        )
-//    }
-//}

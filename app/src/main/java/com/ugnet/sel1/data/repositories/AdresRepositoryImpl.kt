@@ -17,27 +17,14 @@ class AdresRepositoryImpl @Inject constructor(
     private val adresRef: CollectionReference
 ): AdresRepository {
     override fun getAdresesFromFirestore() = callbackFlow {
-//        val snapshotListener = adresRef.document(id).addSnapshotListener { snapshot, e ->
-//            val adresResponse = if (snapshot != null) {
-//                val adres = snapshot.toObject(Adres::class.java)
-//                Response.Success(adres)
-//            } else {
-//                Response.Failure(e)
-//            }
-//            trySend(adresResponse)
-//        }
-//        awaitClose {
-//            snapshotListener.remove()
-//        }
-//    }
         val snapshotListener = adresRef.addSnapshotListener { snapshot, e ->
-            val booksResponse = if (snapshot != null) {
-                val books = snapshot.toObjects(Adres::class.java)
-                Response.Success(books)
+            val adresesResponse = if (snapshot != null) {
+                val adreses = snapshot.toObjects(Adres::class.java)
+                Response.Success(adreses)
             } else {
                 Response.Failure(e)
             }
-            trySend(booksResponse)
+            trySend(adresesResponse)
         }
         awaitClose {
             snapshotListener.remove()

@@ -9,6 +9,7 @@ import com.ugnet.sel1.domain.repository.AdresRepository
 import com.ugnet.sel1.domain.repository.PandenRepository
 import com.ugnet.sel1.domain.useCases.GetAdreses
 import com.ugnet.sel1.domain.useCases.GetOwnedPanden
+import com.ugnet.sel1.domain.useCases.GetPand
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.Module
 import dagger.Provides
@@ -38,7 +39,8 @@ object AppModule {
         pandenRepo : PandenRepository
     ) = UseCases(
         getAdreses = GetAdreses(adresRepo),
-        getOwnedPanden = GetOwnedPanden(pandenRepo)
+        getOwnedPanden = GetOwnedPanden(pandenRepo),
+        getPand = GetPand(pandenRepo)
     )
 
 }

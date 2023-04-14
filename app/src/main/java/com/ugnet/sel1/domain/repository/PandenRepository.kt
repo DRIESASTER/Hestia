@@ -2,13 +2,18 @@ package com.ugnet.sel1.domain.repository
 
 import com.ugnet.sel1.domain.models.Pand
 import com.ugnet.sel1.domain.models.Response
+import kotlinx.coroutines.flow.Flow
 
 typealias Panden = List<Pand>
 typealias PandenResponse = Response<Panden>
+typealias PandResponse = Response<Pand?>
+
 //typealias AddBookResponse = Response<Boolean>
 //typealias DeleteBookResponse = Response<Boolean>
 
 interface PandenRepository {
+
+    fun getPandFromFirestore(id: String): Flow<PandResponse>
 
 //    fun getAdresesFromFirestore(): Flow<AdresesResponse>
 

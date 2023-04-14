@@ -11,6 +11,7 @@ import com.ugnet.sel1.domain.repository.IssuesRepository
 import com.ugnet.sel1.domain.repository.PandenRepository
 import com.ugnet.sel1.domain.useCases.*
 import com.ugnet.sel1.domain.useCases.Issues.AddIssue
+import com.ugnet.sel1.domain.useCases.Issues.ChangeIssueStatus
 import com.ugnet.sel1.domain.useCases.Issues.DeleteIssue
 import com.ugnet.sel1.domain.useCases.Issues.GetIssue
 import com.ugnet.sel1.domain.useCases.adressen.AddAdres
@@ -59,7 +60,8 @@ object AppModule {
         getPand = GetPand(pandenRepo),
         addIssue = AddIssue(issuesRepo),
         getIssue = GetIssue(issuesRepo),
-        deleteIssue = DeleteIssue(issuesRepo)
+        deleteIssue = DeleteIssue(issuesRepo),
+        changeIssueStatus = ChangeIssueStatus(issuesRepo)
 
     )
 

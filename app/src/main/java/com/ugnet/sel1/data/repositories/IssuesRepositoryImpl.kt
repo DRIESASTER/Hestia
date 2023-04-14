@@ -60,4 +60,15 @@ class IssuesRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun changeIssueStatus(
+        issueId: String,
+        status: Status
+    ): ChangeIssueStatusResponse {
+        return try {
+            issuesRef.document(issueId).update("status", status.toString()).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
 }

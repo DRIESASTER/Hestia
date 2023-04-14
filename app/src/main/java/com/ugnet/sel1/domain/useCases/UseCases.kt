@@ -1,6 +1,7 @@
 package com.ugnet.sel1.domain.useCases
 
 import com.ugnet.sel1.domain.useCases.Issues.AddIssue
+import com.ugnet.sel1.domain.useCases.Issues.ChangeIssueStatus
 import com.ugnet.sel1.domain.useCases.Issues.DeleteIssue
 import com.ugnet.sel1.domain.useCases.Issues.GetIssue
 import com.ugnet.sel1.domain.useCases.adressen.AddAdres
@@ -19,4 +20,5 @@ data class UseCases constructor(
     val getIssue: GetIssue,
     val addIssue: AddIssue,
     val deleteIssue: DeleteIssue,
+    val changeIssueStatus: ChangeIssueStatus
 )

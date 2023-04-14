@@ -1,9 +1,7 @@
 package com.ugnet.sel1.data.repositories
 
-import com.ugnet.sel1.data.backends.AdresBackend
-import com.ugnet.sel1.data.backends.ManagerBackend
-import com.ugnet.sel1.data.models.Adres
-import com.ugnet.sel1.data.models.Manager
+import com.ugnet.sel1.domain.backends.ManagerBackend
+import com.ugnet.sel1.domain.models.Manager
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,6 +1,6 @@
-package com.ugnet.sel1.data.useCases
+package com.ugnet.sel1.domain.useCases
 
-import com.ugnet.sel1.data.models.Manager
+import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.data.repositories.ManagerRepo
 import javax.inject.Inject
 

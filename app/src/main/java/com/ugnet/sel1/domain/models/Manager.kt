@@ -1,4 +1,4 @@
-package com.ugnet.sel1.data.models
+package com.ugnet.sel1.domain.models
 
 import com.google.firebase.firestore.Exclude
 

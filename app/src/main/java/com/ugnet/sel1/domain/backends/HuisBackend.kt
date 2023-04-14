@@ -1,12 +1,11 @@
-package com.ugnet.sel1.data.backends
+package com.ugnet.sel1.domain.backends
 
 import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.data.models.Adres
-import com.ugnet.sel1.data.models.Huis
+import com.ugnet.sel1.domain.models.Huis
 
 class HuisBackend {
 

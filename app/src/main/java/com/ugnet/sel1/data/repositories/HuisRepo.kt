@@ -1,7 +1,7 @@
 package com.ugnet.sel1.data.repositories
 
-import com.ugnet.sel1.data.backends.HuisBackend
-import com.ugnet.sel1.data.models.Huis
+import com.ugnet.sel1.domain.backends.HuisBackend
+import com.ugnet.sel1.domain.models.Huis
 import javax.inject.Inject
 import javax.inject.Singleton
 

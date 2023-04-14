@@ -4,12 +4,14 @@ import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import com.google.firebase.firestore.CollectionReference
 import com.ugnet.sel1.domain.models.Adres
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.repository.AddAdresResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.ugnet.sel1.domain.repository.AdresRepository
+import com.ugnet.sel1.domain.repository.DeleteAdresResponse
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 
 
 @Singleton
@@ -30,7 +32,35 @@ class AdresRepositoryImpl @Inject constructor(
             snapshotListener.remove()
         }
     }
+
+    override suspend fun addAdrestoFirestore(straat:String, huisnummer:Int, gemeente:String, land:String, postcode:Int): AddAdresResponse {
+        return try {
+            val id = adresRef.document().id
+            val adres = Adres(
+                straat = straat,
+                huisnummer = huisnummer,
+                gemeente = gemeente,
+                land = land,
+                postcode = postcode
+            )
+            adresRef.document(id).set(adres).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+
+    override suspend fun deleteAdresFromFirestore(adresId: String): DeleteAdresResponse {
+        return try {
+            adresRef.document(adresId).delete().await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
 }
+
 
 //@Singleton
 //class AdresRepositoryImpl @Inject constructor(

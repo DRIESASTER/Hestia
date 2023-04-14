@@ -12,8 +12,6 @@ import com.ugnet.sel1.domain.models.Response
 fun AdresesScreen(
     viewModel: AdresTestVM = hiltViewModel()
 ) {
-    var openDialog by remember { mutableStateOf(false) }
-
     Scaffold(
         content = { padding ->
             Adreses(
@@ -26,16 +24,6 @@ fun AdresesScreen(
             )
         }
     )
-}
-
-@Composable
-fun AddBookAlertDialog(closeDialog: () -> Unit, addBook: Any) {
-    TODO("Not yet implemented")
-}
-
-@Composable
-fun TopBar() {
-    TODO("Not yet implemented")
 }
 
 @Composable

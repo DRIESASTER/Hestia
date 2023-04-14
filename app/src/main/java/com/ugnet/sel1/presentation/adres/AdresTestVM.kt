@@ -19,10 +19,6 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       var adresesResponse by mutableStateOf<AdresesResponse>(Response.Loading)
           private set
 
-      init{
-            getAdreses()
-      }
-
       private fun getAdreses() = viewModelScope.launch {
             useCases.getAdreses().collect { response ->
                   adresesResponse = response

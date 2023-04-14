@@ -7,10 +7,7 @@ import com.ugnet.sel1.data.repositories.AdresRepositoryImpl
 import com.ugnet.sel1.data.repositories.PandenRepositoryImpl
 import com.ugnet.sel1.domain.repository.AdresRepository
 import com.ugnet.sel1.domain.repository.PandenRepository
-import com.ugnet.sel1.domain.useCases.GetAdreses
-import com.ugnet.sel1.domain.useCases.GetOwnedPanden
-import com.ugnet.sel1.domain.useCases.GetPand
-import com.ugnet.sel1.domain.useCases.UseCases
+import com.ugnet.sel1.domain.useCases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +36,8 @@ object AppModule {
         pandenRepo : PandenRepository
     ) = UseCases(
         getAdreses = GetAdreses(adresRepo),
+        addAdres = AddAdres(adresRepo),
+        deleteAdres = DeleteAdres(adresRepo),
         getOwnedPanden = GetOwnedPanden(pandenRepo),
         getPand = GetPand(pandenRepo)
     )

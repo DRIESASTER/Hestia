@@ -28,37 +28,88 @@ import kotlin.math.sign
 import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ugnet.sel1.presentation.profile.ProfileScreen
+import com.ugnet.sel1.presentation.sign_in.GoogleAuthUiClient
+import com.ugnet.sel1.presentation.sign_in.SignInScreen
+import com.ugnet.sel1.presentation.sign_in.SignInViewModel
 
 
 @Composable
 fun MyNavGraph(
     navController: NavHostController = rememberNavController(),
+    googleAuthUiClient: GoogleAuthUiClient,
     startDestination: String = MyDestinations.LOGIN_ROUTE
 ) {
 
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-
-
-
     NavHost(navController = navController, startDestination = startDestination) {
         composable(MyDestinations.LOGIN_ROUTE) {
-            val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "sign_in") {
-                composable("sign_in") {
+            val viewModel = viewModel<SignInViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            val coroutineScope = rememberCoroutineScope()
+            val context = rememberUpdatedState(LocalContext.current)
 
+            LaunchedEffect(key1 = Unit) {
+                if (googleAuthUiClient.getSignedInUser() != null) {
+                    navController.navigate(MyDestinations.MAIN_ROUTE)
                 }
             }
 
-/*        composable(MyDestinations.MAIN_ROUTE) {
-            MainRoute(
-                vM = hiltViewModel(),
-                onClickToDetails = {
-                    navController.navigate(MyDestinations.ROUTE_A)
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartIntentSenderForResult(),
+                onResult = { result ->
+                    if (result.resultCode == RESULT_OK) {
+                        coroutineScope.launch {
+                            val signInResult = googleAuthUiClient.signInWithIntent(
+                                intent = result.data ?: return@launch
+                            )
+                            viewModel.onSignInResult(signInResult)
+                        }
+                    }
                 }
             )
-        }*/
-            // Add other routes here
+
+            LaunchedEffect(key1 = state.isSignInSuccessful) {
+                if (state.isSignInSuccessful) {
+                    context.value.showToast("Sign in successful")
+                    navController.navigate(MyDestinations.MAIN_ROUTE)
+                    viewModel.resetState()
+                }
+            }
+
+            SignInScreen(
+                state = state,
+                onSignInClick = {
+                    coroutineScope.launch {
+                        val signInIntentSender = googleAuthUiClient.signIn()
+                        launcher.launch(
+                            IntentSenderRequest.Builder(
+                                signInIntentSender ?: return@launch
+                            ).build()
+                        )
+                    }
+                }
+            )
+        }
+        composable(MyDestinations.MAIN_ROUTE) {
+            val coroutineScope = rememberCoroutineScope()
+            val context = rememberUpdatedState(LocalContext.current)
+            ProfileScreen(
+                userData = googleAuthUiClient.getSignedInUser(),
+                onSignOut = {
+                    coroutineScope.launch {
+                        googleAuthUiClient.signOut()
+                        context.value.showToast("Signed out")
+                        navController.navigate(MyDestinations.LOGIN_ROUTE)
+                    }
+                }
+            )
         }
     }
 }
+
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+

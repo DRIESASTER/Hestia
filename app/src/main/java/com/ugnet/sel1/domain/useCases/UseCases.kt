@@ -6,6 +6,7 @@ import com.ugnet.sel1.domain.useCases.Issues.DeleteIssue
 import com.ugnet.sel1.domain.useCases.Issues.GetIssue
 import com.ugnet.sel1.domain.useCases.adressen.AddAdres
 import com.ugnet.sel1.domain.useCases.adressen.DeleteAdres
+import com.ugnet.sel1.domain.useCases.adressen.GetAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdreses
 import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
 import com.ugnet.sel1.domain.useCases.panden.GetPand
@@ -13,6 +14,7 @@ import com.ugnet.sel1.domain.useCases.panden.GetPand
 
 data class UseCases constructor(
     val getAdreses: GetAdreses,
+    val getAdres: GetAdres,
     val addAdres: AddAdres,
     val deleteAdres: DeleteAdres,
     val getOwnedPanden: GetOwnedPanden,

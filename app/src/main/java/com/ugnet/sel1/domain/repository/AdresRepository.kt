@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 typealias Adreses = List<Adres>
 typealias AdresesResponse = Response<Adreses>
+typealias AdresResponse = Response<Adres?>
 typealias AddAdresResponse = Response<Boolean>
 typealias DeleteAdresResponse = Response<Boolean>
 //typealias AddBookResponse = Response<Boolean>
@@ -16,6 +17,8 @@ typealias DeleteAdresResponse = Response<Boolean>
 interface AdresRepository {
 
     fun getAdresesFromFirestore(): Flow<AdresesResponse>
+
+    fun getAdresFromFirestore(id: String): Flow<AdresResponse>
 
     suspend fun addAdrestoFirestore(straat:String, huisnummer:Int, gemeente:String, land:String, postcode:Int): AddAdresResponse
 

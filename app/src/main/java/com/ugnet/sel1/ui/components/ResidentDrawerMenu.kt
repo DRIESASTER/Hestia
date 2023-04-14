@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,18 +11,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.ugnet.sel1.ui.theme.AccentLicht
+import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 64.dp),
+            .height(150.dp)
+            //.padding(vertical = 64.dp)
+            .background(MainGroen),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Header", fontSize = 60.sp)
+        Row() {
+            Icon(imageVector = Icons.Rounded.Home, contentDescription = "Home icon", modifier = Modifier.size(60.dp), tint = AccentLicht)
+            Text(text = "Hestia", fontSize = 40.sp, color = AccentLicht)
+        }
     }
 }
 

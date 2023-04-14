@@ -5,9 +5,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.data.repositories.AdresRepositoryImpl
 import com.ugnet.sel1.data.repositories.IssuesRepositoryImpl
+import com.ugnet.sel1.data.repositories.KamersRepositoryImpl
 import com.ugnet.sel1.data.repositories.PandenRepositoryImpl
 import com.ugnet.sel1.domain.repository.AdresRepository
 import com.ugnet.sel1.domain.repository.IssuesRepository
+import com.ugnet.sel1.domain.repository.KamersRepository
 import com.ugnet.sel1.domain.repository.PandenRepository
 import com.ugnet.sel1.domain.useCases.*
 import com.ugnet.sel1.domain.useCases.Issues.AddIssue
@@ -18,6 +20,10 @@ import com.ugnet.sel1.domain.useCases.adressen.AddAdres
 import com.ugnet.sel1.domain.useCases.adressen.DeleteAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdreses
+import com.ugnet.sel1.domain.useCases.kamers.AddKamer
+import com.ugnet.sel1.domain.useCases.kamers.DeleteKamer
+import com.ugnet.sel1.domain.useCases.kamers.EditKamer
+import com.ugnet.sel1.domain.useCases.kamers.GetKamer
 import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
 import com.ugnet.sel1.domain.useCases.panden.GetPand
 import dagger.Module
@@ -32,6 +38,7 @@ object AppModule {
     fun provideAdresesRef() = Firebase.firestore.collection("adres")
     fun providePandenRef() = Firebase.firestore.collection("panden")
     fun provideIssuesRef() = Firebase.firestore.collection("issues")
+    fun provideKamersRef() = Firebase.firestore.collection("kamers")
 
     @Provides
     fun provideAdresesRepository(
@@ -49,10 +56,16 @@ object AppModule {
     ): IssuesRepository = IssuesRepositoryImpl(issuesRef)
 
     @Provides
+    fun providesKamersRepository(
+        kamersRef: CollectionReference
+    ): KamersRepository = KamersRepositoryImpl(kamersRef)
+
+    @Provides
     fun provideUseCases(
         adresRepo: AdresRepository,
         pandenRepo : PandenRepository,
-        issuesRepo : IssuesRepository
+        issuesRepo : IssuesRepository,
+        kamersRepository: KamersRepository
     ) = UseCases(
         getAdreses = GetAdreses(adresRepo),
         getAdres = GetAdres(adresRepo),
@@ -63,6 +76,10 @@ object AppModule {
         addIssue = AddIssue(issuesRepo),
         getIssue = GetIssue(issuesRepo),
         deleteIssue = DeleteIssue(issuesRepo),
-        changeIssueStatus = ChangeIssueStatus(issuesRepo)
+        changeIssueStatus = ChangeIssueStatus(issuesRepo),
+        getKamer = GetKamer(kamersRepository),
+        addKamer = AddKamer(kamersRepository),
+        deleteKamer = DeleteKamer(kamersRepository),
+        editKamer = EditKamer(kamersRepository)
     )
 }

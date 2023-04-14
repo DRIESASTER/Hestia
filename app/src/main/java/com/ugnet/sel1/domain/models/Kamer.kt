@@ -6,7 +6,7 @@ import com.ugnet.sel1.domain.repository.Issues
 @IgnoreExtraProperties
 
 data class Kamer(
-    var huurder: Huurder? = null,
+    var naam : String? = null,
+    var huurder: String? = null,
     var issues : Issues? = null,
-    var naam : String? = null
 )

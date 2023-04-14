@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.AdresesResponse
-import com.ugnet.sel1.domain.useCases.GetAdreses
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

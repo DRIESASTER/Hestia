@@ -56,7 +56,7 @@ fun AdresesContent(
     adreses: Adreses
     ) {
         Text(text = "Adressen:")
-        Text(text = "\n" + adreses[0].straat + " " nu + adreses[0].huisnummer + "\n")
+        Text(text = "\n" + adreses[0].straat + " " + adreses[0].huisnummer + "\n")
 }
 
 

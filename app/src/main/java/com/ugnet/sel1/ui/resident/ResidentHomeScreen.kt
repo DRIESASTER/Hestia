@@ -6,8 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
 import com.ugnet.sel1.ui.components.DrawerBody
 import com.ugnet.sel1.ui.components.DrawerHeader
@@ -46,7 +46,7 @@ fun ResidentHomeScreen() {
         )
     )
 
-    var currentTitle = drawerItems[0].name
+    var currentTitle by rememberSaveable { mutableStateOf(drawerItems[0].name) }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -72,6 +72,6 @@ fun ResidentHomeScreen() {
                 }
             )
         },
-        content = { Text(text = "test string") }
+        content = { Text(text = "TODO: populate with resident pages(routes needed)") }
     )
 }

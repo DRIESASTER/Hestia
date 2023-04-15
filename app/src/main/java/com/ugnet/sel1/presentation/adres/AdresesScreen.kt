@@ -49,4 +49,26 @@ fun AdresesContent(
 
 
 
+//@Composable
+//fun Issues(
+//    viewModel: AdresTestVM = hiltViewModel(),
+//    issuesContent: @Composable (issues: Issues) -> Unit
+//) {
+//    when(val issuesResponse = viewModel.issuesResponse) {
+//        is Response.Loading -> Text(text = "Loading")
+//        is Response.Success -> issuesContent(issuesResponse.data)
+//        is Response.Failure -> print(issuesResponse.e)
+//    }
+//}
+
+//@Composable
+//fun issuesContent(
+//    padding: PaddingValues,
+//    issues: Issues
+//) {
+//    Text(text = "Issues:")
+//    Text(text = "\n" + issues[0].titel + "\n")
+//}
+
+
 

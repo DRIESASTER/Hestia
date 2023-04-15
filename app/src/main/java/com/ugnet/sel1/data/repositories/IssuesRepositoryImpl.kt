@@ -16,17 +16,19 @@ import javax.inject.Inject
 class IssuesRepositoryImpl @Inject constructor(
     private val issuesRef: CollectionReference
 ): IssuesRepository {
-    override fun getIssueFromFirestore(id:String) = callbackFlow {
-        val snapshotListener = issuesRef.document(id).addSnapshotListener{ snapshot, e ->
-            val issueResponse = if (snapshot != null) {
-                val issue = snapshot.toObject(Issue::class.java)
-                Response.Success(issue)
+    override fun getIssuesFromFirestore(ids:List<String>) = callbackFlow {
+        val snapshotListener = issuesRef.addSnapshotListener { snapshot, e ->
+            val issuesResponse = if (snapshot != null) {
+                val issues = snapshot.toObjects(Issue::class.java)
+                Response.Success(issues.filter{ issue -> ids.contains(issue.id)})
             } else {
                 Response.Failure(e)
             }
-            trySend(issueResponse)
+            trySend(issuesResponse)
         }
-        awaitClose { snapshotListener.remove() }
+        awaitClose {
+            snapshotListener.remove()
+        }
     }
 
     override suspend fun addIssueToFirestore(
@@ -40,7 +42,8 @@ class IssuesRepositoryImpl @Inject constructor(
                 beschrijving = beschrijving,
                 datum = datum,
                 titel = titel,
-                status = Status.notStarted
+                status = Status.notStarted,
+                id = id
             )
             issuesRef.document(id).set(issue).await()
             Response.Success(true)

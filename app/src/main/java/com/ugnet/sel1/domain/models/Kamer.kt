@@ -8,5 +8,5 @@ import com.ugnet.sel1.domain.repository.Issues
 data class Kamer(
     var naam : String? = null,
     var huurder: String? = null,
-    var issues : Issues? = null,
+    var issues : List<String>? = null,
 )

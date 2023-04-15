@@ -3,7 +3,7 @@ package com.ugnet.sel1.domain.useCases
 import com.ugnet.sel1.domain.useCases.Issues.AddIssue
 import com.ugnet.sel1.domain.useCases.Issues.ChangeIssueStatus
 import com.ugnet.sel1.domain.useCases.Issues.DeleteIssue
-import com.ugnet.sel1.domain.useCases.Issues.GetIssue
+import com.ugnet.sel1.domain.useCases.Issues.GetIssues
 import com.ugnet.sel1.domain.useCases.adressen.AddAdres
 import com.ugnet.sel1.domain.useCases.adressen.DeleteAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdres
@@ -23,7 +23,7 @@ data class UseCases constructor(
     val deleteAdres: DeleteAdres,
     val getOwnedPanden: GetOwnedPanden,
     val getPand: GetPand,
-    val getIssue: GetIssue,
+    val getIssues: GetIssues,
     val addIssue: AddIssue,
     val deleteIssue: DeleteIssue,
     val changeIssueStatus: ChangeIssueStatus,

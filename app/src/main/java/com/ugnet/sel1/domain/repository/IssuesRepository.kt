@@ -18,7 +18,7 @@ typealias ChangeIssueStatusResponse = Response<Boolean>
 
 interface IssuesRepository {
 
-    fun getIssueFromFirestore(id: String): Flow<IssueResponse>
+    fun getIssuesFromFirestore(id: List<String>): Flow<IssuesResponse>
 
     suspend fun addIssueToFirestore(beschrijving: String, datum: Timestamp, titel: String): AddIssueResponse
 

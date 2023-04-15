@@ -21,7 +21,7 @@ import javax.inject.Inject
 class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewModel() {
 
       var adresesResponse by mutableStateOf<AdresesResponse>(Response.Loading)
-          private set
+            private set
 
 
       var kamerResponse by mutableStateOf<KamerResponse>(Response.Loading)

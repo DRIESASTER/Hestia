@@ -23,15 +23,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun IssueCard(title: String,
-              tennant:String,
+              tenant:String,
               room:String,
               description:String,
-              status: Int, modifier: Modifier = Modifier, onClick: () -> Unit) {
+              status:Status, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val currentStatus = remember { mutableStateOf(status)}
 
     DisposableEffect(currentStatus.value) {
@@ -64,7 +65,7 @@ fun IssueCard(title: String,
                             .padding(2.dp)
                             .size(10.dp))
                         Text(
-                            text = tennant,
+                            text = tenant,
                             color = Color.Black,
                             style = MaterialTheme.typography.body1,
                             fontSize = 10.sp,
@@ -128,10 +129,10 @@ fun IssueCard(title: String,
                     ProgressSwitch(
                         initialState = getStatus(currentStatus.value),
                         onStateChanged = { currentStatus.value = when (it){
-                            "Not Started"-> 0
-                            "In Progress" -> 1
-                            "Finished" -> 2
-                            else -> 0
+                            "Not Started"-> Status.notStarted
+                            "In Progress" -> Status.inProgress
+                            "Finished" ->  Status.finished
+                            else -> Status.notStarted
                         } }
                     )
                 }
@@ -139,12 +140,11 @@ fun IssueCard(title: String,
         }
 }
 
-fun getStatus(status: Int): String {
+fun getStatus(status: Status): String {
     return when (status) {
-        0 -> "Not Started"
-        1 -> "In Progress"
-        2 -> "Finished"
-        else -> "Not Started"
+        Status.notStarted -> "Not Started"
+        Status.inProgress -> "In Progress"
+        Status.finished -> "Finished"
     }
 }
 
@@ -153,5 +153,5 @@ fun getStatus(status: Int): String {
 @Preview
 @Composable
 fun IssueCardPreview() {
-    IssueCard(title = "leaky faucet", tennant = "Ben De Meurichy", room = "room 001", description = "gas", status = 0, onClick = {})
+    IssueCard(title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted, onClick = {})
 }

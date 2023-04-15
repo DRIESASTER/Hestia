@@ -1,78 +1,34 @@
 {
   "project_info": {
-    "project_number": "690801049307",
-    "project_id": "hestiaapp-7b777",
-    "storage_bucket": "hestiaapp-7b777.appspot.com"
+    "project_number": "63508712242",
+    "firebase_url": "https://hestia-2c282-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "hestia-2c282",
+    "storage_bucket": "hestia-2c282.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:690801049307:android:ccca1d05ef6cdb784696fe",
-        "android_client_info": {
-          "package_name": "com.ugnet.hestia"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "690801049307-ffl1a871d61prf0sf38pkppn6vdo9gbl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ugnet.hestia",
-            "certificate_hash": "6bbeb1841c40f8d2a82e3940a82e0705431081b3"
-          }
-        },
-        {
-          "client_id": "690801049307-hqg6d16hir154253f0e92lj3nie9p32s.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD5LkqDGUoG-NejTxzlpTzdnTtLgnhWXXM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "690801049307-hqg6d16hir154253f0e92lj3nie9p32s.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:690801049307:android:c5819ab0623b32894696fe",
+        "mobilesdk_app_id": "1:63508712242:android:7a0f928a713cb2ac18252b",
         "android_client_info": {
           "package_name": "com.ugnet.sel1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "690801049307-qj4oao203kpd52nh0rm7kpjkh5as1g6c.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ugnet.sel1",
-            "certificate_hash": "6bbeb1841c40f8d2a82e3940a82e0705431081b3"
-          }
-        },
-        {
-          "client_id": "690801049307-hqg6d16hir154253f0e92lj3nie9p32s.apps.googleusercontent.com",
+          "client_id": "63508712242-04sln81edff3vhh5rkrvvi00k3gmr0of.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD5LkqDGUoG-NejTxzlpTzdnTtLgnhWXXM"
+          "current_key": "AIzaSyBMLhjBAe5irmGRV8XmQoejyaR_KJda_JE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "690801049307-hqg6d16hir154253f0e92lj3nie9p32s.apps.googleusercontent.com",
+              "client_id": "63508712242-04sln81edff3vhh5rkrvvi00k3gmr0of.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,16 +1,10 @@
 package com.ugnet.sel1.di
 
-import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.data.repositories.AdresRepositoryImpl
-import com.ugnet.sel1.data.repositories.IssuesRepositoryImpl
-import com.ugnet.sel1.data.repositories.KamersRepositoryImpl
-import com.ugnet.sel1.data.repositories.PandenRepositoryImpl
-import com.ugnet.sel1.domain.repository.AdresRepository
-import com.ugnet.sel1.domain.repository.IssuesRepository
-import com.ugnet.sel1.domain.repository.KamersRepository
-import com.ugnet.sel1.domain.repository.PandenRepository
+import com.ugnet.sel1.data.repositories.*
+import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.*
 import com.ugnet.sel1.domain.useCases.Issues.AddIssue
 import com.ugnet.sel1.domain.useCases.Issues.ChangeIssueStatus
@@ -20,12 +14,11 @@ import com.ugnet.sel1.domain.useCases.adressen.AddAdres
 import com.ugnet.sel1.domain.useCases.adressen.DeleteAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdreses
-import com.ugnet.sel1.domain.useCases.kamers.AddKamer
-import com.ugnet.sel1.domain.useCases.kamers.DeleteKamer
-import com.ugnet.sel1.domain.useCases.kamers.EditKamer
-import com.ugnet.sel1.domain.useCases.kamers.GetKamer
+import com.ugnet.sel1.domain.useCases.kamers.*
+import com.ugnet.sel1.domain.useCases.manager.GetManager
 import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
 import com.ugnet.sel1.domain.useCases.panden.GetPand
+import com.ugnet.sel1.domain.useCases.panden.GetPanden
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,38 +27,49 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
-    fun provideAdresesRef() = Firebase.firestore.collection("adres")
-    fun providePandenRef() = Firebase.firestore.collection("panden")
-    fun provideIssuesRef() = Firebase.firestore.collection("issues")
-    fun provideKamersRef() = Firebase.firestore.collection("kamers")
+    fun provideManagerRef() = Firebase.firestore
+
+//    fun provideAdresesRef() = Firebase.firestore.collection("adres")
+//    fun providePandenRef() = Firebase.firestore.collection("panden")
+//    fun provideIssuesRef() = Firebase.firestore.collection("issues")
+//    fun provideKamersRef() = Firebase.firestore.collection("kamers")
+
+
 
     @Provides
     fun provideAdresesRepository(
-        adresesRef: CollectionReference
+        adresesRef: FirebaseFirestore
     ): AdresRepository = AdresRepositoryImpl(adresesRef)
 
     @Provides
     fun providePandenRepository(
-        pandenRef: CollectionReference
+        pandenRef: FirebaseFirestore
     ): PandenRepository = PandenRepositoryImpl(pandenRef)
 
     @Provides
     fun provideIssuesRepository(
-        issuesRef: CollectionReference
+        issuesRef: FirebaseFirestore
     ): IssuesRepository = IssuesRepositoryImpl(issuesRef)
 
     @Provides
     fun providesKamersRepository(
-        kamersRef: CollectionReference
+        kamersRef: FirebaseFirestore
     ): KamersRepository = KamersRepositoryImpl(kamersRef)
+
+    @Provides
+    fun provideManagerRepository(
+        managerRef: FirebaseFirestore
+    ): ManagerRepository = ManagerRepositoryImpl(managerRef)
 
     @Provides
     fun provideUseCases(
         adresRepo: AdresRepository,
         pandenRepo : PandenRepository,
         issuesRepo : IssuesRepository,
-        kamersRepository: KamersRepository
+        kamersRepository: KamersRepository,
+        managerRepository: ManagerRepository
     ) = UseCases(
         getAdreses = GetAdreses(adresRepo),
         getAdres = GetAdres(adresRepo),
@@ -73,6 +77,7 @@ object AppModule {
         deleteAdres = DeleteAdres(adresRepo),
         getOwnedPanden = GetOwnedPanden(pandenRepo),
         getPand = GetPand(pandenRepo),
+        getPanden = GetPanden(pandenRepo),
         addIssue = AddIssue(issuesRepo),
         getIssues = GetIssues(issuesRepo),
         deleteIssue = DeleteIssue(issuesRepo),
@@ -80,6 +85,8 @@ object AppModule {
         getKamer = GetKamer(kamersRepository),
         addKamer = AddKamer(kamersRepository),
         deleteKamer = DeleteKamer(kamersRepository),
-        editKamer = EditKamer(kamersRepository)
+        editKamer = EditKamer(kamersRepository),
+        getKamers = GetKamers(kamersRepository),
+        getManager = GetManager(managerRepository)
     )
 }

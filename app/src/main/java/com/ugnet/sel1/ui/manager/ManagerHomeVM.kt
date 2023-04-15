@@ -4,11 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.domain.repository.IssueResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -26,11 +24,11 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
     var selectedView by mutableStateOf(true)
 
     //FIXME: add user id
-    private fun getIssues() = viewModelScope.launch {
-        useCases.getIssue("help").collect { response ->
-            issues = listOf(response)
-        }
-    }
+//    private fun getIssues() = viewModelScope.launch {
+//        useCases.getIssue("help").collect { response ->
+//            issues = listOf(response)
+//        }
+//    }
 
     //FIXME: add user id
 //    private fun getProperties() = viewModelScope.launch {

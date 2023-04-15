@@ -20,6 +20,8 @@ interface KamersRepository {
 
     fun getKamerFromFirestore(kamerId: String): Flow<KamerResponse>
 
+    fun getKamersFromFirestore(): Flow<KamersResponse>
+
     suspend fun addKamerToFirestore(huurder: String, naam: String): AddKamerResponse
 
     suspend fun deleteKamerFromFirestore(kamerId: String): DeleteKamerResponse

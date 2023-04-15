@@ -1,9 +1,7 @@
 package com.ugnet.sel1.data.repositories
 
-import androidx.compose.runtime.snapshots.SnapshotApplyResult
-import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.Adres
-import com.ugnet.sel1.domain.models.Issue
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.AddAdresResponse
 import javax.inject.Inject
@@ -17,11 +15,11 @@ import kotlinx.coroutines.tasks.await
 
 @Singleton
 class AdresRepositoryImpl @Inject constructor(
-    private val adresRef: CollectionReference
+    private val adresRef: FirebaseFirestore
 ): AdresRepository {
 
     override fun getAdresFromFirestore(adresId: String) = callbackFlow {
-        val snapshotListener = adresRef.document(adresId).addSnapshotListener{ snapshot, e ->
+        val snapshotListener = adresRef.collection("adres").document(adresId).addSnapshotListener{ snapshot, e ->
             val adresResponse = if (snapshot != null) {
                 val issue = snapshot.toObject(Adres::class.java)
                 Response.Success(issue)
@@ -34,7 +32,7 @@ class AdresRepositoryImpl @Inject constructor(
     }
 
     override fun getAdresesFromFirestore() = callbackFlow {
-        val snapshotListener = adresRef.addSnapshotListener { snapshot, e ->
+        val snapshotListener = adresRef.collection("adres").addSnapshotListener { snapshot, e ->
             val adresesResponse = if (snapshot != null) {
                 val adreses = snapshot.toObjects(Adres::class.java)
                 Response.Success(adreses)
@@ -50,7 +48,7 @@ class AdresRepositoryImpl @Inject constructor(
 
     override suspend fun addAdrestoFirestore(straat:String, huisnummer:Int, gemeente:String, land:String, postcode:Int): AddAdresResponse {
         return try {
-            val id = adresRef.document().id
+            val id = adresRef.collection("adres").document().id
             val adres = Adres(
                 straat = straat,
                 huisnummer = huisnummer,
@@ -68,7 +66,7 @@ class AdresRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAdresFromFirestore(adresId: String): DeleteAdresResponse {
         return try {
-            adresRef.document(adresId).delete().await()
+            adresRef.collection("adres").document(adresId).delete().await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

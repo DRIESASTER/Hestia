@@ -1,23 +1,21 @@
 package com.ugnet.sel1.data.repositories
 
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.domain.models.Pand
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.*
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class IssuesRepositoryImpl @Inject constructor(
-    private val issuesRef: CollectionReference
+    private val issuesRef: FirebaseFirestore
 ): IssuesRepository {
     override fun getIssuesFromFirestore(ids:List<String>) = callbackFlow {
-        val snapshotListener = issuesRef.addSnapshotListener { snapshot, e ->
+        val snapshotListener = issuesRef.collection("issues").addSnapshotListener { snapshot, e ->
             val issuesResponse = if (snapshot != null) {
                 val issues = snapshot.toObjects(Issue::class.java)
                 Response.Success(issues.filter{ issue -> ids.contains(issue.id)})
@@ -37,7 +35,7 @@ class IssuesRepositoryImpl @Inject constructor(
         titel: String
     ): AddIssueResponse {
         return try {
-            val id = issuesRef.document().id
+            val id = issuesRef.collection("issues").document().id
             val issue = Issue(
                 beschrijving = beschrijving,
                 datum = datum,
@@ -45,7 +43,7 @@ class IssuesRepositoryImpl @Inject constructor(
                 status = Status.notStarted,
                 id = id
             )
-            issuesRef.document(id).set(issue).await()
+            issuesRef.collection("issues").document(id).set(issue).await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)
@@ -56,7 +54,7 @@ class IssuesRepositoryImpl @Inject constructor(
 
     override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {
         return try {
-            issuesRef.document(issueId).delete().await()
+            issuesRef.collection("issues").document(issueId).delete().await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)
@@ -68,7 +66,7 @@ class IssuesRepositoryImpl @Inject constructor(
         status: Status
     ): ChangeIssueStatusResponse {
         return try {
-            issuesRef.document(issueId).update("status", status.toString()).await()
+            issuesRef.collection("issues").document(issueId).update("status", status.toString()).await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

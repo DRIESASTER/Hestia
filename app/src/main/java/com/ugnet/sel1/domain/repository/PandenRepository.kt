@@ -1,5 +1,6 @@
 package com.ugnet.sel1.domain.repository
 
+import com.google.firebase.firestore.DocumentReference
 import com.ugnet.sel1.domain.models.Pand
 import com.ugnet.sel1.domain.models.Response
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,8 @@ typealias PandResponse = Response<Pand?>
 interface PandenRepository {
 
     fun getPandFromFirestore(id: String): Flow<PandResponse>
+
+    fun getPandenFromFirestore(): Flow<PandenResponse>
 
 //    fun getAdresesFromFirestore(): Flow<AdresesResponse>
 

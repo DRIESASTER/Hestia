@@ -17,37 +17,14 @@ import coil.compose.AsyncImage
 import com.ugnet.sel1.presentation.sign_in.UserData
 
 @Composable
-fun ProfileScreen(
-    userData: UserData?,
-    onSignOut: () -> Unit
-) {
+fun ProfileScreen() {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        if(userData?.profilePictureUrl != null) {
-            AsyncImage(
-                model = userData.profilePictureUrl,
-                contentDescription = "Profile picture",
-                modifier = Modifier
-                    .size(150.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        if(userData?.username != null) {
-            Text(
-                text = userData.username,
-                textAlign = TextAlign.Center,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        Button(onClick = onSignOut) {
-            Text(text = "Sign out")
-        }
+        Text(text = "Profile", fontSize = 24.sp, fontWeight = FontWeight.Bold)
     }
 }

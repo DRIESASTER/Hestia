@@ -1,55 +1,59 @@
 package com.ugnet.sel1
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.navigation.NavHostController
+import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.auth.api.identity.Identity
-import com.ugnet.sel1.navigation.MyNavGraph
-import com.ugnet.sel1.presentation.profile.ProfileScreen
-import com.ugnet.sel1.presentation.sign_in.GoogleAuthUiClient
-import com.ugnet.sel1.presentation.sign_in.SignInScreen
-import com.ugnet.sel1.presentation.sign_in.SignInViewModel
+import com.ugnet.sel1.navigation.MyDestinations
+import com.ugnet.sel1.navigation.NavGraph
 
 
-import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = applicationContext,
-            oneTapClient = Identity.getSignInClient(applicationContext)
-        )
-    }
+    private lateinit var navController: NavHostController
+    private val viewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // A surface container using the 'background' color from the theme
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colors.background
-            ) {
-                MyNavGraph(googleAuthUiClient = googleAuthUiClient)
-            }
+            navController = rememberNavController()
+            NavGraph(navController = navController)
+            AuthState()
         }
     }
+
+
+    // bron : https://medium.com/firebase-developers/how-to-authenticate-to-firebase-using-email-and-password-in-jetpack-compose-bd70ca56ea91
+    @Composable
+    private fun AuthState() {
+        val isUserSignedOut = viewModel.getAuthState().collectAsState().value
+        if (isUserSignedOut) { // Navigate to Role Selection Screen if user is signed out
+            NavigateToRoleSelectionScreen()
+        } else {
+            NavigateToProfileScreen()
+        }
+    }
+
+    private @Composable
+    fun NavigateToRoleSelectionScreen() =  navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE){
+        popUpTo(navController.graph.id) {
+            inclusive = true
+        }
+    }
+
+    @Composable
+    fun NavigateToProfileScreen() = navController.navigate(MyDestinations.PROFILE_ROUTE) {
+        popUpTo(navController.graph.id) {
+            inclusive = true
+        }
+    }
+
 }
+
 
 

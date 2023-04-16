@@ -16,6 +16,7 @@ import com.ugnet.sel1.domain.useCases.adressen.GetAdres
 import com.ugnet.sel1.domain.useCases.adressen.GetAdreses
 import com.ugnet.sel1.domain.useCases.kamers.*
 import com.ugnet.sel1.domain.useCases.manager.GetManager
+import com.ugnet.sel1.domain.useCases.panden.DeletePand
 import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
 import com.ugnet.sel1.domain.useCases.panden.GetPand
 import com.ugnet.sel1.domain.useCases.panden.GetPanden
@@ -30,12 +31,6 @@ object AppModule {
 
     @Provides
     fun provideManagerRef() = Firebase.firestore
-
-//    fun provideAdresesRef() = Firebase.firestore.collection("adres")
-//    fun providePandenRef() = Firebase.firestore.collection("panden")
-//    fun provideIssuesRef() = Firebase.firestore.collection("issues")
-//    fun provideKamersRef() = Firebase.firestore.collection("kamers")
-
 
 
     @Provides
@@ -77,6 +72,7 @@ object AppModule {
         deleteAdres = DeleteAdres(adresRepo),
         getOwnedPanden = GetOwnedPanden(pandenRepo),
         getPand = GetPand(pandenRepo),
+        deletePand = DeletePand(pandenRepo),
         getPanden = GetPanden(pandenRepo),
         addIssue = AddIssue(issuesRepo),
         getIssues = GetIssues(issuesRepo),

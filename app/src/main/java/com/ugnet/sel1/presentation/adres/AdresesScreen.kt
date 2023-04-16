@@ -71,9 +71,29 @@ fun ownedPanden(
     }
 }
 
+//@Composable
+//fun ownedPanden2(
+//    viewModel: AdresTestVM = hiltViewModel(),
+//    padding : PaddingValues
+//) {
+//    when(val managerResponse = viewModel.managerResponse) {
+//        is Response.Loading -> Text(text = "Loading")
+//        is Response.Success ->  pandContent(viewModel)
+//        is Response.Failure -> print(managerResponse.e)
+//    }
+//}
 
-
-
+//@Composable
+//fun pandContent(
+//    viewModel: AdresTestVM = hiltViewModel()
+//) {
+//    viewModel.getPanden(viewModel.managerResponse)
+//    when(val pandResponse = viewModel.pandenResponse) {
+//        is Response.Loading -> Text(text = "Loading")
+//        is Response.Success ->  Text(text = pandResponse.data.size.toString() + "hey")
+//        is Response.Failure -> print(pandResponse.e)
+//    }
+//}
 
 
 @Composable

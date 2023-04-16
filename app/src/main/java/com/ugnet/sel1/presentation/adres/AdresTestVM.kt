@@ -8,11 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +41,8 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
 
       var pandenResponse by mutableStateOf<PandenResponse>(Response.Loading)
 
+      var deletePandResponse by mutableStateOf<DeletePandResponse>(Response.Success(false))
+
 
       init{
 //            getAdreses()
@@ -46,6 +51,7 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
 //            getAdres("LdIJ1hy6d7HOrGR8RiMS")
             getManager("4YNpPq1e3Gg2FTrnqPoW")
             getPanden()
+
       }
 
 
@@ -55,6 +61,11 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             }
       }
 
+
+      fun deletePand(id: String) = viewModelScope.launch {
+            deletePandResponse = Response.Loading
+            deletePandResponse = useCases.deletePand(id)
+      }
 
       private fun getManager(id : String) = viewModelScope.launch {
             useCases.getManager(id).collect { response ->
@@ -74,6 +85,8 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
                   adresResponse = response
             }
       }
+
+
 //
 //
 //

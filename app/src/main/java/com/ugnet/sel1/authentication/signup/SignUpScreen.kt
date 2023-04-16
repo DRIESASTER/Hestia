@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ugnet.sel1.authentication.login.SignInViewModel
+import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
 import com.ugnet.sel1.authentication.signup.components.SignUp
 import com.ugnet.sel1.navigation.MyDestinations
@@ -24,12 +25,16 @@ import com.ugnet.sel1.ui.components.showMessage
 
 @Composable
 fun SignUpScreen(
+    roleSelectionViewModel: RoleSelectionViewModel,
     viewModel: SignUpViewModel,
     navController: NavController,
-    signUp : (email: String, password: String) -> Unit
+    signUp : (email: String, password: String, role : String, name: String, surname: String, userName : String) -> Unit
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+    val surname = remember { mutableStateOf("") }
+    val name = remember { mutableStateOf("") }
+    val userName = remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -41,6 +46,22 @@ fun SignUpScreen(
     ) {
         Text(text = "Create Account", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = name.value,
+            onValueChange = { name.value = it },
+            label = { Text("Name") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = surname.value,
+            onValueChange = { surname.value = it },
+            label = { Text("Surname") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = email.value,
@@ -59,7 +80,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { signUp(email.value, password.value)},
+            onClick = { signUp(email.value, password.value, roleSelectionViewModel.selectedRole.value, name.value, surname.value, userName.value) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")

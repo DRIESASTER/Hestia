@@ -5,7 +5,8 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 @IgnoreExtraProperties
 
 data class Huurder(
-    var achternaam: String? = null,
-    var voornaam: String? = null,
-    var username: String? = null,
+    var userId : String,
+    var voornaam: String,
+    var achternaam: String,
+    var username: String,
 )

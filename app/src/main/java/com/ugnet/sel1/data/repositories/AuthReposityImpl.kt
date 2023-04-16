@@ -3,7 +3,10 @@ package com.ugnet.sel1.data.repositories
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.authentication.selection.*
+import com.ugnet.sel1.domain.models.Huurder
+import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
@@ -17,19 +20,33 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
 ) : AuthRepository {
     override val currentUser get() = auth.currentUser
 
     override suspend fun firebaseSignUpWithEmailAndPassword(
-        email: String, password: String
+        email: String, password: String, role : String, surname : String,
+        name : String, username : String
     ): SignUpResponse {
         return try {
-            auth.createUserWithEmailAndPassword(email, password).await()
+            val result = auth.createUserWithEmailAndPassword(email, password).await()
+            val userId = result.user?.uid ?: throw Exception("User ID not found")
+            saveUserData(userId, name, surname, username, role)
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)
         }
+    }
+
+    private suspend fun saveUserData(userId: String, name: String, surname: String, username: String, role: String) {
+        val data = when (role) {
+            "Huurder" -> Huurder(userId, voornaam = name, achternaam = surname, username = username)
+            "Manager" -> Manager(userId, name, surname, username, null)
+            else -> throw Exception("Invalid role")
+        }
+
+        firestore.collection(role).document(userId).set(data).await()
     }
 
 

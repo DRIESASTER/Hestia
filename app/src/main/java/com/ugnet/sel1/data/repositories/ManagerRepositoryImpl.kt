@@ -12,7 +12,7 @@ class ManagerRepositoryImpl @Inject constructor(
     private val managerRef: FirebaseFirestore
 ): ManagerRepository {
     override fun getManagerFromFirestore(id: String) = callbackFlow {
-        val snapshotListener = managerRef.collection("manager").document(id).addSnapshotListener{ snapshot, e ->
+        val snapshotListener = managerRef.collection("manager").document(id).addSnapshotListener { snapshot, e ->
             val managerResponse = if (snapshot != null) {
                 val manager = snapshot.toObject(Manager::class.java)
                 Response.Success(manager)
@@ -23,5 +23,4 @@ class ManagerRepositoryImpl @Inject constructor(
         }
         awaitClose { snapshotListener.remove() }
     }
-
 }

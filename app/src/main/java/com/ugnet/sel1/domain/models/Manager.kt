@@ -9,8 +9,9 @@ import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
 @IgnoreExtraProperties
 
 data class Manager(
-    var username: String? = null,
+    var userId : String,
     var voornaam: String? = null,
     var achternaam: String? = null,
+    var username: String? = null,
     var ownedPanden: List<String>? = null
 )

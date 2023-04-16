@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private @Composable
+    @Composable
     fun NavigateToRoleSelectionScreen() =  navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE){
         popUpTo(navController.graph.id) {
             inclusive = true
@@ -49,9 +49,14 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NavigateToProfileScreen() = navController.navigate(MyDestinations.PROFILE_ROUTE) {
-        popUpTo(navController.graph.id) {
-            inclusive = true
+    fun NavigateToProfileScreen() {
+        val userId = viewModel.getCurrentUserId()
+        if (userId != null) {
+            navController.navigate("${MyDestinations.PROFILE_ROUTE}/$userId") {
+                popUpTo(navController.graph.id) {
+                    inclusive = true
+                }
+            }
         }
     }
 

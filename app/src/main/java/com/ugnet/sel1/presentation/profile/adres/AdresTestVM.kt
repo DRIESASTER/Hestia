@@ -99,6 +99,13 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             addPropertyResponse = useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat)
       }
 
+      fun deleteProperty(propertyId: String) = viewModelScope.launch {
+            addPropertyResponse = Response.Loading
+            addPropertyResponse = useCases.deleteProperty(propertyId)
+      }
+
+
+
 
 
 

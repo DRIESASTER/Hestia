@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 typealias Properties = List<Property>
 typealias PropertiesResponse = Response<Properties>
 typealias AddPropertyResponse = Response<Boolean>
+typealias DeletePropertyResponse = Response<Boolean>
 
 //typealias AddBookResponse = Response<Boolean>
 //typealias DeleteBookResponse = Response<Boolean>
@@ -23,6 +24,8 @@ interface PropertiesRepository {
         stad: String,
         straat: String
     ): AddPropertyResponse
+
+    suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 
 }

@@ -2,12 +2,10 @@ package com.ugnet.sel1.domain.backends
 
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.domain.models.Adres
-import kotlinx.coroutines.tasks.await
+import com.ugnet.sel1.domain.models.oudeShit.Adres
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

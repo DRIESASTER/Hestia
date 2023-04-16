@@ -10,18 +10,10 @@ import com.ugnet.sel1.authentication.login.LoginScreen
 import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
 import com.ugnet.sel1.authentication.signup.SignUpScreen
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ugnet.sel1.authentication.login.SignInViewModel
-import com.ugnet.sel1.authentication.profile.UserProfileScreen
-import com.ugnet.sel1.authentication.profile.UserViewModel
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
-import com.ugnet.sel1.data.repositories.ManagerRepositoryImpl
-import com.ugnet.sel1.domain.repository.ManagerRepository
-import com.ugnet.sel1.presentation.profile.ProfileScreen
 
 
 @Composable

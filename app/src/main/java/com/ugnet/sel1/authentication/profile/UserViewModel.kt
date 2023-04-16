@@ -12,7 +12,8 @@ import com.ugnet.sel1.authentication.selection.RevokeAccessResponse
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.UserData
-import com.ugnet.sel1.domain.repository.ManagerRepository
+
+import com.ugnet.sel1.domain.repository.UsersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: ManagerRepository,
+    private val userRepository: UsersRepository,
     private val repo: AuthRepository
 ) : ViewModel() {
 

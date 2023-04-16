@@ -1,4 +1,4 @@
-package com.ugnet.sel1.presentation.adres
+package com.ugnet.sel1.presentation.profile.adres
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
@@ -6,7 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 //@Composable
 //fun AdresesScreen(
- //   viewModel: AdresTestVM = hiltViewModel()
+//    viewModel: AdresTestVM = hiltViewModel()
 //) {
 //    viewModel.getIssuesByKamer("OwyLqQ6Dv3ENGciJg0gA ")
 //   Scaffold(

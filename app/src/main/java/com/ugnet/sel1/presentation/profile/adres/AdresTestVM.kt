@@ -1,4 +1,4 @@
-package com.ugnet.sel1.presentation.adres
+package com.ugnet.sel1.presentation.profile.adres
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,8 +38,11 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       var deleteRoomFromPropertyResponse by mutableStateOf<DeleteRoomResponse>(Response.Success(false))
             private set
 
-      var addPandResponse by mutableStateOf<AddPandResponse>(Response.Success(false))
+      var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Success(false))
             private set
+
+//      var addPandResponse by mutableStateOf<AddPandResponse>(Response.Success(false))
+//            private set
 
 
       init {
@@ -89,6 +92,11 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       fun deleteRoomFromProperty(propertyId: String, roomId: String) = viewModelScope.launch {
             deleteRoomFromPropertyResponse = Response.Loading
             deleteRoomFromPropertyResponse = useCases.deleteRoomFromProperty(propertyId, roomId)
+      }
+
+      fun addProperty(huisnummer:Int, isHuis:Boolean, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
+            addPropertyResponse = Response.Loading
+            addPropertyResponse = useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat)
       }
 
 

@@ -11,4 +11,5 @@ data class UseCases constructor(
     val changeIssueStatus: ChangeIssueStatus,
     val addRoomToProperty: AddRoomToProperty,
     val deleteRoomFromProperty: DeleteRoomFromProperty,
+    val addProperty: AddProperty
 )

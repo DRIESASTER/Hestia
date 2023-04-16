@@ -8,7 +8,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.ugnet.sel1.domain.models.Huurder
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 

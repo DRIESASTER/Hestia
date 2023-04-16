@@ -80,9 +80,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.3.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
-<<<<<<< HEAD
     androidTestImplementation "org.mockito:mockito-core:3.12.4"
-=======
 
->>>>>>> fd9a17ffc4ad4c772084fc609f7103c84b30edee
 }

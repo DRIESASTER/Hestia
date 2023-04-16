@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.authentication.login.SignInViewModel
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
+import com.ugnet.sel1.presentation.profile.ProfileScreen
 
 
 @Composable
@@ -41,19 +42,12 @@ fun NavGraph(
                 roleSelectionViewModel = roleSelectionViewModel,
                 viewModel = signUpViewModel,
                 navController = navController,
-                signUp = { email, password, role, name, surname, username ->
-                signUpViewModel.signUpWithEmailAndPassword(email, password, role, name, surname, username)
+                signUp = { email, password, role, name, surname ->
+                signUpViewModel.signUpWithEmailAndPassword(email, password, role, name, surname)
             })
         }
-        composable("${MyDestinations.PROFILE_ROUTE}/{userId}") { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString("userId")
-            if (userId != null) {
-                // show userdata
-                // todo UserProfileScreen()
-            } else {
-                throw Exception("no usedIdFound");
-                // Handle the case when userId is null, e.g., show an error or navigate back
-            }
+        composable(MyDestinations.PROFILE_ROUTE) {
+            ProfileScreen()
         }
         // Add any other destinations here
     }

@@ -19,7 +19,7 @@ interface AuthRepository {
 
     val currentUser: FirebaseUser?
 
-    suspend fun firebaseSignUpWithEmailAndPassword(email: String, password: String, role : String, surname : String, name : String, username : String): SignUpResponse
+    suspend fun firebaseSignUpWithEmailAndPassword(email: String, password: String, role : String, surname : String, name : String): SignUpResponse
 
     suspend fun sendEmailVerification(): SendEmailVerificationResponse
 

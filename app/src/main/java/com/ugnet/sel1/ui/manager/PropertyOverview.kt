@@ -27,5 +27,7 @@ fun PropertyOverview(modifier: Modifier = Modifier,properties:List<PropertyData>
                 Spacer(modifier = Modifier.height(0.dp))
             }
         }
+
     }
 }
+

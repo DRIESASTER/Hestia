@@ -1,21 +1,24 @@
 package com.ugnet.sel1.ui.manager
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Issue
 import com.ugnet.sel1.domain.models.Pand
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.components.*
+import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -28,11 +31,9 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             route = "managerhome",
             icon = Icons.Rounded.Home,
         ),
-        MenuItem(
-            name = "Profile",
-            route = "profile",
-            icon = Icons.Rounded.Person,
-        ),
+        MenuItem(name= "Logout",
+            route = "logout",
+            icon = Icons.Rounded.ExitToApp),
         MenuItem(
             name = "Chat",
             route = "chat",
@@ -87,7 +88,9 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                 )})
             }
         }
-    })
+    },
+        bottomBar = {if (currentState) {addButton(contentDescription = "Add issue", onClick = {/** route to addissue */})} else {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
+    )
 
 }
 
@@ -103,14 +106,37 @@ fun IssueDataContainer(
     }
 }
 
+//FIXME: add tenant and room if fixed
 fun processIssues(issueList: List<Issue>): List<IssueData> {
-    //
-    return null!!
+    //transfer the data from the issue model to the issue data model
+    val issueDataList = mutableListOf<IssueData>()
+    for (issue in issueList) {
+        val issueData = IssueData(
+            id = if (issue.id != null) issue.id!! else "0",
+            title = if (issue.titel != null) issue.titel!! else "No title",
+            description = if (issue.beschrijving != null) issue.beschrijving!! else "No title",
+            status = if (issue.status != null) issue.status!! else Status.notStarted,
+            tenant = "",
+            room = "",
+        )
+        issueDataList.add(issueData)
+    }
+    return issueDataList
 }
 
 fun processProperties(propertyList: List<Pand>): List<PropertyData> {
     //tranfer the data from the pand model to the property data model
-    return null!!
+    val propertyDataList = mutableListOf<PropertyData>()
+    for (property in propertyList) {
+        val propertyData = PropertyData(
+            name = if (property.straat != null) property.straat!! else "No title",
+            address = if (property.straat != null) property.straat!! else "No title",
+            issues = listOf(),
+            tenants = listOf()
+        )
+        propertyDataList.add(propertyData)
+    }
+    return propertyDataList
 }
 
 @Composable
@@ -124,6 +150,19 @@ fun PropertyDataContainer(
         is Response.Failure -> print(propertyResponse.e)
     }
 }
+
+@Composable
+fun addButton(contentDescription: String, onClick: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        FloatingActionButton(
+            onClick = { onClick()},
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            Icon(imageVector = Icons.Rounded.Add, contentDescription = contentDescription, tint = MainGroen)
+        }
+    }
+}
+
 
 @Preview
 @Composable

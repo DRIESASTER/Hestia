@@ -29,26 +29,28 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         private set
 
     init{
-        //getIssues()
-        //getProperties()
+        getProperties()
     }
 
     val uid: String? = Firebase.auth.currentUser?.uid
-    //FIXME: add user id
-//    private fun getIssues() = viewModelScope.launch {
-//        if(uid != null){
-//            useCases.getIssues(uid).collect { response ->
-//                IssueResponse = listOf<>(response)
-//            }
-//        }
-//    }
+    //FIXME: proces db response
+    private fun getIssues(issues:List<String>) = viewModelScope.launch {
+            useCases.getIssues(issues).collect { response ->
+                IssueResponse = response
+            }
+    }
 
-    //FIXME: add user id
-//    private fun getProperties() = viewModelScope.launch {
-//        useCases.getOwnedPanden(uid).collect { response ->
-//            PropertyResponse = response
-//        }
-//    }
+    //FIXME: proces db response
+    private fun getProperties() = viewModelScope.launch {
+        if(uid != null){
+            useCases.getPanden().collect { response ->
+                PropertyResponse = response
+            }
+        }
+
+    }
+
+
 
 
 }

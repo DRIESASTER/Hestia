@@ -20,12 +20,6 @@ object AppModule {
     @Provides
     fun provideManagerRef() = Firebase.firestore
 
-
-//    @Provides
-//    fun provideAdresesRepository(
-//        adresesRef: FirebaseFirestore
-//    ): AdresRepository = AdresRepositoryImpl(adresesRef)
-
     @Provides
     fun providePropertyRepository(
         dbRef: FirebaseFirestore
@@ -57,6 +51,8 @@ object AppModule {
         getOwnedProperties = GetOwnedProperties(propertyRepo),
         getIssuesForRoom = GetIssuesForRoom(issuesRepo),
         getRoomsForProperty = GetRoomsForProperty(roomsRepo),
-        changeIssueStatus = ChangeIssueStatus(issuesRepo)
+        changeIssueStatus = ChangeIssueStatus(issuesRepo),
+        addRoomToProperty = AddRoomToProperty(roomsRepo),
+        deleteRoomFromProperty = DeleteRoomFromProperty(roomsRepo)
     )
 }

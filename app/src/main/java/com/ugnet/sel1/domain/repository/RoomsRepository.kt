@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 typealias Rooms = List<Room>
 typealias RoomsResponse = Response<Rooms>
+typealias AddRoomResponse = Response<Boolean>
+typealias DeleteRoomResponse = Response<Boolean>
 //typealias KamerResponse = Response<Room?>
 //typealias AddKamerResponse = Response<Boolean>
 //typealias DeleteKamerResponse = Response<Boolean>
@@ -20,6 +22,10 @@ interface RoomsRepository {
 
 
     fun getRoomsForPropertyFromFirestore(pandId: String): Flow<RoomsResponse>
+
+    suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurder:String?): AddRoomResponse
+
+    suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse
 
 //    fun getKamerFromFirestore(kamerId: String): Flow<KamerResponse>
 //

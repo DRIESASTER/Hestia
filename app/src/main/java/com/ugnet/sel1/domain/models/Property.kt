@@ -9,5 +9,6 @@ data class Property(
     var isHuis: Boolean? = null,
     var straat: String? = null,
     var huisnummer: Int? = null,
-    var postcode: Int? = null
+    var postcode: Int? = null,
+    var ownedBy: String? = null
 )

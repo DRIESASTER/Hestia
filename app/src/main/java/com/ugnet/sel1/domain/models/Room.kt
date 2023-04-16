@@ -5,5 +5,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 @IgnoreExtraProperties
 
 data class Room(
-    var naam: String? = null
+    var naam: String? = null,
+    var roomId: String? = null,
+    var huurder: String? = null,
 )

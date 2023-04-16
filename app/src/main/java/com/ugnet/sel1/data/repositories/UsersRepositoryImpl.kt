@@ -44,4 +44,10 @@ class UsersRepositoryImpl @Inject constructor(
         }
     }
 
+
+
+//    fun getRentedRoomsFromFirestore(uid : String) = callbackFlow {
+//        val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", "uid").
+//    }
+
 }

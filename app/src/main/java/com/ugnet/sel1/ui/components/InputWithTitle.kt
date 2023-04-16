@@ -17,18 +17,15 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun InputWithTitle(title:String,modifier: Modifier = Modifier) {
-    var textFieldValue by remember { mutableStateOf("") }
+fun InputWithTitle(title:String,modifier: Modifier = Modifier,initValue:String,onValuechanged: (String) -> Unit = {}){
 
     Column(modifier = modifier
         .padding(10.dp)
         .fillMaxWidth()) {
         Text(text = title,style= MaterialTheme.typography.h6)
         OutlinedTextField(
-            value = textFieldValue,
-            onValueChange = { newValue ->
-                textFieldValue = newValue
-            },
+            value = initValue,
+            onValueChange = onValuechanged,
             label = { Text(title) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MainGroen,
@@ -47,9 +44,9 @@ fun InputWithTitle(title:String,modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun InputWithTitlePreview() {
-    Column() {
-        InputWithTitle(title = "naam")
-        InputWithTitle(title = "email")
+    Column {
+        InputWithTitle(title = "naam",initValue = "test",onValuechanged = {})
+        InputWithTitle(title = "email",initValue = "test",onValuechanged = {})
     }
 
 }

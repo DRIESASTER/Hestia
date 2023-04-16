@@ -21,7 +21,6 @@ import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false){
 
@@ -60,40 +59,41 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     //ui
     Scaffold(scaffoldState = scaffoldState,
         topBar = {ResidentTopBar(
-            onNavigationIconClick = {coroutineScope.launch {
-                scaffoldState.drawerState.open()
-            } },
-            topBarTitle = currentTitle
-        )}, drawerContent = {
+        onNavigationIconClick = {coroutineScope.launch {
+            scaffoldState.drawerState.open()
+        } },
+        topBarTitle = currentTitle
+    )}, drawerContent = {
             DrawerHeader()
             DrawerBody(items=drawerItems,onItemClick={})
         }, content={ padding ->
-            Column(modifier = Modifier.padding(padding)) {
-                SwitchButton2(
-                    option1 = "Issues",
-                    option2 = "Properties",
-                    initialState = initialScreen,
-                    onStateChanged = {
-                        setCurrentState(it)
-                    }
-                )
-                if (currentState) {
-                    IssueDataContainer(viewModel = Data, IssueContent ={issues-> IssueOverview(
-                        issues = issues,
-                        onIssueClicked = {}
-                    )})
-                } else {
-                    PropertyDataContainer(viewModel = Data, IssueContent ={properties-> PropertyOverview(
-                        properties = properties,
-                        onPropertyClicked = {}
-                    )})
+        Column(modifier = Modifier.padding(padding)) {
+            SwitchButton2(
+                option1 = "Issues",
+                option2 = "Properties",
+                initialState = initialScreen,
+                onStateChanged = {
+                    setCurrentState(it)
                 }
+            )
+            if (!currentState) {
+                IssueDataContainer(viewModel = Data, IssueContent ={issues-> IssueOverview(
+                    issues = issues,
+                    onIssueClicked = {}
+                )})
+            } else {
+                PropertyDataContainer(viewModel = Data, PropertyContent ={properties-> PropertyOverview(
+                    properties = properties,
+                    onPropertyClicked = {}
+                )})
             }
-        },
-        bottomBar = {if (currentState) {addButton(contentDescription = "Add issue", onClick = {/** route to addissue */})} else {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
+        }
+    },
+        bottomBar = {if (!currentState) {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
     )
 
 }
+
 @Composable
 fun IssueDataContainer(
     viewModel: ManagerHomeVM = hiltViewModel(),
@@ -112,7 +112,7 @@ fun processIssues(issueList: List<Issue>): List<IssueData> {
     val issueDataList = mutableListOf<IssueData>()
     for (issue in issueList) {
         val issueData = IssueData(
-            id = if (issue.id != null) issue.id!! else "0",
+            id = if (issue.roomId != null) issue.roomId!! else "0",
             title = if (issue.titel != null) issue.titel!! else "No title",
             description = if (issue.beschrijving != null) issue.beschrijving!! else "No title",
             status = if (issue.status != null) issue.status!! else Status.notStarted,
@@ -142,11 +142,11 @@ fun processProperties(propertyList: List<Property>): List<PropertyData> {
 @Composable
 fun PropertyDataContainer(
     viewModel: ManagerHomeVM = hiltViewModel(),
-    IssueContent: @Composable (Issues: List<PropertyData> ) -> Unit
+    PropertyContent: @Composable (Issues: List<PropertyData> ) -> Unit
 ) {
     when(val propertyResponse = viewModel.PropertyResponse) {
         is Response.Loading -> Text(text = "Loading")
-        is Response.Success -> IssueContent(processProperties(propertyResponse.data))
+        is Response.Success -> PropertyContent(processProperties(propertyResponse.data))
         is Response.Failure -> print(propertyResponse.e)
     }
 }

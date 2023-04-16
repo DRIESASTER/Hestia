@@ -38,7 +38,8 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       var deleteRoomFromPropertyResponse by mutableStateOf<DeleteRoomResponse>(Response.Success(false))
             private set
 
-//      var deletePandResponse by mutableStateOf<DeletePandResponse>(Response.Success(false))
+      var addPandResponse by mutableStateOf<AddPandResponse>(Response.Success(false))
+            private set
 
 
       init {

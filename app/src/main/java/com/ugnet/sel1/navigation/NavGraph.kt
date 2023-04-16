@@ -12,6 +12,7 @@ import com.ugnet.sel1.authentication.signup.SignUpScreen
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.authentication.login.SignInViewModel
+import com.ugnet.sel1.authentication.profile.UserProfileScreen
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
 import com.ugnet.sel1.presentation.profile.ProfileScreen
@@ -47,7 +48,7 @@ fun NavGraph(
             })
         }
         composable(MyDestinations.PROFILE_ROUTE) {
-            ProfileScreen()
+            UserProfileScreen()
         }
         // Add any other destinations here
     }

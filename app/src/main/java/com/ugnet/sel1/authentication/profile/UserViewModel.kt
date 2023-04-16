@@ -11,9 +11,12 @@ import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.authentication.selection.RevokeAccessResponse
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.models.UserData
+import com.ugnet.sel1.domain.repository.UserResponse
 
 import com.ugnet.sel1.domain.repository.UsersRepository
+import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,26 +28,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: UsersRepository,
+    private val useCases: UseCases,
     private val repo: AuthRepository
 ) : ViewModel() {
 
-    private val _userData = MutableStateFlow<Result<Any?>>(Result.success(null))
-    val userData: StateFlow<Result<Any?>> get() = _userData
+    private val _userResponse = MutableStateFlow<UserResponse>(Response.Loading as UserResponse)
+    val userData: StateFlow<UserResponse> get() = _userResponse
 
     fun signOut() = repo.signOut()
 
     init {
-        repo.currentUser?.let { fetchUserData(it.uid) }
+        repo.currentUser?.let { getUser(it.uid) }
     }
 
-    fun fetchUserData(userId: String) {
-/*        viewModelScope.launch {
-            userRepository.fetchUserData(userId, role)
-                .catch { e -> _userData.value = Result.failure(e) }
-                .collect { result -> _userData.value = result }
-        }*/
+    fun getUser(id: String) = viewModelScope.launch {
+        useCases.getUser(id).collect { response ->
+            _userResponse.value = response
+        }
     }
+}
 
 /*    fun saveUserData(userId: String, name: String, surname: String, email: String, userName: String, role: String) {
         viewModelScope.launch {
@@ -57,5 +59,5 @@ class UserViewModel @Inject constructor(
         }
     }*/
 
-}
+
 

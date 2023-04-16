@@ -90,5 +90,5 @@ fun CurrentStatus(
 @Preview
 @Composable
 fun ProgressionStatusPreview() {
-    ProgressionStatus(currentState = "Not Started")
+    ProgressionStatus(currentState = "Finished")
 }

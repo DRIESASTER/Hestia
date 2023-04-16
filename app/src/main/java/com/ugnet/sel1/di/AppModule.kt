@@ -56,6 +56,7 @@ object AppModule {
         getUser = GetUser(usersRepo),
         getOwnedProperties = GetOwnedProperties(propertyRepo),
         getIssuesForRoom = GetIssuesForRoom(issuesRepo),
-        getRoomsForProperty = GetRoomsForProperty(roomsRepo)
+        getRoomsForProperty = GetRoomsForProperty(roomsRepo),
+        changeIssueStatus = ChangeIssueStatus(issuesRepo)
     )
 }

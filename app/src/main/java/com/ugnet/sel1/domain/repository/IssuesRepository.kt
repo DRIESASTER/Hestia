@@ -9,9 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 typealias Issues = List<Issue>
 typealias IssuesResponse = Response<Issues>
-typealias IssueResponse = Response<Issue?>
-typealias AddIssueResponse = Response<Boolean>
-typealias DeleteIssueResponse = Response<Boolean>
 typealias ChangeIssueStatusResponse = Response<Boolean>
 //typealias AddBookResponse = Response<Boolean>
 //typealias DeleteBookResponse = Response<Boolean>
@@ -32,4 +29,5 @@ interface IssuesRepository {
 //    suspend fun addBookToFirestore(title: String, author: String): AddBookResponse
 //
 //    suspend fun deleteBookFromFirestore(bookId: String): DeleteBookResponse
+    suspend fun changeIssueStatusInFirestore(propertyId: String, status: Status, issueId: String) : ChangeIssueStatusResponse
 }

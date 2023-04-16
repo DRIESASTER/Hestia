@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,9 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             private set
 
       var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
+            private set
+
+      var changeIssueStatusResponse by mutableStateOf<ChangeIssueStatusResponse>(Response.Success(false))
             private set
 
 //      var deletePandResponse by mutableStateOf<DeletePandResponse>(Response.Success(false))
@@ -59,6 +63,12 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             useCases.getRoomsForProperty(propertyId).collect { response ->
                   roomsForPropertyResponse = response
             }
+      }
+
+
+      fun changeIssueStatus(issueId: String, status: Status, propertyId: String) = viewModelScope.launch {
+            changeIssueStatusResponse = Response.Loading
+            changeIssueStatusResponse = useCases.changeIssueStatus(issueId, status, propertyId)
       }
 
 

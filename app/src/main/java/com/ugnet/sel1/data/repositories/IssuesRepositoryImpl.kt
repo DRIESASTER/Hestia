@@ -30,6 +30,17 @@ class IssuesRepositoryImpl @Inject constructor(
             snapshotListener.remove()
         }
     }
+
+
+    override suspend fun changeIssueStatusInFirestore(pandId:String, status: Status, issueId: String): ChangeIssueStatusResponse {
+        return try{
+            dbRef.collection("properties/${pandId}/issues").document(issueId).update("status", status.toString()).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
 }
 
 //    override suspend fun addIssueToFirestore(

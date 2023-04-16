@@ -6,20 +6,8 @@ import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.data.repositories.*
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.*
-import com.ugnet.sel1.domain.useCases.Issues.AddIssue
-import com.ugnet.sel1.domain.useCases.Issues.ChangeIssueStatus
-import com.ugnet.sel1.domain.useCases.Issues.DeleteIssue
-import com.ugnet.sel1.domain.useCases.Issues.GetIssues
-import com.ugnet.sel1.domain.useCases.adressen.AddAdres
-import com.ugnet.sel1.domain.useCases.adressen.DeleteAdres
-import com.ugnet.sel1.domain.useCases.adressen.GetAdres
-import com.ugnet.sel1.domain.useCases.adressen.GetAdreses
-import com.ugnet.sel1.domain.useCases.kamers.*
-import com.ugnet.sel1.domain.useCases.manager.GetManager
-import com.ugnet.sel1.domain.useCases.panden.DeletePand
-import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
-import com.ugnet.sel1.domain.useCases.panden.GetPand
-import com.ugnet.sel1.domain.useCases.panden.GetPanden
+import com.ugnet.sel1.domain.useCases.GetUser
+import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,56 +21,41 @@ object AppModule {
     fun provideManagerRef() = Firebase.firestore
 
 
-    @Provides
-    fun provideAdresesRepository(
-        adresesRef: FirebaseFirestore
-    ): AdresRepository = AdresRepositoryImpl(adresesRef)
+//    @Provides
+//    fun provideAdresesRepository(
+//        adresesRef: FirebaseFirestore
+//    ): AdresRepository = AdresRepositoryImpl(adresesRef)
 
     @Provides
-    fun providePandenRepository(
-        pandenRef: FirebaseFirestore
-    ): PandenRepository = PandenRepositoryImpl(pandenRef)
+    fun providePropertyRepository(
+        dbRef: FirebaseFirestore
+    ): PropertiesRepository = PropertiesRepositoryImpl(dbRef)
 
     @Provides
     fun provideIssuesRepository(
-        issuesRef: FirebaseFirestore
-    ): IssuesRepository = IssuesRepositoryImpl(issuesRef)
+        dbRef: FirebaseFirestore
+    ): IssuesRepository = IssuesRepositoryImpl(dbRef)
 
     @Provides
-    fun providesKamersRepository(
-        kamersRef: FirebaseFirestore
-    ): KamersRepository = KamersRepositoryImpl(kamersRef)
+    fun provideRoomsRepository(
+        dbRef: FirebaseFirestore
+    ): RoomsRepository = RoomsRepositoryImpl(dbRef)
 
     @Provides
-    fun provideManagerRepository(
-        managerRef: FirebaseFirestore
-    ): ManagerRepository = ManagerRepositoryImpl(managerRef)
+    fun provideUsersRepository(
+        dbRef: FirebaseFirestore
+    ): UsersRepository = UsersRepositoryImpl(dbRef)
 
     @Provides
     fun provideUseCases(
-        adresRepo: AdresRepository,
-        pandenRepo : PandenRepository,
+        propertyRepo : PropertiesRepository,
         issuesRepo : IssuesRepository,
-        kamersRepository: KamersRepository,
-        managerRepository: ManagerRepository
+        roomsRepo: RoomsRepository,
+        usersRepo: UsersRepository,
     ) = UseCases(
-        getAdreses = GetAdreses(adresRepo),
-        getAdres = GetAdres(adresRepo),
-        addAdres = AddAdres(adresRepo),
-        deleteAdres = DeleteAdres(adresRepo),
-        getOwnedPanden = GetOwnedPanden(pandenRepo),
-        getPand = GetPand(pandenRepo),
-        deletePand = DeletePand(pandenRepo),
-        getPanden = GetPanden(pandenRepo),
-        addIssue = AddIssue(issuesRepo),
-        getIssues = GetIssues(issuesRepo),
-        deleteIssue = DeleteIssue(issuesRepo),
-        changeIssueStatus = ChangeIssueStatus(issuesRepo),
-        getKamer = GetKamer(kamersRepository),
-        addKamer = AddKamer(kamersRepository),
-        deleteKamer = DeleteKamer(kamersRepository),
-        editKamer = EditKamer(kamersRepository),
-        getKamers = GetKamers(kamersRepository),
-        getManager = GetManager(managerRepository)
+        getUser = GetUser(usersRepo),
+        getOwnedProperties = GetOwnedProperties(propertyRepo),
+        getIssuesForRoom = GetIssuesForRoom(issuesRepo),
+        getRoomsForProperty = GetRoomsForProperty(roomsRepo)
     )
 }

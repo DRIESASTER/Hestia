@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import com.ugnet.sel1.domain.models.Issue
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
-import com.ugnet.sel1.domain.useCases.Issues.ChangeIssueStatus
+import com.ugnet.sel1.domain.useCases.oudeShit.panden.Issues.ChangeIssueStatus
 import kotlinx.coroutines.flow.Flow
 
 typealias Issues = List<Issue>
@@ -18,13 +18,13 @@ typealias ChangeIssueStatusResponse = Response<Boolean>
 
 interface IssuesRepository {
 
-    fun getIssuesFromFirestore(id: List<String>): Flow<IssuesResponse>
+    fun getIssuesByRoomFromFirestore(pandId:String, roomId:String): Flow<IssuesResponse>
 
-    suspend fun addIssueToFirestore(beschrijving: String, datum: Timestamp, titel: String): AddIssueResponse
-
-    suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
-
-    suspend fun changeIssueStatus(issueId: String, status: Status): ChangeIssueStatusResponse
+//    suspend fun addIssueToFirestore(beschrijving: String, datum: Timestamp, titel: String): AddIssueResponse
+//
+//    suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
+//
+//    suspend fun changeIssueStatus(issueId: String, status: Status): ChangeIssueStatusResponse
 
 //
 //    fun getAdresesFromFirestore(): Flow<AdresesResponse>

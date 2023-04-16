@@ -6,12 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import com.ugnet.sel1.domain.repository.Adreses
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.firebase.firestore.DocumentReference
-import com.ugnet.sel1.domain.models.Adres
-import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.Issues
-import com.ugnet.sel1.domain.repository.PandenResponse
 
 @Composable
 fun AdresesScreen(
@@ -60,40 +56,17 @@ fun ownedPanden(
     viewModel: AdresTestVM = hiltViewModel(),
     padding : PaddingValues
 ) {
-    when(val pandResponse = viewModel.pandenResponse) {
+    viewModel.getOwnedProperties("4YNpPq1e3Gg2FTrnqPoW")
+    when(val pandResponse = viewModel.ownedPropertiesResponse) {
         is Response.Loading -> Text(text = "Loading")
-        is Response.Success ->  when(val managerResponse = viewModel.managerResponse) {
-            is Response.Loading -> Text(text = "Loading")
-            is Response.Success ->  Text(text = pandResponse.data.filter { pand -> managerResponse.data?.ownedPanden?.contains(pand.id) == true}.size.toString() + "hey")
-            is Response.Failure -> print(managerResponse.e)
+        is Response.Success ->  Text(text = pandResponse.data?.?.get(0)?.adres?.straat + "hey")
         }
         is Response.Failure -> print(pandResponse.e)
     }
 }
 
-//@Composable
-//fun ownedPanden2(
-//    viewModel: AdresTestVM = hiltViewModel(),
-//    padding : PaddingValues
-//) {
-//    when(val managerResponse = viewModel.managerResponse) {
-//        is Response.Loading -> Text(text = "Loading")
-//        is Response.Success ->  pandContent(viewModel)
-//        is Response.Failure -> print(managerResponse.e)
-//    }
-//}
 
-//@Composable
-//fun pandContent(
-//    viewModel: AdresTestVM = hiltViewModel()
-//) {
-//    viewModel.getPanden(viewModel.managerResponse)
-//    when(val pandResponse = viewModel.pandenResponse) {
-//        is Response.Loading -> Text(text = "Loading")
-//        is Response.Success ->  Text(text = pandResponse.data.size.toString() + "hey")
-//        is Response.Failure -> print(pandResponse.e)
-//    }
-//}
+
 
 
 @Composable
@@ -148,7 +121,7 @@ fun Issues(
     viewModel: AdresTestVM = hiltViewModel(),
     issuesContent: @Composable (issues: Issues) -> Unit
 ) {
-    when(val issuesResponse = viewModel.issuesResponse) {
+    when(val issuesResponse = viewModel.issuesForRoomResponse) {
         is Response.Loading -> Text(text = "Loading")
         is Response.Success -> issuesContent(issuesResponse.data)
         is Response.Failure -> print(issuesResponse.e)

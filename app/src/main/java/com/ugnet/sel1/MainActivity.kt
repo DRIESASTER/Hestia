@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.navigation.NavGraph
-
+import com.ugnet.sel1.presentation.adres.AdresesScreen
 
 
 @AndroidEntryPoint
@@ -23,9 +23,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            navController = rememberNavController()
-            NavGraph(navController = navController)
-            AuthState()
+//            navController = rememberNavController()
+//            NavGraph(navController = navController)
+//            AuthState()
+            AdresesScreen()
         }
     }
 

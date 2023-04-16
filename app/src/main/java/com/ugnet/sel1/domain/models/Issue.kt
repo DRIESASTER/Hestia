@@ -11,7 +11,7 @@ data class Issue(
     var titel: String? = null,
     var datum: Timestamp? = null,
     var status: Status? = null,
-    var id: String? = null
+    var roomId: String? = null
 )
 
 enum class Status {

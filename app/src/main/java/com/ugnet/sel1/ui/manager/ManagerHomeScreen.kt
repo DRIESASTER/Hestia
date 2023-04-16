@@ -14,12 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.domain.models.Pand
+import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false){
@@ -59,41 +60,40 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     //ui
     Scaffold(scaffoldState = scaffoldState,
         topBar = {ResidentTopBar(
-        onNavigationIconClick = {coroutineScope.launch {
-            scaffoldState.drawerState.open()
-        } },
-        topBarTitle = currentTitle
-    )}, drawerContent = {
+            onNavigationIconClick = {coroutineScope.launch {
+                scaffoldState.drawerState.open()
+            } },
+            topBarTitle = currentTitle
+        )}, drawerContent = {
             DrawerHeader()
             DrawerBody(items=drawerItems,onItemClick={})
         }, content={ padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            SwitchButton2(
-                option1 = "Issues",
-                option2 = "Properties",
-                initialState = initialScreen,
-                onStateChanged = {
-                    setCurrentState(it)
+            Column(modifier = Modifier.padding(padding)) {
+                SwitchButton2(
+                    option1 = "Issues",
+                    option2 = "Properties",
+                    initialState = initialScreen,
+                    onStateChanged = {
+                        setCurrentState(it)
+                    }
+                )
+                if (currentState) {
+                    IssueDataContainer(viewModel = Data, IssueContent ={issues-> IssueOverview(
+                        issues = issues,
+                        onIssueClicked = {}
+                    )})
+                } else {
+                    PropertyDataContainer(viewModel = Data, IssueContent ={properties-> PropertyOverview(
+                        properties = properties,
+                        onPropertyClicked = {}
+                    )})
                 }
-            )
-            if (currentState) {
-                IssueDataContainer(viewModel = Data, IssueContent ={issues-> IssueOverview(
-                    issues = issues,
-                    onIssueClicked = {}
-                )})
-            } else {
-                PropertyDataContainer(viewModel = Data, IssueContent ={properties-> PropertyOverview(
-                    properties = properties,
-                    onPropertyClicked = {}
-                )})
             }
-        }
-    },
+        },
         bottomBar = {if (currentState) {addButton(contentDescription = "Add issue", onClick = {/** route to addissue */})} else {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
     )
 
 }
-
 @Composable
 fun IssueDataContainer(
     viewModel: ManagerHomeVM = hiltViewModel(),
@@ -124,7 +124,7 @@ fun processIssues(issueList: List<Issue>): List<IssueData> {
     return issueDataList
 }
 
-fun processProperties(propertyList: List<Pand>): List<PropertyData> {
+fun processProperties(propertyList: List<Property>): List<PropertyData> {
     //tranfer the data from the pand model to the property data model
     val propertyDataList = mutableListOf<PropertyData>()
     for (property in propertyList) {

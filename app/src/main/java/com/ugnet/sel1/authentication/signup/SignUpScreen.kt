@@ -28,13 +28,12 @@ fun SignUpScreen(
     roleSelectionViewModel: RoleSelectionViewModel,
     viewModel: SignUpViewModel,
     navController: NavController,
-    signUp : (email: String, password: String, role : String, name: String, surname: String, userName : String) -> Unit
+    signUp : (email: String, password: String, role : String, name: String, surname: String) -> Unit
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val surname = remember { mutableStateOf("") }
     val name = remember { mutableStateOf("") }
-    val userName = remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -80,7 +79,9 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { signUp(email.value, password.value, roleSelectionViewModel.selectedRole.value, name.value, surname.value, userName.value) },
+            onClick = {
+                println("Button clicked")
+                signUp(email.value, password.value, roleSelectionViewModel.selectedRole.value, name.value, surname.value) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")

@@ -27,7 +27,7 @@ class UsersRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
-    override suspend fun saveUserData(userId: String, name: String, surname: String, email: String, userName: String, role: String): AddUserResponse {
+    override suspend fun saveUserData(userId: String, name: String, surname: String, email: String, role: String): AddUserResponse {
         return try{
             val id = dbRef.collection("user").document().id
             val user = User(

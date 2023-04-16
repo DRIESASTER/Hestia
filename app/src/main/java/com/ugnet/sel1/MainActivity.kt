@@ -49,14 +49,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun NavigateToProfileScreen() {
-        val userId = viewModel.getCurrentUserId()
-        if (userId != null) {
-            navController.navigate("${MyDestinations.PROFILE_ROUTE}/$userId") {
+            navController.navigate(MyDestinations.PROFILE_ROUTE) {
                 popUpTo(navController.graph.id) {
                     inclusive = true
                 }
             }
-        }
     }
 
 }

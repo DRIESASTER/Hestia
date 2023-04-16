@@ -16,7 +16,6 @@ interface UsersRepository {
         name: String,
         surname: String,
         email: String,
-        userName: String,
         role: String
     ) : AddUserResponse
 }

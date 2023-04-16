@@ -3,8 +3,6 @@ package com.ugnet.sel1.domain.models
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
-import com.ugnet.sel1.domain.repository.Panden
-import com.ugnet.sel1.domain.useCases.panden.GetOwnedPanden
 
 @IgnoreExtraProperties
 

@@ -8,14 +8,24 @@ import kotlinx.coroutines.flow.Flow
 
 typealias Kamers = List<Kamer>
 typealias KamersResponse = Response<Kamers>
+typealias KamerResponse = Response<Kamer?>
+typealias AddKamerResponse = Response<Boolean>
+typealias DeleteKamerResponse = Response<Boolean>
+typealias EditKamerResponse = Response<Boolean>
+
 //typealias AddBookResponse = Response<Boolean>
 //typealias DeleteBookResponse = Response<Boolean>
 
 interface KamersRepository {
 
-//    fun getAdresesFromFirestore(): Flow<AdresesResponse>
+    fun getKamerFromFirestore(kamerId: String): Flow<KamerResponse>
 
-//    suspend fun addBookToFirestore(title: String, author: String): AddBookResponse
-//
-//    suspend fun deleteBookFromFirestore(bookId: String): DeleteBookResponse
+    fun getKamersFromFirestore(): Flow<KamersResponse>
+
+    suspend fun addKamerToFirestore(huurder: String, naam: String): AddKamerResponse
+
+    suspend fun deleteKamerFromFirestore(kamerId: String): DeleteKamerResponse
+
+    suspend fun editKamerFromFirestore(kamerId: String, huurder: String, naam: String, issues: List<String>): EditKamerResponse
+
 }

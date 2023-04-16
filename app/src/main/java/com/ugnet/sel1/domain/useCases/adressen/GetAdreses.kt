@@ -1,4 +1,4 @@
-package com.ugnet.sel1.domain.useCases
+package com.ugnet.sel1.domain.useCases.adressen
 
 
 import com.ugnet.sel1.domain.repository.AdresRepository

@@ -1,19 +1,13 @@
 package com.ugnet.sel1.domain.repository
 
-import com.ugnet.sel1.domain.models.Kamer
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
+import kotlinx.coroutines.flow.Flow
 
-typealias Managers = List<Manager>
-typealias ManagersResponse = Response<Manager>
-//typealias AddBookResponse = Response<Boolean>
-//typealias DeleteBookResponse = Response<Boolean>
+typealias ManagerResponse = Response<Manager?>
 
 interface ManagerRepository {
 
-//    fun getAdresesFromFirestore(): Flow<AdresesResponse>
+    fun getManagerFromFirestore(id: String): Flow<ManagerResponse>
 
-//    suspend fun addBookToFirestore(title: String, author: String): AddBookResponse
-//
-//    suspend fun deleteBookFromFirestore(bookId: String): DeleteBookResponse
 }

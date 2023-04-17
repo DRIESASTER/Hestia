@@ -42,6 +42,8 @@ class UserViewModel @Inject constructor(
     fun signOut() = repo.signOut()
 
     init {
+//        Log.d("USER", Firebase.auth.currentUser?.uid.toString())
+        getUser("0BD213chR0UFGciNHZXsbI8DOy32")
     }
 
     fun getUser(id: String) = viewModelScope.launch {

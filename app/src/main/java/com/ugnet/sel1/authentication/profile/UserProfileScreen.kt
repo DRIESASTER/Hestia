@@ -33,6 +33,7 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        userViewModel.getUser(Firebase.auth.currentUser?.uid.toString())
         when (val response = userViewModel.userDataResponse) {
             is Response.Loading -> {
                 CircularProgressIndicator()

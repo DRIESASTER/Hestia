@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Timestamp
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.manager.IssueData
 import com.ugnet.sel1.ui.theme.MainGroen
@@ -105,7 +107,10 @@ fun createMockIssueDataList(): List<IssueData> {
             description = "test${i}",
             status = Status.notStarted,
             tenant = "test${i}",
-            room = "test${i}"
+            room = "test${i}",
+            building = "test${i}",
+            issuekind = IssueType.electricity,
+            date = Timestamp.now()
         )
         mockIssueDataList.add(issueData)
     }

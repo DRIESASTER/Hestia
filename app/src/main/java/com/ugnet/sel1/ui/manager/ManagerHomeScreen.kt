@@ -16,13 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
 @Composable
-fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false){
+fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false, navController: NavController){
 
     //data
     val drawerItems = listOf(
@@ -94,7 +97,8 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             }
             }
     },
-        bottomBar = {if (!currentState) {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
+        bottomBar = {if (!currentState) {addButton(contentDescription = "Add property", onClick = { navController.navigate(MyDestinations.ADD_PROPERTY) }
+        )}}
     )
 
 }
@@ -116,6 +120,6 @@ fun addButton(contentDescription: String, onClick: () -> Unit) {
 @Preview
 @Composable
 fun ManagerHomeScreenPreview(){
-    ManagerHomeScreen()
+    ManagerHomeScreen(navController = rememberNavController())
 }
 

@@ -95,6 +95,7 @@ fun ResidentIssueOverviewPreview() {
     ResidentIssueOverview(issues = emptyList())
 }
 
+/*
 fun createMockIssueDataList(): List<IssueData> {
     val mockIssueDataList = mutableListOf<IssueData>()
 
@@ -111,4 +112,4 @@ fun createMockIssueDataList(): List<IssueData> {
     }
 
     return mockIssueDataList
-}
+}*/

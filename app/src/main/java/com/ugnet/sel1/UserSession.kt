@@ -13,7 +13,6 @@ import javax.inject.Singleton
 class UserSession @Inject constructor() {
     private var _currentUser = mutableStateOf<User?>(null)
     val currentUser: State<User?> get() = _currentUser
-
     fun updateCurrentUser(user: User?) {
         _currentUser.value = user
     }

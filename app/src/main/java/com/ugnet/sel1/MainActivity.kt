@@ -14,6 +14,7 @@ import com.ugnet.sel1.domain.repository.oudeShit.Adreses
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.navigation.NavGraph
 import com.ugnet.sel1.presentation.profile.adres.AdresesScreen
+import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 
 
 @AndroidEntryPoint
@@ -27,7 +28,8 @@ class MainActivity : ComponentActivity() {
 //            navController = rememberNavController()
 //            NavGraph(navController = navController)
 //            AuthState()
-            AdresesScreen()
+            //AdresesScreen()
+            ManagerHomeScreen()
         }
     }
 

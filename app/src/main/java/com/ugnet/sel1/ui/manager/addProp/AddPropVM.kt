@@ -1,6 +1,5 @@
 package com.ugnet.sel1.ui.manager.addProp
 
-import android.service.autofill.UserData
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,9 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.repository.AddPropertyResponse
 import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.useCases.UseCases
@@ -44,7 +41,7 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
         }
     }
 
-    open fun changeState(){
+    fun changeState(){
         isHouse = !isHouse
     }
 
@@ -58,19 +55,18 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
         addProperty(number.toInt(), isHouse, managerID, postalCode.toInt(), city, street)
         when(val addPropResponse = addPropertyResponse){
             is Response.Success -> {
-                useCases.addRoomToProperty(addPropResponse.data ,rooms[0].roomName, rooms[0].tenantName)
+                for(room in rooms){
+                    useCases.addRoomToProperty(addPropResponse.data,room.roomName, room.tenantName)
+                }
             }
             else -> {}
-        }
-        for (room in rooms){
-//            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
-        }
+        } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
     }
 
     fun addProperty(huisnummer:Int, isHuis:Boolean, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
-//        useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat).collect { response ->
-//            addPropertyResponse = response
-//        }
+        useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat).collect { response ->
+            addPropertyResponse = response
+        }
     }
 
     fun addRoom(roomname:String, tenantname:String){

@@ -28,11 +28,13 @@ import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
-fun IssueCard(title: String,
+fun IssueCard(id:String,
+              building:String,
+              title: String,
               tenant:String,
               room:String,
               description:String,
-              status:Status, modifier: Modifier = Modifier, onClick: () -> Unit) {
+              status:Status, modifier: Modifier = Modifier, onClick: () -> Unit, onStatusClicked: (Status,String,String) -> Unit) {
     val currentStatus = remember { mutableStateOf(status)}
 
     DisposableEffect(currentStatus.value) {
@@ -133,7 +135,8 @@ fun IssueCard(title: String,
                             "In Progress" -> Status.inProgress
                             "Finished" ->  Status.finished
                             else -> Status.notStarted
-                        } }
+                        }
+                            onStatusClicked(currentStatus.value,id,building)}
                     )
                 }
             }
@@ -153,5 +156,5 @@ fun getStatus(status: Status): String {
 @Preview
 @Composable
 fun IssueCardPreview() {
-    IssueCard(title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted, onClick = {})
+    IssueCard(building ="hoi", id = "hoi", title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted, onClick = {}, onStatusClicked = {int1,int2,int3-> println(int1.toString()+int2+int3) })
 }

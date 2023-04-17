@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.manager.IssueData
 import com.ugnet.sel1.ui.manager.IssueOverview
@@ -38,7 +39,9 @@ fun createMockIssueDataList(): List<IssueData> {
             description = "decr${i}",
             status = Status.notStarted,
             tenant = "tenant${i}",
-            room = "room${i}"
+            room = "room${i}",
+            building = "building${i}",
+            issuekind = IssueType.gas
         )
         mockIssueDataList.add(issueData)
     }
@@ -57,7 +60,7 @@ class IssueOverviewTest {
 
         // Set up your Composable under test
         composeTestRule.setContent {
-            IssueOverview(issues = mockIssueDataList, onIssueClicked = {/* Do nothing */})
+            IssueOverview(issues = mockIssueDataList, onIssueClicked = {/* Do nothing */}, onStatusClicked = { _, _, _ -> /* Do nothing */})
         }
 
         // Check if each property is displayed properly

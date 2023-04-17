@@ -11,21 +11,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.Timestamp
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.components.IssueCard
 
 @Composable
-fun IssueOverview(modifier: Modifier = Modifier,issues:List<IssueData>,onIssueClicked:(IssueData)->Unit) {
+fun IssueOverview(modifier: Modifier = Modifier,issues:List<IssueData>,onIssueClicked:(IssueData)->Unit,onStatusClicked:(Status,String,String)->Unit) {
     Surface(modifier = modifier) {
         LazyColumn (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
             itemsIndexed(issues) { _, issue ->
                 IssueCard(
+                    id = issue.id,
+                    building = issue.building,
                     title = issue.title,
                     tenant = issue.tenant,
                     room = issue.room,
-                    description = issue.description,
+                    description = issue.issuekind.toString(),
                     status = issue.status,
-                    onClick = { onIssueClicked(issue) }
+                    onClick = { onIssueClicked(issue) },
+                    onStatusClicked =  onStatusClicked
                 )
                 Spacer(modifier = Modifier.height(0.dp))
             }
@@ -38,7 +43,7 @@ fun IssueOverview(modifier: Modifier = Modifier,issues:List<IssueData>,onIssueCl
 @Composable
 fun IssueOverviewPreview() {
     val mockIssueDataList = createMockIssueDataList()
-    IssueOverview(issues = mockIssueDataList, onIssueClicked = {/* Do nothing */})
+    IssueOverview(issues = mockIssueDataList, onIssueClicked = {/* Do nothing */}, onStatusClicked = { _, _, _ -> /* Do nothing */})
 }
 
 fun createMockIssueDataList(): List<IssueData> {
@@ -51,7 +56,10 @@ fun createMockIssueDataList(): List<IssueData> {
             description = "test${i}",
             status = Status.notStarted,
             tenant = "test${i}",
-            room = "test${i}"
+            room = "test${i}",
+            building = "test${i}",
+            issuekind = IssueType.electricity,
+            date = Timestamp.now()
         )
         mockIssueDataList.add(issueData)
     }

@@ -1,5 +1,6 @@
 package com.ugnet.sel1.authentication.profile
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.authentication.selection.AuthRepository
@@ -42,8 +44,8 @@ class UserViewModel @Inject constructor(
     fun signOut() = repo.signOut()
 
     init {
-//        Log.d("USER", Firebase.auth.currentUser?.uid.toString())
-        getUser("0BD213chR0UFGciNHZXsbI8DOy32")
+        Log.d("USER", Firebase.auth.currentUser?.uid.toString())
+        Firebase.auth.currentUser?.uid?.let { getUser(it) }
     }
 
     fun getUser(id: String) = viewModelScope.launch {
@@ -53,16 +55,6 @@ class UserViewModel @Inject constructor(
     }
 }
 
-/*    fun saveUserData(userId: String, name: String, surname: String, email: String, userName: String, role: String) {
-        viewModelScope.launch {
-            try {
-                userRepository.saveUserData(userId, name, surname, email, userName, role)
-                _userData.value = Result.success(null)
-            } catch (e: Exception) {
-                _userData.value = Result.failure(e)
-            }
-        }
-    }*/
 
 
 

@@ -54,7 +54,7 @@ fun ownedPanden(
     padding: PaddingValues
 ) {
 //    viewModel.getIssuesForRoom("QTx6rzIOf8Y5G1KQQPUB", "2gLemNlYgYghm7InAZ")
-    when(val issuesResponse = viewModel.changeIssueStatusResponse) {
+    when(val issuesResponse = viewModel.issuesForRoomResponse) {
         is Response.Success -> Text(text = issuesResponse.data.toString())
         is Response.Failure -> Text(text = "very sad")
         Response.Loading -> Text(text = "loading")

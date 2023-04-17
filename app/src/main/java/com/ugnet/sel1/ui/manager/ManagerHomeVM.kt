@@ -123,6 +123,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
                         else -> {}
                     }
                 }
+                Log.d("ManagerHomeVM", "getIssuesForManager succes: ${issues.size}")
                 issuesForManagerResponse = Response.Success(issues)
             }
             else -> {}

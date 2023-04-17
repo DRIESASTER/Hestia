@@ -15,6 +15,7 @@ import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.navigation.NavGraph
 import com.ugnet.sel1.presentation.profile.adres.AdresesScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
+import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 
 
 @AndroidEntryPoint
@@ -29,7 +30,8 @@ class MainActivity : ComponentActivity() {
 //            NavGraph(navController = navController)
 //            AuthState()
             //AdresesScreen()
-            ManagerHomeScreen()
+            //ManagerHomeScreen()
+            AddPropMainScreen()
         }
     }
 

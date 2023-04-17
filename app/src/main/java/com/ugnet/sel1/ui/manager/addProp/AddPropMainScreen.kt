@@ -5,9 +5,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,11 +21,12 @@ import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.components.SwitchButton2
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier ) {
+fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navController = navController)},
         content = { padding ->
@@ -37,15 +41,16 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
             } else {
                 AddAppartement(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             }
-            Button(onClick = { trySave(viewmodel,navController) }, modifier = Modifier
-                .padding(10.dp)
-                .border(1.dp, MainGroen, RoundedCornerShape(10.dp))
-                .background(MainGroen)
-                .padding(10.dp)
-                .fillMaxWidth()) {
-                Text(text = "Add Property", color = Color.White)
-            }
+
         }
+        }, floatingActionButton = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                IconButton(onClick = { trySave(viewmodel,navController) },Modifier.background(
+                    AccentLicht, RoundedCornerShape(20.dp))) {
+                    Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
+                }
+            }
+
         })
 }
 

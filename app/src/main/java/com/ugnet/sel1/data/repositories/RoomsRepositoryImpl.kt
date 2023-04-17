@@ -54,6 +54,21 @@ class RoomsRepositoryImpl @Inject constructor(
     }
 
 
+    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener() { snapshot, e ->
+            val roomsResponse = if (snapshot != null) {
+                val rooms = snapshot.toObjects(Room::class.java)
+                Response.Success(rooms)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(roomsResponse)
+        }
+        awaitClose { snapshotListener.remove()
+    }
+    }
+
+
 //    override fun getKamersFromFirestore() = callbackFlow {
 //        val snapshotListener = kamersRef.collection("kamers").addSnapshotListener { snapshot, e ->
 //            val kamersResponse = if (snapshot != null) {

@@ -9,6 +9,7 @@ data class UseCases constructor(
     val getIssuesForRoom: GetIssuesForRoom,
     val getRoomsForProperty: GetRoomsForProperty,
     val getOwnedProperties: GetOwnedProperties,
+    val getRentedRoomsByUser: GetRentedRoomsByUser,
     val changeIssueStatus: ChangeIssueStatus,
     val addRoomToProperty: AddRoomToProperty,
     val deleteRoomFromProperty: DeleteRoomFromProperty,

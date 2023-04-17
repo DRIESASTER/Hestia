@@ -10,7 +10,6 @@ import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -78,7 +77,7 @@ fun AddHouse(viewmodel:AddPropVM, modifier:Modifier = Modifier) {
             InputWithTitle(title = "Street", initValue = viewmodel.street, onValuechanged = {viewmodel.street = it})
             InputWithTitle(title = "Number", initValue = viewmodel.number, onValuechanged = {viewmodel.number = it})
             InputWithTitle(title = "Postal Code", initValue = viewmodel.postalCode, onValuechanged = {viewmodel.postalCode = it})
-            InputWithTitle(title = "Tenant", initValue = viewmodel.tenant, onValuechanged = {viewmodel.tenant = it})
+            InputWithTitle(title = "Tenant email", initValue = viewmodel.tenant, onValuechanged = {viewmodel.tenant = it})
     }
 
 }

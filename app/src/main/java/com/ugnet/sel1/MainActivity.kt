@@ -30,8 +30,8 @@ class MainActivity : ComponentActivity() {
 //            NavGraph(navController = navController)
 //            AuthState()
             //AdresesScreen()
-            //ManagerHomeScreen()
-            AddPropMainScreen()
+            ManagerHomeScreen()
+            //AddPropMainScreen()
         }
     }
 

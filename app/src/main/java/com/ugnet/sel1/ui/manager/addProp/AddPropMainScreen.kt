@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,8 +17,6 @@ import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.components.SwitchButton2
 import com.ugnet.sel1.ui.theme.MainGroen
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @Composable
@@ -28,14 +24,19 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
     val navController = rememberNavController()
     Scaffold(topBar = { SimpleTopBar(name = "Add Property", navController = navController)},
         content = { padding ->
-            SwitchButton2(initialState = viewmodel.isHouse, onStateChanged = {viewmodel.changeState()})
-            if (viewmodel.isHouse){
-                AddHouse(viewmodel = viewmodel,modifier = Modifier.padding(padding))
+            Column() {
+            SwitchButton2(
+                option1 = "House",
+                option2 = "Appartment",
+                initialState = viewmodel.isHouse,
+                onStateChanged = { viewmodel.changeState() })
+            if (viewmodel.isHouse) {
+                AddHouse(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             } else {
-                AddAppartement(viewmodel = viewmodel,modifier = Modifier.padding(padding))
+                AddAppartement(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             }
+        }
         })
-
 }
 
 @Composable
@@ -145,6 +146,17 @@ fun AddRoomPopupPreview() {
 @Preview
 @Composable
 fun AddpropMainScreenPreview() {
-    AddPropMainScreen( modifier = Modifier)
+    AddPropMainScreen(viewmodel = FakeAddPropVM(), modifier = Modifier)
 }
 
+class FakeAddPropVM : AddPropVM() {
+    override var isHouse: Boolean by mutableStateOf(false)
+    override var city: String = "city"
+    override var street: String = "street"
+    override var number: String = "number"
+    override var postalCode: String = "postalCode"
+    override var tenant: String = "tenant"
+    override fun changeState() {
+        isHouse = !isHouse
+    }
+}

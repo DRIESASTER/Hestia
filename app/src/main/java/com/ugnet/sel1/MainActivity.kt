@@ -10,8 +10,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.rememberNavController
+import com.ugnet.sel1.domain.repository.oudeShit.Adreses
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.navigation.NavGraph
+import com.ugnet.sel1.presentation.profile.adres.AdresesScreen
 
 
 @AndroidEntryPoint
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
             navController = rememberNavController()
             NavGraph(navController = navController)
             AuthState()
+//            AdresesScreen()
         }
     }
 

@@ -1,24 +1,26 @@
 package com.ugnet.sel1.presentation.profile.adres
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ugnet.sel1.domain.models.Response
 
-//@Composable
-//fun AdresesScreen(
-//    viewModel: AdresTestVM = hiltViewModel()
-//) {
-//    viewModel.getIssuesByKamer("OwyLqQ6Dv3ENGciJg0gA ")
-//   Scaffold(
-//        content = { padding ->
+@Composable
+fun AdresesScreen(
+    viewModel: AdresTestVM = hiltViewModel()
+) {
+   Scaffold(
+        content = { padding ->
 //            Manager(
 //            viewModel = viewModel,
 //                padding = padding
 //            ),
-  //          ownedPanden(
-   //             viewModel = viewModel,
-        //         padding = padding
-     //       )
+            ownedPanden(
+                viewModel = viewModel,
+                 padding = padding
+            )
 //            Adres(
 //                viewModel = viewModel,
 //                padding = padding
@@ -39,25 +41,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
 //                    )
 //                }
 //            )
-//        }
-//    )
-//}
+        }
+    )
+}
 //
 //
 //
 //
-//@Composable
-//fun ownedPanden(
-//    viewModel: AdresTestVM = hiltViewModel(),
-//    padding : PaddingValues
-//) {
-//    viewModel.getOwnedProperties("4YNpPq1e3Gg2FTrnqPoW")
-//    when(val pandResponse = viewModel.ownedPropertiesResponse) {
-//        is Response.Loading -> Text(text = "Loading")
-//        is Response.Success ->  Text(text = pandResponse.data?.?.get(0)?.adres?.straat + "hey")
-//        }
-//        is Response.Failure -> print(pandResponse.e)
-//    }
+@Composable
+fun ownedPanden(
+    viewModel: AdresTestVM = hiltViewModel(),
+    padding: PaddingValues
+) {
+    viewModel.getIssuesForRoom("QTx6rzIOf8Y5G1KQQPUB", "2gLemNlYgYghm7InAZ")
+    when(val issuesResponse = viewModel.issuesForRoomResponse) {
+        is Response.Success -> Text(text = issuesResponse.data.size.toString())
+        is Response.Failure -> Text(text = "fails")
+        Response.Loading -> Text(text = "loading")
+    }
+    }
 //}
 //
 //

@@ -57,6 +57,7 @@ object AppModule {
         addRoomToProperty = AddRoomToProperty(roomsRepo),
         deleteRoomFromProperty = DeleteRoomFromProperty(roomsRepo),
         addProperty = AddProperty(propertyRepo),
-        deleteProperty = DeleteProperty(propertyRepo)
+        deleteProperty = DeleteProperty(propertyRepo),
+        getRentedRoomsByUser = GetRentedRoomsByUser(roomsRepo)
     )
 }

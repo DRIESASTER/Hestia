@@ -29,6 +29,9 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
             private set
 
+      var rentedRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
+            private set
+
       var changeIssueStatusResponse by mutableStateOf<ChangeIssueStatusResponse>(Response.Success(false))
             private set
 
@@ -39,6 +42,9 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             private set
 
       var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Success(false))
+            private set
+
+      var deletePropertyResponse by mutableStateOf<DeletePropertyResponse>(Response.Success(false))
             private set
 
 //      var addPandResponse by mutableStateOf<AddPandResponse>(Response.Success(false))
@@ -100,17 +106,15 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       }
 
       fun deleteProperty(propertyId: String) = viewModelScope.launch {
-            addPropertyResponse = Response.Loading
-            addPropertyResponse = useCases.deleteProperty(propertyId)
+            deletePropertyResponse = Response.Loading
+            deletePropertyResponse = useCases.deleteProperty(propertyId)
       }
 
 
+     fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
+            useCases.getRentedRoomsByUser(userId).collect { response ->
+                  rentedRoomsResponse = response
+            }
+      }
 
-
-
-
-//      fun deletePand(id: String) = viewModelScope.launch {
-//            deletePandResponse = Response.Loading
-//            deletePandResponse = useCases.deletePand(id)
-//      }
 }

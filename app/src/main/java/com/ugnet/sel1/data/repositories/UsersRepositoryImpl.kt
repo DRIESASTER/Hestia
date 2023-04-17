@@ -29,15 +29,14 @@ class UsersRepositoryImpl @Inject constructor(
 
     override suspend fun saveUserData(userId: String, name: String, surname: String, email: String, role: String): AddUserResponse {
         return try{
-            val id = dbRef.collection("user").document().id
             val user = User(
                 voornaam = name,
                 achternaam = surname,
                 email = email,
                 accountType = role,
-                uid = id
+                uid = userId
             )
-            dbRef.document("users/${id}").set(user).await()
+            dbRef.document("users/${userId}").set(user).await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

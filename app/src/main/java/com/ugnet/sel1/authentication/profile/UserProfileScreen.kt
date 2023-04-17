@@ -1,5 +1,6 @@
 package com.ugnet.sel1.authentication.profile
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -16,20 +17,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 
 
 @Composable
 fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
-    val userData = userViewModel.userData.collectAsState(initial = Response.Loading)
-    print("userDataValue" + userData.value)
-
-    LaunchedEffect(Unit) {
-        print("userDataValue: ${userData.value}")
-    }
-
-
+//    Log.d("USER", Firebase.auth.currentUser?.uid.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,12 +33,12 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        when (val response = userData.value) {
+        when (val response = userViewModel.userDataResponse) {
             is Response.Loading -> {
                 CircularProgressIndicator()
             }
             is Response.Success -> {
-                print("responseData:" + response.data)
+                Log.d("resposne succes", response.data.toString())
                 response.data?.let { user ->
                     Text(text = "Name: ${user.voornaam}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(16.dp))
@@ -57,5 +53,6 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
         }
     }
 }
+
 
 

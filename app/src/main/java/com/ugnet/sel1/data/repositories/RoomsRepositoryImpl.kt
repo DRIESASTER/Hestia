@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.*
@@ -27,6 +28,7 @@ class RoomsRepositoryImpl @Inject constructor(
 
     override suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurder:String?): AddRoomResponse {
         return try{
+            dbRef.collection("properties/${pandId}").document().update("huurders", FieldValue.arrayUnion((huurder)))
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(
                 naam = naam,
@@ -44,13 +46,32 @@ class RoomsRepositoryImpl @Inject constructor(
     override suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse {
         return try {
             dbRef.document("properties/${pandId}/rooms/${roomId}").delete().await()
-            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {
-                it.reference.delete().await()
+            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {room ->
+                //delete huurder uit pand als het geen huis is
+                if(dbRef.document("properties/${pandId}").get().await().data?.get("isHuis") == true){
+                    dbRef.document("properties/${pandId}").update("huurders", FieldValue.arrayRemove(room.reference.get().await().data?.get("huurder"))).await()
+                }
+                room.reference.delete().await()
             }
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)
         }
+    }
+
+
+    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener() { snapshot, e ->
+            val roomsResponse = if (snapshot != null) {
+                val rooms = snapshot.toObjects(Room::class.java)
+                Response.Success(rooms)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(roomsResponse)
+        }
+        awaitClose { snapshotListener.remove()
+    }
     }
 
 

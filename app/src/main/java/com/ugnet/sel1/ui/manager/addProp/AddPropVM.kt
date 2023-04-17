@@ -10,20 +10,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPropVM @Inject constructor(private val useCases :UseCases): ViewModel() {
+open class AddPropVM @Inject constructor(): ViewModel() {
 
-    var tenant : String by mutableStateOf("")
-    var city : String by mutableStateOf("")
-    var street : String by mutableStateOf("")
-    var number : String by mutableStateOf("")
-    var postalCode : String by mutableStateOf("")
+    open var tenant : String by mutableStateOf("")
+    open var city : String by mutableStateOf("")
+    open var street : String by mutableStateOf("")
+    open var number : String by mutableStateOf("")
+    open var postalCode : String by mutableStateOf("")
 
     var rooms : MutableList<RoomData> = mutableListOf()
-    var isHouse : Boolean by mutableStateOf(false)
-        private set
+    open var isHouse : Boolean by mutableStateOf(false)
+
     init{}
 
-    fun changeState(){
+    open fun changeState(){
         isHouse = !isHouse
     }
 

@@ -11,11 +11,20 @@ data class Issue(
     var titel: String? = null,
     var datum: Timestamp? = null,
     var status: Status? = null,
-    var roomId: String? = null
+    var roomId: String? = null,
+    var issueId: String? = null,
+    var issueType: IssueType? = null
 )
 
 enum class Status {
     notStarted,
     inProgress,
     finished
+}
+
+enum class IssueType {
+    water,
+    electricity,
+    gas,
+    other
 }

@@ -14,6 +14,7 @@ import com.ugnet.sel1.domain.repository.oudeShit.Adreses
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.navigation.NavGraph
 import com.ugnet.sel1.presentation.profile.adres.AdresesScreen
+import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 
 
 @AndroidEntryPoint
@@ -24,10 +25,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            navController = rememberNavController()
-            NavGraph(navController = navController)
-            AuthState()
-//            AdresesScreen()
+//            navController = rememberNavController()
+//            NavGraph(navController = navController)
+//            AuthState()
+            //AdresesScreen()
+            ManagerHomeScreen()
         }
     }
 
@@ -44,19 +46,20 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NavigateToRoleSelectionScreen() =  navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE){
-        popUpTo(navController.graph.id) {
-            inclusive = true
+    fun NavigateToRoleSelectionScreen() =
+        navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE) {
+            popUpTo(navController.graph.id) {
+                inclusive = true
+            }
         }
-    }
 
     @Composable
     fun NavigateToProfileScreen() {
-            navController.navigate(MyDestinations.PROFILE_ROUTE) {
-                popUpTo(navController.graph.id) {
-                    inclusive = true
-                }
+        navController.navigate(MyDestinations.PROFILE_ROUTE) {
+            popUpTo(navController.graph.id) {
+                inclusive = true
             }
+        }
     }
 
 }

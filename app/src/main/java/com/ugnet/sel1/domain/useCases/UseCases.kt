@@ -14,9 +14,7 @@ data class UseCases constructor(
     val addRoomToProperty: AddRoomToProperty,
     val deleteRoomFromProperty: DeleteRoomFromProperty,
     val addProperty: AddProperty,
-    val deleteProperty : DeleteProperty
-) {
-    fun addProperty(huisnummer: Int, isHuis: Boolean, ownedBy: String, postcode: Int, stad: String, straat: String, any: Any) {
-
-    }
-}
+    val deleteProperty : DeleteProperty,
+    val addIssue: AddIssue,
+    val deleteIssue: DeleteIssue
+)

@@ -12,7 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.components.SwitchButton2
@@ -35,7 +37,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
             } else {
                 AddAppartement(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             }
-            Button(onClick = { TrySave() }, modifier = Modifier
+            Button(onClick = { trySave(viewmodel,navController) }, modifier = Modifier
                 .padding(10.dp)
                 .border(1.dp, MainGroen, RoundedCornerShape(10.dp))
                 .background(MainGroen)
@@ -47,8 +49,21 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
         })
 }
 
-fun TrySave() {
-
+//TODO: fix input validation
+fun trySave(viewmodel: AddPropVM,navigator:NavController) {
+    when(val userresponse = viewmodel.userResponse){
+        is Response.Success-> {
+            viewmodel.saveProp(userresponse.data?.uid.toString())
+            when(val propresponse = viewmodel.addPropertyResponse){
+                is Response.Success ->{
+                    /**route to main screen*/
+                    navigator.popBackStack()
+                }
+                else -> {}
+            }
+        }
+        else -> {}
+    }
 }
 
 @Composable

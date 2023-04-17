@@ -20,8 +20,8 @@ fun PropertyOverview(modifier: Modifier = Modifier,properties:List<PropertyData>
                 PropertyCard(
                     propName = property.name,
                     propAddress = property.address,
-                    tennants = property.tenants.size,
-                    issueCount = property.issues.size,
+                    tennants = property.tenants,
+                    issueCount = property.issues,
                     onClick = { onPropertyClicked(property) }
                 )
                 Spacer(modifier = Modifier.height(0.dp))

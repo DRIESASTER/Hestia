@@ -13,18 +13,18 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class PropertiesRepositoryImpl @Inject constructor(
-    private val firestoreDB: FirebaseFirestore
+    private val dbRef: FirebaseFirestore
 ): PropertiesRepository {
 
     override fun getOwnedPropertiesFromFirestore(id:String) = callbackFlow {
-        val snapshotListener = firestoreDB.collection("properties").whereEqualTo("ownedBy",id).addSnapshotListener{ snapshot, e ->
-            val pandenResponse = if (snapshot != null) {
+        val snapshotListener = dbRef.collection("properties").whereEqualTo("ownedBy",id).addSnapshotListener{ snapshot, e ->
+            val propertyResponse = if (snapshot != null) {
                 val panden = snapshot.toObjects(Property::class.java)
                 Response.Success(panden)
             } else {
                 Response.Failure(e)
             }
-            trySend(pandenResponse)
+            trySend(propertyResponse)
         }
         awaitClose { snapshotListener.remove() }
     }
@@ -32,23 +32,24 @@ class PropertiesRepositoryImpl @Inject constructor(
 
     override suspend fun addPropertyToFirestore(
         huisnummer: Int,
-        isHuis: Boolean,
+        type: String,
         ownedBy: String,
         postcode: Int,
         stad: String,
         straat: String
-    ) = callbackFlow {
-        val pand = hashMapOf(
-            "huisnummer" to huisnummer,
-            "isHuis" to isHuis,
-            "ownedBy" to ownedBy,
-            "postcode" to postcode,
-            "stad" to stad,
-            "straat" to straat
+    ): Flow<AddPropertyResponse> = callbackFlow {
+        val id = dbRef.collection("properties").document().id
+        val property = Property(
+            huisnummer = huisnummer,
+            type = type,
+            ownedBy = ownedBy,
+            postcode = postcode,
+            stad = stad,
+            straat = straat,
+            propertyId = id
         )
-        val pandRef = firestoreDB.collection("properties").document()
-        pandRef.set(pand).addOnSuccessListener {
-            trySend(Response.Success(pandRef.id))
+        val propertyRef = dbRef.document("properties/${id}").set(property).addOnSuccessListener {
+            trySend(Response.Success(id))
         }.addOnFailureListener {
             trySend(Response.Failure(it))
         }
@@ -56,7 +57,7 @@ class PropertiesRepositoryImpl @Inject constructor(
 
     override suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse {
         return try {
-            firestoreDB.collection("properties").document(propertyId).delete().await()
+            dbRef.collection("properties").document(propertyId).delete().await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

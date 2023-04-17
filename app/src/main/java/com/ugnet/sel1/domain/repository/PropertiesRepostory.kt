@@ -18,7 +18,7 @@ interface PropertiesRepository {
     fun getOwnedPropertiesFromFirestore(userId:String): Flow<PropertiesResponse>
     suspend fun addPropertyToFirestore(
         huisnummer: Int,
-        isHuis: Boolean,
+        type: String,
         ownedBy: String,
         postcode: Int,
         stad: String,

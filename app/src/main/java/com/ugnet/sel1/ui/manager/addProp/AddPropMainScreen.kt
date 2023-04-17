@@ -3,6 +3,7 @@ package com.ugnet.sel1.ui.manager.addProp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.ui.components.InputWithTitle
@@ -22,9 +22,9 @@ import com.ugnet.sel1.ui.theme.MainGroen
 @Composable
 fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier ) {
     val navController = rememberNavController()
-    Scaffold(topBar = { SimpleTopBar(name = "Add Property", navController = navController)},
+    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navController = navController)},
         content = { padding ->
-            Column() {
+            Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             SwitchButton2(
                 option1 = "House",
                 option2 = "Appartment",
@@ -35,13 +35,14 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
             } else {
                 AddAppartement(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             }
+
         }
         })
 }
 
 @Composable
 fun AddHouse(viewmodel:AddPropVM, modifier:Modifier = Modifier) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally){
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
             InputWithTitle(title = "City", initValue = viewmodel.city, onValuechanged = {viewmodel.city = it})
             InputWithTitle(title = "Street", initValue = viewmodel.street, onValuechanged = {viewmodel.street = it})
             InputWithTitle(title = "Number", initValue = viewmodel.number, onValuechanged = {viewmodel.number = it})
@@ -53,25 +54,31 @@ fun AddHouse(viewmodel:AddPropVM, modifier:Modifier = Modifier) {
 
 @Composable
 fun AddAppartement(viewmodel:AddPropVM,modifier:Modifier = Modifier) {
-    var isPopupVisible = remember { mutableStateOf(false) }
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        if (isPopupVisible.value) {
-            Popup(
-                onDismissRequest = { isPopupVisible.value = false },
-                alignment = Alignment.Center
-            ) {
+    var isPopupVisible by remember { mutableStateOf(false) }
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.TopStart)){
+
+        DropdownMenu(
+            onDismissRequest = { isPopupVisible = false },
+            expanded = isPopupVisible,
+        ) {
             AddRoomPopup(
-                onClose = { isPopupVisible.value = false },
+                onClose = { isPopupVisible = false },
                 onAddRoom = { roomname,tenantname -> viewmodel.addRoom(roomname,tenantname)
-                    isPopupVisible.value = false})
+                    isPopupVisible = false})
             }
+        Column(horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center) {
+            InputWithTitle(title = "City", initValue = viewmodel.city, onValuechanged = {viewmodel.city = it})
+            InputWithTitle(title = "Street", initValue = viewmodel.street, onValuechanged = {viewmodel.street = it})
+            InputWithTitle(title = "Number", initValue = viewmodel.number, onValuechanged = {viewmodel.number = it})
+            InputWithTitle(title = "Postal Code", initValue = viewmodel.postalCode, onValuechanged = {viewmodel.postalCode = it})
+            AddRoomButton(onClick = { isPopupVisible = true })
+            Spacer(modifier = Modifier.height(10.dp))
+            RoomOverview(rooms = viewmodel.rooms, onDeleteClicked = { roomname -> viewmodel.removeRoom(roomname)})
         }
-        InputWithTitle(title = "City", initValue = viewmodel.city, onValuechanged = {viewmodel.city = it})
-        InputWithTitle(title = "Street", initValue = viewmodel.street, onValuechanged = {viewmodel.street = it})
-        InputWithTitle(title = "Number", initValue = viewmodel.number, onValuechanged = {viewmodel.number = it})
-        InputWithTitle(title = "Postal Code", initValue = viewmodel.postalCode, onValuechanged = {viewmodel.postalCode = it})
-        AddRoomButton(onClick = { isPopupVisible.value = true })
-        RoomOverview(rooms = viewmodel.rooms, onDeleteClicked = { roomname -> viewmodel.removeRoom(roomname)})
+
     }
 
 }
@@ -79,12 +86,12 @@ fun AddAppartement(viewmodel:AddPropVM,modifier:Modifier = Modifier) {
 
 @Composable
 fun AddRoomButton(modifier:Modifier = Modifier, onClick: () -> Unit = {}){
-    FloatingActionButton(onClick = { onClick },
+    FloatingActionButton(onClick = onClick ,
         Modifier
-            .background(MainGroen)
+            .background(Color.Transparent)
             .border(
                 1.dp,
-                Color.DarkGray
+                Color.DarkGray, RoundedCornerShape(30.dp)
             )) {
         Text(text ="Add Room", color = Color.White, modifier = Modifier.padding(start= 10.dp, end = 10.dp))
     }
@@ -95,25 +102,25 @@ fun AddRoomPopup(
     onClose: () -> Unit,
     onAddRoom: (roomName: String, tenantName: String) -> Unit
 ) {
-    var roomName = remember { mutableStateOf("") }
-    var tenantName = remember { mutableStateOf("") }
+    var roomName by remember { mutableStateOf("") }
+    var tenantName by remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        elevation = 8.dp
+
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
         ) {
             InputWithTitle(
-                title = "Room Name", initValue = roomName.value, onValuechanged = { roomName.value = it }
+                title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputWithTitle(
-                title = "Tenant Name", initValue = tenantName.value, onValuechanged = { tenantName.value = it }
+                title = "Tenant Name", initValue = tenantName, onValuechanged = { tenantName = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -125,12 +132,13 @@ fun AddRoomPopup(
                     modifier = Modifier.padding(end = 8.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
-                    Text("Cancel")
+                    Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
                 }
                 Button(
-                    onClick = { onAddRoom(roomName.value, tenantName.value) }
+                    onClick = { onAddRoom(roomName, tenantName) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
-                    Text("Save")
+                    Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
                 }
             }
         }
@@ -143,20 +151,21 @@ fun AddRoomPopupPreview() {
     AddRoomPopup(onClose = {}, onAddRoom = { _, _ -> })
 }
 
-@Preview
-@Composable
-fun AddpropMainScreenPreview() {
-    AddPropMainScreen(viewmodel = FakeAddPropVM(), modifier = Modifier)
-}
-
-class FakeAddPropVM : AddPropVM() {
-    override var isHouse: Boolean by mutableStateOf(false)
-    override var city: String = "city"
-    override var street: String = "street"
-    override var number: String = "number"
-    override var postalCode: String = "postalCode"
-    override var tenant: String = "tenant"
-    override fun changeState() {
-        isHouse = !isHouse
-    }
-}
+//@Preview
+//@Composable
+//fun AddpropMainScreenPreview() {
+//    AddPropMainScreen(viewmodel = FakeAddPropVM(), modifier = Modifier)
+//}
+//
+//class FakeAddPropVM : AddPropVM() {
+//    override var isHouse: Boolean by mutableStateOf(false)
+//    override var city by mutableStateOf( "city")
+//    override var street: String = "street"
+//    override var number: String = "number"
+//    override var postalCode: String = "postalCode"
+//    override var tenant: String = "tenant"
+//    override fun changeState() {
+//        isHouse = !isHouse
+//    }
+//
+//}

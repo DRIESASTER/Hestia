@@ -8,6 +8,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +21,8 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun InputWithTitle(title:String,modifier: Modifier = Modifier,initValue:String,onValuechanged: (String) -> Unit = {}){
 
     Column(modifier = modifier
-        .padding(10.dp)
-        .fillMaxWidth()) {
+        .padding(2.dp)
+        .fillMaxWidth(),horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = title,style= MaterialTheme.typography.h6)
         OutlinedTextField(
             value = initValue,

@@ -1,15 +1,9 @@
 package com.ugnet.sel1.ui.manager
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -22,7 +16,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
 @Composable
-fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false){
+fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel()){
 
     //data
     val drawerItems = listOf(
@@ -40,9 +34,9 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             icon = Icons.Rounded.Chat,
         ),
         MenuItem(
-            name = "Events",
-            route = "events",
-            icon = Icons.Rounded.CalendarToday
+            name = "Profile",
+            route = "profile",
+            icon = Icons.Rounded.Person,
         ),
         MenuItem(
             name = "Announcements",
@@ -52,7 +46,6 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     )
 
     var currentTitle by rememberSaveable { mutableStateOf(drawerItems[0].name) }
-    val (currentState, setCurrentState) = remember { mutableStateOf(initialScreen) }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope  = rememberCoroutineScope()
 
@@ -67,34 +60,52 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             DrawerHeader()
             DrawerBody(items=drawerItems,onItemClick={})
         }, content={ padding ->
-        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)){
-            SwitchButton2(
-                option1 = "Issues",
-                option2 = "Properties",
-                initialState = initialScreen,
-                onStateChanged = {
-                    setCurrentState(it)
-                }
-            )
-            if (!currentState) {
-                /*show issues overview*/
-                IssueOverview(issues = when (val allissues = Data.issuesForManagerResponse){
-                    is Response.Success -> allissues.data
-                    else -> listOf()
-                }, onIssueClicked = {/*route to DetailsScreen*/}, onStatusClicked = { status,issue,building ->
-                    Data.changeIssueStatus(issue, status,building)})
-            } else {
-                /*show properties overview*/
-                PropertyOverview(
-                    properties = when (val allproperties = Data.ownedPropertiesResponseFormatted) {
-                        is Response.Success -> allproperties.data
-                        else -> listOf()
-                    }, onPropertyClicked = {/*route to DetailsScreen*/}
+
+        Box(contentAlignment = Alignment.TopStart,modifier = Modifier.padding(padding).fillMaxWidth()){
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                SwitchButton2(
+                    option1 = "Issues",
+                    option2 = "Properties",
+                    initialState = Data.currentState,
+                    onStateChanged = {
+                        Data.currentState = it
+                    }
                 )
+            }
+
+            Column(horizontalAlignment = Alignment.Start) {
+                if (!Data.currentState) {
+                    /*show issues overview*/
+                    IssueOverview(modifier = Modifier.padding(padding),
+                        issues = when (val allissues = Data.issuesForManagerResponse) {
+                            is Response.Success -> allissues.data
+                            else -> listOf()
+                        },
+                        onIssueClicked = {/*route to DetailsScreen*/ },
+                        onStatusClicked = { status, issue, building ->
+                            Data.changeIssueStatus(issue, status, building)
+                        })
+                } else {
+                    /*show properties overview*/
+                    when (val allproperties = Data.ownedPropertiesResponseFormatted) {
+                        is Response.Success -> {
+                            if (allproperties.data.isEmpty()) {
+                                Text(text = "No properties found")
+                            } else {
+                                PropertyOverview(
+                                    properties = allproperties.data,
+                                    onPropertyClicked = {/*route to details*/ })
+                            }
+                        }
+                        else -> {
+                            Text(text = "Loading properties...")
+                        }
+                    }
+                }
             }
             }
     },
-        bottomBar = {if (!currentState) {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
+        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
     )
 
 }

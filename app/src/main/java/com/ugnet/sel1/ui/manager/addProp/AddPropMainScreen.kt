@@ -35,9 +35,20 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
             } else {
                 AddAppartement(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             }
-
+            Button(onClick = { TrySave() }, modifier = Modifier
+                .padding(10.dp)
+                .border(1.dp, MainGroen, RoundedCornerShape(10.dp))
+                .background(MainGroen)
+                .padding(10.dp)
+                .fillMaxWidth()) {
+                Text(text = "Add Property", color = Color.White)
+            }
         }
         })
+}
+
+fun TrySave() {
+
 }
 
 @Composable

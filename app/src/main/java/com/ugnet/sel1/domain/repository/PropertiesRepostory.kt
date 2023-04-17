@@ -23,7 +23,7 @@ interface PropertiesRepository {
         postcode: Int,
         stad: String,
         straat: String
-    ): AddPropertyResponse
+    ): Flow<AddPropertyResponse>
 
     suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse

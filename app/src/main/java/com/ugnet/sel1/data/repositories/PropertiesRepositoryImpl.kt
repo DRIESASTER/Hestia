@@ -7,6 +7,7 @@ import com.ugnet.sel1.domain.repository.AddPropertyResponse
 import com.ugnet.sel1.domain.repository.DeletePropertyResponse
 import com.ugnet.sel1.domain.repository.PropertiesRepository
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -36,21 +37,20 @@ class PropertiesRepositoryImpl @Inject constructor(
         postcode: Int,
         stad: String,
         straat: String
-    ): AddPropertyResponse {
-        return try {
-            val id = firestoreDB.collection("properties").document().id
-            val pand = Property(
-                huisnummer = huisnummer,
-                isHuis = isHuis,
-                ownedBy = ownedBy,
-                postcode = postcode,
-                stad = stad,
-                straat = straat
-            )
-            firestoreDB.document("properties/${id}").set(pand).await()
-            Response.Success(id)
-        } catch (e: Exception) {
-            Response.Failure(e)
+    ) = callbackFlow {
+        val pand = hashMapOf(
+            "huisnummer" to huisnummer,
+            "isHuis" to isHuis,
+            "ownedBy" to ownedBy,
+            "postcode" to postcode,
+            "stad" to stad,
+            "straat" to straat
+        )
+        val pandRef = firestoreDB.collection("properties").document()
+        pandRef.set(pand).addOnSuccessListener {
+            trySend(Response.Success(pandRef.id))
+        }.addOnFailureListener {
+            trySend(Response.Failure(it))
         }
     }
 

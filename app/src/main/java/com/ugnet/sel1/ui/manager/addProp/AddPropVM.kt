@@ -68,8 +68,9 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     }
 
     fun addProperty(huisnummer:Int, isHuis:Boolean, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
-        addPropertyResponse = Response.Loading
-        addPropertyResponse = useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat)
+//        useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat).collect { response ->
+//            addPropertyResponse = response
+//        }
     }
 
     fun addRoom(roomname:String, tenantname:String){

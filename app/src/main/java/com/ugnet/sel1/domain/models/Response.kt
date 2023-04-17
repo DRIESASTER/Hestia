@@ -1,6 +1,10 @@
 package com.ugnet.sel1.domain.models
 
+
+import kotlinx.coroutines.flow.Flow
+
 sealed class Response<out T> {
+
     object Loading: Response<Nothing>()
 
     data class Success<out T>(

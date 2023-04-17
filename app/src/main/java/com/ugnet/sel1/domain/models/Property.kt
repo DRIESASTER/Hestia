@@ -6,10 +6,10 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 
 data class Property(
     var stad: String? = null,
-    var isHuis: Boolean? = null,
     var straat: String? = null,
     var huisnummer: Int? = null,
     var postcode: Int? = null,
     var ownedBy: String? = null,
-    var propertyId: String? = null
+    var propertyId: String? = null,
+    var type: String? = null
 )

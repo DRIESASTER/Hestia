@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -43,7 +44,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
     init{
         //getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
-        getOwnedProperties("hJeSa6tsSv7xADKV3SV")
+        getOwnedProperties("Fti1aAWM1USFFCJg2I7LFniWrlT2")
         getIssuesForManager()
     }
 
@@ -53,6 +54,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
             ownedPropertiesResponse = response
             when(response){
                 is Response.Success -> {
+                    Log.d("ManagerHomeVM", "getOwnedProperties: ${response.data}")
                     ownedPropertiesResponseFormatted = formatPropertyData(response.data)
                 }
                 else -> {}

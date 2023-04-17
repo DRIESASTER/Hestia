@@ -52,7 +52,7 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 
     //TODO: upload room to db
     fun saveProp(managerID:String) = viewModelScope.launch{
-        addProperty(number.toInt(), isHouse, managerID, postalCode.toInt(), city, street)
+        addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
         when(val addPropResponse = addPropertyResponse){
             is Response.Success -> {
                 for(room in rooms){

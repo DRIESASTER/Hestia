@@ -57,7 +57,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     val coroutineScope  = rememberCoroutineScope()
 
     //ui
-    Scaffold(scaffoldState = scaffoldState,
+    Scaffold(modifier = Modifier.fillMaxSize(1.0f),scaffoldState = scaffoldState,
         topBar = {ResidentTopBar(
         onNavigationIconClick = {coroutineScope.launch {
             scaffoldState.drawerState.open()
@@ -67,7 +67,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             DrawerHeader()
             DrawerBody(items=drawerItems,onItemClick={})
         }, content={ padding ->
-        Column(modifier = Modifier.padding(padding)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)){
             SwitchButton2(
                 option1 = "Issues",
                 option2 = "Properties",
@@ -92,7 +92,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                     }, onPropertyClicked = {/*route to DetailsScreen*/}
                 )
             }
-        }
+            }
     },
         bottomBar = {if (!currentState) {addButton(contentDescription = "Add property", onClick = {/**fix routing*/})}}
     )

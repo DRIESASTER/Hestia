@@ -25,11 +25,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            navController = rememberNavController()
-//            NavGraph(navController = navController)
-//            AuthState()
-            //AdresesScreen()
-            ManagerHomeScreen()
+            navController = rememberNavController()
+            NavGraph(navController = navController)
+            AuthState()
+            AdresesScreen()
+//            ManagerHomeScreen()
         }
     }
 

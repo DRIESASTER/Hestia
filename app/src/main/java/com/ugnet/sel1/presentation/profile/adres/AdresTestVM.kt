@@ -47,14 +47,24 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       var deletePropertyResponse by mutableStateOf<DeletePropertyResponse>(Response.Success(false))
             private set
 
+      var userByEmailResponse by mutableStateOf<UsersResponse>(Response.Loading)
+            private set
+
 
 
       init {
 //            getUser("4YNpPq1e3Gg2FTrnqPoW")
 //            getOwnedProperties("4YNpPq1e3Gg2FTrnqPoW")
-            changeIssueStatus("kUXh7T1OH6CDyuYOuEEJ", Status.inProgress, "QTx6rzIOf8Y5G1KQQPUB")
+//            changeIssueStatus("kUXh7T1OH6CDyuYOuEEJ", Status.inProgress, "QTx6rzIOf8Y5G1KQQPUB")
+            getIssuesForRoom("QTx6rzIOf8Y5G1KQQPUB","2gLemNlYgYghm7InAZW3")
       }
 
+
+      fun getUserByEmail(email: String) = viewModelScope.launch {
+            useCases.getUserByEmail(email).collect { response ->
+                  userByEmailResponse = response
+            }
+      }
 
 
 

@@ -38,17 +38,18 @@ class PropertiesRepositoryImpl @Inject constructor(
         stad: String,
         straat: String
     ) = callbackFlow {
-        val pand = hashMapOf(
-            "huisnummer" to huisnummer,
-            "isHuis" to isHuis,
-            "ownedBy" to ownedBy,
-            "postcode" to postcode,
-            "stad" to stad,
-            "straat" to straat
+        val id = firestoreDB.collection("properties").document().id
+        val property = Property(
+            huisnummer = huisnummer,
+            isHuis = isHuis,
+            ownedBy = ownedBy,
+            postcode = postcode,
+            stad = stad,
+            straat = straat,
+            propertyId = id
         )
-        val pandRef = firestoreDB.collection("properties").document()
-        pandRef.set(pand).addOnSuccessListener {
-            trySend(Response.Success(pandRef.id))
+        val propertyRef = firestoreDB.document("properties/${id}").set(property).addOnSuccessListener {
+            trySend(Response.Success(id))
         }.addOnFailureListener {
             trySend(Response.Failure(it))
         }

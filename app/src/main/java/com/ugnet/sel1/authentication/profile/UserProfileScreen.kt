@@ -1,5 +1,6 @@
 package com.ugnet.sel1.authentication.profile
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -16,13 +17,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 
 
 @Composable
 fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
-
+//    Log.d("USER", Firebase.auth.currentUser?.uid.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()

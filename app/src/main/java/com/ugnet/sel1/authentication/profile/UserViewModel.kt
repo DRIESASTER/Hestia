@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.authentication.selection.RevokeAccessResponse
 import com.ugnet.sel1.domain.models.Manager
@@ -40,7 +42,6 @@ class UserViewModel @Inject constructor(
     fun signOut() = repo.signOut()
 
     init {
-        getUser("4YNpPq1e3Gg2FTrnqPoW")
     }
 
     fun getUser(id: String) = viewModelScope.launch {

@@ -33,17 +33,19 @@ class UserViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _userResponse = MutableStateFlow<UserResponse>(Response.Loading as UserResponse)
-    val userData: StateFlow<UserResponse> get() = _userResponse
+
+    var userDataResponse by mutableStateOf<UserResponse>(Response.Loading)
+        private set
 
     fun signOut() = repo.signOut()
 
     init {
-        repo.currentUser?.let { getUser(it.uid) }
+        getUser("4YNpPq1e3Gg2FTrnqPoW")
     }
 
     fun getUser(id: String) = viewModelScope.launch {
         useCases.getUser(id).collect { response ->
-            _userResponse.value = response
+            userDataResponse = response
         }
     }
 }

@@ -17,6 +17,7 @@ import com.ugnet.sel1.domain.models.Issue
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
+import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
 import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
@@ -99,7 +100,7 @@ fun IssueDataContainer(
     viewModel: ManagerHomeVM = hiltViewModel(),
     IssueContent: @Composable (Issues: List<IssueData> ) -> Unit
 ) {
-    when(val issueResponse = viewModel.IssueResponse) {
+    when(val issueResponse = viewModel.issuesForRoomResponse) {
         is Response.Loading -> Text(text = "Loading")
         is Response.Success -> IssueContent(processIssues(issueResponse.data))
         is Response.Failure -> print(issueResponse.e)
@@ -144,7 +145,7 @@ fun PropertyDataContainer(
     viewModel: ManagerHomeVM = hiltViewModel(),
     PropertyContent: @Composable (Issues: List<PropertyData> ) -> Unit
 ) {
-    when(val propertyResponse = viewModel.PropertyResponse) {
+    when(val propertyResponse = viewModel.ownedPropertiesResponse) {
         is Response.Loading -> Text(text = "Loading")
         is Response.Success -> PropertyContent(processProperties(propertyResponse.data))
         is Response.Failure -> print(propertyResponse.e)

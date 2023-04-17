@@ -22,7 +22,6 @@ import com.ugnet.sel1.domain.models.Response
 
 @Composable
 fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
-    val userData = userViewModel.userData.collectAsState(initial = Response.Loading)
 
     Column(
         modifier = Modifier
@@ -31,7 +30,7 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        when (val response = userData.value) {
+        when (val response = userViewModel.userDataResponse) {
             is Response.Loading -> {
                 CircularProgressIndicator()
             }

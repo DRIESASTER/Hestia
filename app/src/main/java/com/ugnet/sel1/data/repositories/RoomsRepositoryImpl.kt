@@ -61,6 +61,7 @@ class RoomsRepositoryImpl @Inject constructor(
 
 
     override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
+//        var propRef = dbRef.collection("properties").whereArrayContains("huurders", userId).
         val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener() { snapshot, e ->
             val roomsResponse = if (snapshot != null) {
                 val rooms = snapshot.toObjects(Room::class.java)

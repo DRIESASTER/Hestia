@@ -59,7 +59,7 @@ fun ownedPanden(
         is Response.Failure -> Text(text = "fails")
         Response.Loading -> Text(text = "loading")
     }
-    }
+}
 //}
 //
 //

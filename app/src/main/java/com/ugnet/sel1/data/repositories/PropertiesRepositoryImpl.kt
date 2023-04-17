@@ -48,7 +48,7 @@ class PropertiesRepositoryImpl @Inject constructor(
                 straat = straat
             )
             firestoreDB.document("properties/${id}").set(pand).await()
-            Response.Success(true)
+            Response.Success(id)
         } catch (e: Exception) {
             Response.Failure(e)
         }

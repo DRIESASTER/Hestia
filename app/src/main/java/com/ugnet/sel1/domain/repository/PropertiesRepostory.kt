@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 typealias Properties = List<Property>
 typealias PropertiesResponse = Response<Properties>
-typealias AddPropertyResponse = Response<Boolean>
+typealias AddPropertyResponse = Response<String>
 typealias DeletePropertyResponse = Response<Boolean>
 
 //typealias AddBookResponse = Response<Boolean>

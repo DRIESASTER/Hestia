@@ -32,7 +32,7 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     var rooms : MutableList<RoomData> = mutableListOf()
     var isHouse : Boolean by mutableStateOf(false)
 
-    var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Success(false))
+    var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Loading)
         private set
     init{
         getUser(Firebase.auth.currentUser?.uid.toString())
@@ -56,14 +56,14 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     //TODO: upload room to db
     fun saveProp(managerID:String) = viewModelScope.launch{
         addProperty(number.toInt(), isHouse, managerID, postalCode.toInt(), city, street)
-        when(addPropertyResponse){
+        when(val addPropResponse = addPropertyResponse){
             is Response.Success -> {
-                addRoomsToProperty()
+                useCases.addRoomToProperty(addPropResponse.data ,rooms[0].roomName, rooms[0].tenantName)
             }
             else -> {}
         }
         for (room in rooms){
-            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
+//            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
         }
     }
 

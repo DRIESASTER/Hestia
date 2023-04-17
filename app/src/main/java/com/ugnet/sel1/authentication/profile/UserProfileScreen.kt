@@ -23,6 +23,12 @@ import com.ugnet.sel1.domain.models.Response
 @Composable
 fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
     val userData = userViewModel.userData.collectAsState(initial = Response.Loading)
+    print("userDataValue" + userData.value)
+
+    LaunchedEffect(Unit) {
+        print("userDataValue: ${userData.value}")
+    }
+
 
     Column(
         modifier = Modifier
@@ -36,6 +42,7 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
                 CircularProgressIndicator()
             }
             is Response.Success -> {
+                print("responseData:" + response.data)
                 response.data?.let { user ->
                     Text(text = "Name: ${user.voornaam}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(16.dp))

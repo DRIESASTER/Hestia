@@ -48,6 +48,9 @@ fun NavGraph(
             })
         }
         composable(MyDestinations.PROFILE_ROUTE) {
+
+            print("destination profile_ROUTE")
+
             UserProfileScreen()
         }
         // Add any other destinations here

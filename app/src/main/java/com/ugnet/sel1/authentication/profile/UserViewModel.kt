@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.authentication.selection.RevokeAccessResponse
 import com.ugnet.sel1.domain.models.Manager
@@ -29,22 +30,31 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val useCases: UseCases,
-    private val repo: AuthRepository
+    private val auth: FirebaseAuth
 ) : ViewModel() {
 
     private val _userResponse = MutableStateFlow<UserResponse>(Response.Loading as UserResponse)
     val userData: StateFlow<UserResponse> get() = _userResponse
 
-    fun signOut() = repo.signOut()
+    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        firebaseAuth.currentUser?.let { getUser(it.uid) }
+    }
 
     init {
-        repo.currentUser?.let { getUser(it.uid) }
+        auth.addAuthStateListener(authStateListener)
     }
+
+    fun signOut() = auth.signOut()
 
     fun getUser(id: String) = viewModelScope.launch {
         useCases.getUser(id).collect { response ->
             _userResponse.value = response
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        auth.removeAuthStateListener(authStateListener)
     }
 }
 

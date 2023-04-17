@@ -19,7 +19,7 @@ import javax.inject.Inject
 //add issues later
 @HiltViewModel
 class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewModel() {
-    var currentState by mutableStateOf(false)
+    var currentState by mutableStateOf(true)
 
     var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set

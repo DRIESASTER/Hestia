@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -49,6 +50,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel()){
     val scaffoldState = rememberScaffoldState()
     val coroutineScope  = rememberCoroutineScope()
 
+    Log.d("ManagerHomeScreen","current switchState ${Data.currentState}")
     //ui
     Scaffold(modifier = Modifier.fillMaxSize(1.0f),scaffoldState = scaffoldState,
         topBar = {ResidentTopBar(
@@ -61,19 +63,20 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel()){
             DrawerBody(items=drawerItems,onItemClick={})
         }, content={ padding ->
 
-        Box(contentAlignment = Alignment.TopStart,modifier = Modifier.padding(padding).fillMaxWidth()){
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,modifier = Modifier.fillMaxWidth().padding(padding)){
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 SwitchButton2(
                     option1 = "Issues",
                     option2 = "Properties",
-                    initialState = Data.currentState,
+                    initialState = !Data.currentState,
                     onStateChanged = {
                         Data.currentState = it
-                    }
+                        Log.d("ManagerHomeScreen", "onStateChanged: $it")
+                    },
                 )
             }
 
-            Column(horizontalAlignment = Alignment.Start) {
+            Column(horizontalAlignment = Alignment.Start,modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.Start)) {
                 if (!Data.currentState) {
                     /*show issues overview*/
                     IssueOverview(modifier = Modifier.padding(padding),

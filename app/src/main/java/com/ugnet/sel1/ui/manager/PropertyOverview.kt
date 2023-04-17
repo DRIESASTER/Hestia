@@ -15,7 +15,7 @@ import com.ugnet.sel1.ui.components.PropertyCard
 @Composable
 fun PropertyOverview(modifier: Modifier = Modifier,properties:List<PropertyData>,onPropertyClicked:(PropertyData)->Unit) {
     Surface(modifier = modifier) {
-        LazyColumn (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
+        LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()){
             itemsIndexed(properties) { _, property ->
                 PropertyCard(
                     propName = property.name,

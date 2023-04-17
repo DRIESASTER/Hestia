@@ -32,7 +32,9 @@ fun ResidentIssueOverview(
 
     ) {
         Column(
-            modifier = modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -54,7 +56,7 @@ fun ResidentIssueOverview(
             } else {
                 LazyColumn(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().weight(1f)
                 ) {
                     itemsIndexed(issues) { _, issue ->
                         ResidentIssueCard(
@@ -67,26 +69,33 @@ fun ResidentIssueOverview(
                     }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(1.0f)
-                    .padding(8.dp),
-            ) {
-                OutlinedButton(
-                    onClick = { /*TODO: make click add direct to add issue screen*/ },
-                    modifier = Modifier.size(50.dp).align(Alignment.BottomCenter),
-                    shape = CircleShape,
-                    border = BorderStroke(5.dp, MainGroen),
-                    contentPadding = PaddingValues(0.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = "add issue button",
-                        tint = MainGroen
-                    )
-                }
-            }
+            addIssueButton {}
+        }
+    }
+}
+
+@Composable
+fun addIssueButton(onAddButtonClick:() -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(1.0f)
+            .padding(8.dp),
+    ) {
+        OutlinedButton(
+            onClick = { onAddButtonClick },
+            modifier = Modifier
+                .size(50.dp)
+                .align(Alignment.BottomCenter),
+            shape = CircleShape,
+            border = BorderStroke(5.dp, MainGroen),
+            contentPadding = PaddingValues(0.dp),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Add,
+                contentDescription = "add issue button",
+                tint = MainGroen
+            )
         }
     }
 }
@@ -94,7 +103,7 @@ fun ResidentIssueOverview(
 @Preview
 @Composable
 fun ResidentIssueOverviewPreview() {
-    ResidentIssueOverview(issues = emptyList())
+    ResidentIssueOverview(issues = createMockIssueDataList())
 }
 
 fun createMockIssueDataList(): List<IssueData> {

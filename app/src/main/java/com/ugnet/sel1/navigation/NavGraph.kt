@@ -16,6 +16,11 @@ import com.ugnet.sel1.authentication.profile.UserProfileScreen
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
 import com.ugnet.sel1.presentation.profile.ProfileScreen
+import com.ugnet.sel1.ui.manager.ManagerHomeScreen
+import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
+import com.ugnet.sel1.ui.resident.ResidentHomeScreen
+
+
 
 
 @Composable
@@ -48,8 +53,25 @@ fun NavGraph(
             })
         }
         composable(MyDestinations.PROFILE_ROUTE) {
-            UserProfileScreen()
+            UserProfileScreen(navController = navController)
         }
+
+        composable(MyDestinations.MANAGER_HOME_ROUTE) {
+            ManagerHomeScreen(navController = navController)
+        }
+
+        composable(MyDestinations.HIREE_HOME_ROUTE) {
+            ResidentHomeScreen()
+        }
+
+        composable(MyDestinations.ADD_PROPERTY){
+            AddPropMainScreen(modifier = androidx.compose.ui.Modifier)
+        }
+
+
+
+        // add prop main screen
+
         // Add any other destinations here
     }
 }

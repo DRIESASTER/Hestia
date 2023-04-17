@@ -15,7 +15,7 @@ class UsersRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): UsersRepository {
     override fun getUserFromFirestore(id: String) = callbackFlow {
-        val snapshotListener = dbRef.collection("manager").document(id).addSnapshotListener{ snapshot, e ->
+        val snapshotListener = dbRef.collection("users").document(id).addSnapshotListener{ snapshot, e ->
             val managerResponse = if (snapshot != null) {
                 val manager = snapshot.toObject(User::class.java)
                 Response.Success(manager)

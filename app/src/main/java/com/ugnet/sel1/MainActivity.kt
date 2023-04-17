@@ -52,7 +52,6 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun NavigateToProfileScreen() {
-            print("navigating to profile")
             navController.navigate(MyDestinations.PROFILE_ROUTE) {
                 popUpTo(navController.graph.id) {
                     inclusive = true

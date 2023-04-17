@@ -14,8 +14,5 @@ class AuthViewModel @Inject constructor(
         getAuthState()
     }
 
-    fun getCurrentUserId(): String? {
-        return repo.currentUser?.uid
-    }
     fun getAuthState() = repo.getAuthState(viewModelScope)
 }

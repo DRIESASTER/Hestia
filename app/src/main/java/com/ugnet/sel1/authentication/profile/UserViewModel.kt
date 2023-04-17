@@ -45,7 +45,7 @@ class UserViewModel @Inject constructor(
 
     init {
         Log.d("USER", Firebase.auth.currentUser?.uid.toString())
-        getUser("0BD213chR0UFGciNHZXsbI8DOy32")
+        Firebase.auth.currentUser?.uid?.let { getUser(it) }
     }
 
     fun getUser(id: String) = viewModelScope.launch {

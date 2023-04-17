@@ -2,6 +2,7 @@ package com.ugnet.sel1.authentication.profile
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        userViewModel.getUser(Firebase.auth.currentUser?.uid.toString())
         when (val response = userViewModel.userDataResponse) {
             is Response.Loading -> {
                 CircularProgressIndicator()
@@ -44,8 +46,17 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel()) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = "Email: ${user.email}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "Role: ${user.achternaam}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "Achternaam: ${user.achternaam}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "Role: ${user.accountType}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                 }
+                Button(
+                    onClick = { userViewModel.signOut() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Sign Out", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+
             }
             is Response.Failure -> {
                 Text(text = "Error: ${response.e?.localizedMessage}", color = Color.Red)

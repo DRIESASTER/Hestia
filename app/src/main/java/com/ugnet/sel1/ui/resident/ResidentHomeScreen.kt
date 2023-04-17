@@ -67,11 +67,28 @@ fun ResidentHomeScreen() {
             DrawerBody(
                 items = drawerItems,
                 onItemClick = {
-                    println("Clicked on ${it.name}") //TODO: add routing function
-                    currentTitle = it.name //Does not work as intended
+                    currentTitle = it.name
                 }
             )
         },
-        content = { Text(text = "TODO: populate with resident pages(routes needed)") }
+        content = { GetCorrectDisplay(currentTitle) }
     )
+}
+
+//TODO: pass actual data and implement all screens
+@Composable
+fun GetCorrectDisplay(title:String = "Profile") {
+    when (title) {
+        "Profile" -> Text(text = "TODO: implement profile screen")
+        "Issues" -> ResidentIssueOverview(issues = emptyList())
+        "Chat" -> Text(text = "TODO: implement chat")
+        "Events" -> Text(text = "TODO: implement events screen")
+        "Announcements" -> Text(text = "TODO: implement announcements screen")
+    }
+}
+
+@Preview
+@Composable
+fun ResidentHomeScreenPreview() {
+    ResidentHomeScreen()
 }

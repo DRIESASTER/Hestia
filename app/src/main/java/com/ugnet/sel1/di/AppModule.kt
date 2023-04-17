@@ -58,6 +58,8 @@ object AppModule {
         deleteRoomFromProperty = DeleteRoomFromProperty(roomsRepo),
         addProperty = AddProperty(propertyRepo),
         deleteProperty = DeleteProperty(propertyRepo),
-        getRentedRoomsByUser = GetRentedRoomsByUser(roomsRepo)
+        getRentedRoomsByUser = GetRentedRoomsByUser(roomsRepo),
+        addIssue = AddIssue(issuesRepo),
+        deleteIssue = DeleteIssue(issuesRepo)
     )
 }

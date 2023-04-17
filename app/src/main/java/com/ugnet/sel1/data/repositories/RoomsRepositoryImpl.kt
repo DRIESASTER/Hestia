@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.*
@@ -26,14 +27,14 @@ class RoomsRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
-    override suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurder:String?): AddRoomResponse {
+    override suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurderId:String?): AddRoomResponse {
         return try{
-            dbRef.collection("properties/${pandId}").document().update("huurders", FieldValue.arrayUnion((huurder)))
+            dbRef.collection("properties/${pandId}").document().update("huurders", FieldValue.arrayUnion((huurderId)))
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(
                 naam = naam,
                 roomId = id,
-                huurder = huurder
+                huurderId = huurderId
             )
             dbRef.document("properties/${pandId}/rooms/${id}").set(room).await()
             Response.Success(true)
@@ -46,12 +47,8 @@ class RoomsRepositoryImpl @Inject constructor(
     override suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse {
         return try {
             dbRef.document("properties/${pandId}/rooms/${roomId}").delete().await()
-            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {room ->
-                //delete huurder uit pand als het geen huis is
-                if(dbRef.document("properties/${pandId}").get().await().data?.get("isHuis") == true){
-                    dbRef.document("properties/${pandId}").update("huurders", FieldValue.arrayRemove(room.reference.get().await().data?.get("huurder"))).await()
-                }
-                room.reference.delete().await()
+            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {issue ->
+                issue.reference.delete().await()
             }
             Response.Success(true)
         } catch (e: Exception) {
@@ -61,11 +58,14 @@ class RoomsRepositoryImpl @Inject constructor(
 
 
     override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
-        val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener() { snapshot, e ->
+//        var propRef = dbRef.collection("properties").whereArrayContains("huurders", userId).
+        //dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener()
+        val snapshotListener = dbRef.collectionGroup("rooms").whereEqualTo("huurderId", "gq8qZljKY73A9X3SQzAb").addSnapshotListener() { snapshot, e ->
             val roomsResponse = if (snapshot != null) {
                 val rooms = snapshot.toObjects(Room::class.java)
                 Response.Success(rooms)
             } else {
+                Log.d("TAG", "getRentedRoomsByUserInFirestore: ${e?.message}")
                 Response.Failure(e)
             }
             trySend(roomsResponse)

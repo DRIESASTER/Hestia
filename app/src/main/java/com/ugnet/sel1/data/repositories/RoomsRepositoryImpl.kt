@@ -47,12 +47,8 @@ class RoomsRepositoryImpl @Inject constructor(
     override suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse {
         return try {
             dbRef.document("properties/${pandId}/rooms/${roomId}").delete().await()
-            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {room ->
-                //delete huurder uit pand als het geen huis is
-                if(dbRef.document("properties/${pandId}").get().await().data?.get("isHuis") == true){
-                    dbRef.document("properties/${pandId}").update("huurders", FieldValue.arrayRemove(room.reference.get().await().data?.get("huurder"))).await()
-                }
-                room.reference.delete().await()
+            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {issue ->
+                issue.reference.delete().await()
             }
             Response.Success(true)
         } catch (e: Exception) {

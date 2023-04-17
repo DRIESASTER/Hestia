@@ -54,7 +54,7 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       init {
 //            getUser("4YNpPq1e3Gg2FTrnqPoW")
 //            getOwnedProperties("4YNpPq1e3Gg2FTrnqPoW")
-            getRentedRoomsByUser("gq8qZljKY73A9X3SQzAb ")
+            changeIssueStatus("kUXh7T1OH6CDyuYOuEEJ", Status.inProgress, "QTx6rzIOf8Y5G1KQQPUB")
       }
 
 
@@ -101,11 +101,11 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             deleteRoomFromPropertyResponse = useCases.deleteRoomFromProperty(propertyId, roomId)
       }
 
-//      fun addProperty(huisnummer:Int, isHuis:Boolean, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
-//            useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat).collect { response ->
-//                  addPropertyResponse = response
-//            }
-//      }
+      fun addProperty(huisnummer:Int, isHuis:Boolean, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
+            useCases.addProperty(huisnummer, isHuis, ownedBy, postcode, stad, straat).collect { response ->
+                  addPropertyResponse = response
+            }
+      }
 
       fun deleteProperty(propertyId: String) = viewModelScope.launch {
             deletePropertyResponse = Response.Loading

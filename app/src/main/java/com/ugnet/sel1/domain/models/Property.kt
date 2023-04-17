@@ -10,6 +10,5 @@ data class Property(
     var straat: String? = null,
     var huisnummer: Int? = null,
     var postcode: Int? = null,
-    var ownedBy: String? = null,
-    var huurders: List<String>? = null
+    var ownedBy: String? = null
 )

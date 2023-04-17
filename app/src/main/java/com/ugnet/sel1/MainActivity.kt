@@ -24,10 +24,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            navController = rememberNavController()
-            NavGraph(navController = navController)
-            AuthState()
-//            AdresesScreen()
+//            navController = rememberNavController()
+//            NavGraph(navController = navController)
+//            AuthState()
+            AdresesScreen()
         }
     }
 
@@ -44,19 +44,20 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NavigateToRoleSelectionScreen() =  navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE){
-        popUpTo(navController.graph.id) {
-            inclusive = true
+    fun NavigateToRoleSelectionScreen() =
+        navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE) {
+            popUpTo(navController.graph.id) {
+                inclusive = true
+            }
         }
-    }
 
     @Composable
     fun NavigateToProfileScreen() {
-            navController.navigate(MyDestinations.PROFILE_ROUTE) {
-                popUpTo(navController.graph.id) {
-                    inclusive = true
-                }
+        navController.navigate(MyDestinations.PROFILE_ROUTE) {
+            popUpTo(navController.graph.id) {
+                inclusive = true
             }
+        }
     }
 
 }

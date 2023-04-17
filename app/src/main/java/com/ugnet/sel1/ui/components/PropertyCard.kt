@@ -44,11 +44,11 @@ fun PropertyCard(propName: String,
                 .background(MainGroen)
                 .clip(RoundedCornerShape(10.dp))
                 .wrapContentWidth()
-                .height(105.dp)
+                .height(120.dp)
         ) {
             Column(
                 modifier = Modifier
-                    .width(200.dp)
+                    .width(250.dp)
                     .padding(10.dp)
             ) {
                 //name
@@ -70,13 +70,13 @@ fun PropertyCard(propName: String,
                         tint = Color.Black,
                         modifier = Modifier
                             .padding(2.dp)
-                            .size(10.dp)
+                            .size(12.dp)
                     )
                     Text(
                         text = propAddress,
                         color = Color.Black,
                         style = MaterialTheme.typography.body1,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         modifier = Modifier.padding(2.dp)
                     )
                 }
@@ -93,13 +93,13 @@ fun PropertyCard(propName: String,
                         tint = Color.Black,
                         modifier = Modifier
                             .padding(2.dp)
-                            .size(10.dp)
+                            .size(12.dp)
                     )
                     Text(
                         text = "tenants: $tennants",
                         color = Color.Black,
                         style = MaterialTheme.typography.body1,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         modifier = Modifier.padding(2.dp)
                     )
                 }
@@ -116,13 +116,13 @@ fun PropertyCard(propName: String,
                         tint = Color.Red,
                         modifier = Modifier
                             .padding(3.dp)
-                            .size(10.dp)
+                            .size(12.dp)
                     )
                     Text(
                         text = "issues: $issueCount",
                         color = Color.Black,
                         style = MaterialTheme.typography.body1,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         modifier = Modifier.padding(1.dp)
                     )
                 }

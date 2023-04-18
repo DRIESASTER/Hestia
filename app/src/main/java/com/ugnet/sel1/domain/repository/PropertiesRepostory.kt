@@ -14,8 +14,8 @@ typealias DeletePropertyResponse = Response<Boolean>
 
 interface PropertiesRepository {
 
-//    fun getPandFromFirestore(id: String): Flow<PandResponse>
-    fun getOwnedPropertiesFromFirestore(userId:String): Flow<PropertiesResponse>
+    //    fun getPandFromFirestore(id: String): Flow<PandResponse>
+    fun getOwnedPropertiesFromFirestore(userId: String): Flow<PropertiesResponse>
     suspend fun addPropertyToFirestore(
         huisnummer: Int,
         type: String,
@@ -23,12 +23,12 @@ interface PropertiesRepository {
         postcode: Int,
         stad: String,
         straat: String
-    ): Flow<AddPropertyResponse>
+    ): AddPropertyResponse
 
     suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
+}
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 
-}
 
 //    fun getAdresesFromFirestore(): Flow<AdresesResponse>
 

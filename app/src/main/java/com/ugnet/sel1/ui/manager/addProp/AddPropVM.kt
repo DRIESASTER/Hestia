@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager.addProp
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,6 +32,11 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 
     var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Loading)
         private set
+
+
+//    var deleteRoomFromPropertyResponse by mutableStateOf<DeleteRoomResponse>(Response.Success(false))
+//        private set
+
     init{
         //getUser(Firebase.auth.currentUser?.uid.toString())
         getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
@@ -53,22 +59,26 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 
     //TODO: upload room to db
     fun saveProp(managerID:String) = viewModelScope.launch{
+        Log.d("TAG", "saveProp: $managerID")
         addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
         when(val addPropResponse = addPropertyResponse){
             is Response.Success -> {
-                for(room in rooms){
-                    useCases.addRoomToProperty(addPropResponse.data,room.roomName, room.tenantName)
+//                for(room in rooms){
+//                    useCases.addRoomToProperty(addPropResponse.data,room.roomName, room.tenantName)
+                Log.d("TAG",addPropResponse.data)
                 }
-            }
             else -> {}
-        } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
-    }
+        }
+    } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
 
     fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
-        useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat).collect { response ->
-            addPropertyResponse = response
-        }
+        addPropertyResponse = Response.Loading
+        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
     }
+//    fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
+//        addPropertyResponse = Response.Loading
+//        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
+//    }
 
     fun addRoom(roomname:String, tenantname:String){
         rooms.add(RoomData(roomname,tenantname))

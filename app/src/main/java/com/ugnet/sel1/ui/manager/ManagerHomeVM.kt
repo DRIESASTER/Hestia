@@ -45,10 +45,9 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
 
     init{
-        getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
-//        getOwnedProperties("Fti1aAWM1USFFCJg2I7LFniWrlT2")
-
-
+//        getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
+        getOwnedProperties("Azi4i3r0iFfW57QAntbNebBn1Kr2")
+//        getIssuesForManager()
     }
 
 
@@ -109,7 +108,6 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
     }
 
     fun getIssuesForManager(){
-        Log.d("ManagerHomeVM", "getIssuesForManager: ")
         var issues = mutableListOf<IssueData>()
         when(val propertiesResponse = ownedPropertiesResponse){
             is Response.Success -> {
@@ -125,7 +123,6 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
                         else -> {}
                     }
                 }
-                Log.d("ManagerHomeVM", "getIssuesForManager succes: ${issues.size}")
                 issuesForManagerResponse = Response.Success(issues)
             }
             else -> {}

@@ -45,8 +45,8 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
 
     init{
-        //getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
-        getOwnedProperties("Fti1aAWM1USFFCJg2I7LFniWrlT2")
+        getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
+//        getOwnedProperties("Fti1aAWM1USFFCJg2I7LFniWrlT2")
 
 
     }

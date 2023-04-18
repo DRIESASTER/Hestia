@@ -39,8 +39,8 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 //        private set
 
     init{
-        //getUser(Firebase.auth.currentUser?.uid.toString())
-        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
+        getUser(Firebase.auth.currentUser?.uid.toString())
+//        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
     }
 
     fun getUser(id: String) = viewModelScope.launch {

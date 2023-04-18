@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.*
@@ -48,6 +49,9 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             private set
 
       var userByEmailResponse by mutableStateOf<UsersResponse>(Response.Loading)
+            private set
+
+      var addIssueResponse by mutableStateOf<AddIssueResponse>(Response.Loading)
             private set
 
 
@@ -114,6 +118,11 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
 //                  addPropertyResponse = response
 //            }
 //      }
+
+      fun addIssue(beschrijving:String, titel:String, propertyId: String, roomId:String, issueType: IssueType) = viewModelScope.launch {
+            addIssueResponse = Response.Loading
+            addIssueResponse = useCases.addIssue(beschrijving, titel, propertyId, roomId, issueType)
+      }
 
       fun deleteProperty(propertyId: String) = viewModelScope.launch {
             deletePropertyResponse = Response.Loading

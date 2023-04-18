@@ -1,6 +1,7 @@
 package com.ugnet.sel1.ui.manager.addProp
 
 import android.util.Log
+import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -61,19 +62,23 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     fun saveProp(managerID:String) = viewModelScope.launch{
         Log.d("TAG", "saveProp: $managerID")
         addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
-        when(val addPropResponse = addPropertyResponse){
+        when (addPropertyResponse) {
             is Response.Success -> {
-//                for(room in rooms){
-//                    useCases.addRoomToProperty(addPropResponse.data,room.roomName, room.tenantName)
-                Log.d("TAG",addPropResponse.data)
-                }
-            else -> {}
+                Log.d("TAG","YES HET WERKT")
+//                rooms.forEach {
+//                    useCases.addRoomToProperty(addPropertyResponse.data!!, it.roomName, it.tenantName)
+//                }
+            }
+            else -> {
+                //niks
+            }
         }
     } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
 
     fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
         addPropertyResponse = Response.Loading
         addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
+        Log.d("ADDPROP", addPropertyResponse.toString())
     }
 //    fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
 //        addPropertyResponse = Response.Loading

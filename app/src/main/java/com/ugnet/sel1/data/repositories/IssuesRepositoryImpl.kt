@@ -41,25 +41,43 @@ class IssuesRepositoryImpl @Inject constructor(
     override suspend fun addIssueToFirestore(
         beschrijving: String,
         titel: String,
+        propertyId: String,
         roomId: String,
-        issueType: IssueType
-    ) = callbackFlow {
-        val id = dbRef.collection("properties/${roomId}/issues").document().id
-        val issue = hashMapOf(
-            "titel" to titel,
-            "beschrijving" to beschrijving,
-            "roomId" to roomId,
-            "issueType" to issueType.toString(),
-            "status" to Status.notStarted.toString(),
-            "datum" to serverTimestamp()
-        )
-        val issueRef =
-            dbRef.document("properties/${roomId}/issues/${id}").set(issue).addOnSuccessListener {
-                trySend(Response.Success(id))
-            }.addOnFailureListener {
-                trySend(Response.Failure(it))
-            }
+        issueType: IssueType) : AddIssueResponse {
+        return try{
+            val id = dbRef.collection("properties/${propertyId}/issues").document().id
+            val issue = Issue(
+                beschrijving = beschrijving,
+                titel = titel,
+                roomId = roomId,
+                issueType = issueType,
+                status = Status.notStarted,
+                datum = null,
+                issueId = id
+            )
+            dbRef.collection("properties/${propertyId}/issues").document(id).set(issue).await()
+            Response.Success(id)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
     }
+//    ) = callbackFlow {
+//        val id = dbRef.collection("properties/${roomId}/issues").document().id
+//        val issue = hashMapOf(
+//            "titel" to titel,
+//            "beschrijving" to beschrijving,
+//            "roomId" to roomId,
+//            "issueType" to issueType.toString(),
+//            "status" to Status.notStarted.toString(),
+//            "datum" to serverTimestamp()
+//        )
+//        val issueRef =
+//            dbRef.document("properties/${roomId}/issues/${id}").set(issue).addOnSuccessListener {
+//                trySend(Response.Success(id))
+//            }.addOnFailureListener {
+//                trySend(Response.Failure(it))
+//            }
+//    }
 
 
         override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {

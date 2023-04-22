@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager.addProp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -58,17 +59,14 @@ fun trySave(viewmodel: AddPropVM,navigator:NavController) {
     when(val userresponse = viewmodel.userResponse){
         is Response.Success-> {
             viewmodel.saveProp(userresponse.data?.uid.toString())
-            when(val propresponse = viewmodel.addPropertyResponse){
-                is Response.Success ->{
-                    /**route to main screen*/
-                    navigator.popBackStack()
-                }
-                else -> {}
+
+            //TODO: navigate to roomeditscreen and pass the propid, new viewmodel will be made
+
             }
-        }
         else -> {}
-    }
+        }
 }
+
 
 @Composable
 fun AddHouse(viewmodel:AddPropVM, modifier:Modifier = Modifier) {
@@ -84,27 +82,17 @@ fun AddHouse(viewmodel:AddPropVM, modifier:Modifier = Modifier) {
 
 @Composable
 fun AddAppartement(viewmodel:AddPropVM,modifier:Modifier = Modifier) {
-    var isPopupVisible by remember { mutableStateOf(false) }
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier
         .fillMaxSize()
         .wrapContentSize(Alignment.TopStart)){
 
-        DropdownMenu(
-            onDismissRequest = { isPopupVisible = false },
-            expanded = isPopupVisible,
-        ) {
-            AddRoomPopup(
-                onClose = { isPopupVisible = false },
-                onAddRoom = { roomname,tenantname -> viewmodel.addRoom(roomname,tenantname)
-                    isPopupVisible = false})
-            }
+
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
             InputWithTitle(title = "City", initValue = viewmodel.city, onValuechanged = {viewmodel.city = it})
             InputWithTitle(title = "Street", initValue = viewmodel.street, onValuechanged = {viewmodel.street = it})
             InputWithTitle(title = "Number", initValue = viewmodel.number, onValuechanged = {viewmodel.number = it})
             InputWithTitle(title = "Postal Code", initValue = viewmodel.postalCode, onValuechanged = {viewmodel.postalCode = it})
-            AddRoomButton(onClick = { isPopupVisible = true })
             Spacer(modifier = Modifier.height(10.dp))
             RoomOverview(rooms = viewmodel.rooms, onDeleteClicked = { roomname -> viewmodel.removeRoom(roomname)})
         }
@@ -114,72 +102,11 @@ fun AddAppartement(viewmodel:AddPropVM,modifier:Modifier = Modifier) {
 }
 
 
-@Composable
-fun AddRoomButton(modifier:Modifier = Modifier, onClick: () -> Unit = {}){
-    FloatingActionButton(onClick = onClick ,
-        Modifier
-            .background(Color.Transparent)
-            .border(
-                1.dp,
-                Color.DarkGray, RoundedCornerShape(30.dp)
-            )) {
-        Text(text ="Add Room", color = Color.White, modifier = Modifier.padding(start= 10.dp, end = 10.dp))
-    }
-}
 
-@Composable
-fun AddRoomPopup(
-    onClose: () -> Unit,
-    onAddRoom: (roomName: String, tenantName: String) -> Unit
-) {
-    var roomName by remember { mutableStateOf("") }
-    var tenantName by remember { mutableStateOf("") }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
 
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            InputWithTitle(
-                title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            InputWithTitle(
-                title = "Tenant Name", initValue = tenantName, onValuechanged = { tenantName = it }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = onClose,
-                    modifier = Modifier.padding(end = 8.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
-                ) {
-                    Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
-                }
-                Button(
-                    onClick = { onAddRoom(roomName, tenantName) },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
-                ) {
-                    Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
-                }
-            }
-        }
-    }
-}
 
-@Preview
-@Composable
-fun AddRoomPopupPreview() {
-    AddRoomPopup(onClose = {}, onAddRoom = { _, _ -> })
-}
+
 
 //@Preview
 //@Composable

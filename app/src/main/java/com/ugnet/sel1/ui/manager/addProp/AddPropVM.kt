@@ -53,26 +53,15 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
         isHouse = !isHouse
     }
 
-    fun removeRoom(naam:String): (String) -> Unit {
-        rooms.filter{ it.roomName != naam }
-        return {}
+    fun removeRoom(naam:String)= viewModelScope.launch{
+        rooms = rooms.filter{ it.roomName != naam }.toMutableList()
     }
 
     //TODO: upload room to db
     fun saveProp(managerID:String) = viewModelScope.launch{
         Log.d("TAG", "saveProp: $managerID")
         addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
-        when (addPropertyResponse) {
-            is Response.Success -> {
-                Log.d("TAG","YES HET WERKT")
-//                rooms.forEach {
-//                    useCases.addRoomToProperty(addPropertyResponse.data!!, it.roomName, it.tenantName)
-//                }
-            }
-            else -> {
-                //niks
-            }
-        }
+
     } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
 
     fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
@@ -85,7 +74,11 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 //        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
 //    }
 
-    fun addRoom(roomname:String, tenantname:String){
+    //not necessary anymore because of extra screen
+    fun addRoom(roomname:String, tenantname:String)= viewModelScope.launch{
         rooms.add(RoomData(roomname,tenantname))
     }
+
+
+
 }

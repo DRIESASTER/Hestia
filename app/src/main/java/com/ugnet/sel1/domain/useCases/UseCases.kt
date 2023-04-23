@@ -17,5 +17,6 @@ data class UseCases constructor(
     val deleteProperty : DeleteProperty,
     val addIssue: AddIssue,
     val deleteIssue: DeleteIssue,
-    val getUserByEmail: GetUserByEmail
+    val getUserByEmail: GetUserByEmail,
+    val getIssuesPerProperty: GetIssuesPerProperty
 )

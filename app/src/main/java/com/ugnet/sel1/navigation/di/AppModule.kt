@@ -61,6 +61,7 @@ object AppModule {
         getRentedRoomsByUser = GetRentedRoomsByUser(roomsRepo),
         addIssue = AddIssue(issuesRepo),
         deleteIssue = DeleteIssue(issuesRepo),
-        getUserByEmail = GetUserByEmail(usersRepo)
+        getUserByEmail = GetUserByEmail(usersRepo),
+        getIssuesPerProperty = GetIssuesPerProperty(issuesRepo)
     )
 }

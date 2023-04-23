@@ -6,10 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.type.Date
-import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.domain.models.IssueType
-import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.models.Status
+import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -24,6 +21,27 @@ class IssuesRepositoryImpl @Inject constructor(
     override fun getIssuesByRoomFromFirestore(propertyId: String, roomId: String) = callbackFlow {
         val snapshotListener =
             dbRef.collection("properties/${propertyId}/issues").whereEqualTo("roomId", roomId)
+                .addSnapshotListener { snapshot, e ->
+                    val issuesResponse = if (snapshot != null) {
+                        val issues = snapshot.toObjects(Issue::class.java)
+                        Response.Success(issues)
+                    } else {
+                        Response.Failure(e)
+                    }
+                    trySend(issuesResponse)
+                }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+
+
+    override fun getIssuesPerPropertyFromFirestore(
+        propertyId: String
+    ) = callbackFlow {
+        val snapshotListener =
+            dbRef.collection("properties/${propertyId}/issues")
                 .addSnapshotListener { snapshot, e ->
                     val issuesResponse = if (snapshot != null) {
                         val issues = snapshot.toObjects(Issue::class.java)

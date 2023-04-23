@@ -19,16 +19,17 @@ class PropertiesRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): PropertiesRepository {
 
-    override fun getOwnedPropertiesFromFirestore(id:String) = callbackFlow {
-        val snapshotListener = dbRef.collection("properties").whereEqualTo("ownedBy",id).addSnapshotListener{ snapshot, e ->
-            val propertyResponse = if (snapshot != null) {
-                val panden = snapshot.toObjects(Property::class.java)
-                Response.Success(panden)
-            } else {
-                Response.Failure(e)
+    override fun getOwnedPropertiesFromFirestore(id: String) = callbackFlow {
+        val snapshotListener = dbRef.collection("properties").whereEqualTo("ownedBy", id)
+            .addSnapshotListener { snapshot, e ->
+                val propertyResponse = if (snapshot != null) {
+                    val panden = snapshot.toObjects(Property::class.java)
+                    Response.Success(panden)
+                } else {
+                    Response.Failure(e)
+                }
+                trySend(propertyResponse)
             }
-            trySend(propertyResponse)
-        }
         awaitClose { snapshotListener.remove() }
     }
 
@@ -40,7 +41,7 @@ class PropertiesRepositoryImpl @Inject constructor(
         postcode: Int,
         stad: String,
         straat: String
-    ) : AddPropertyResponse {
+    ): AddPropertyResponse {
         return try {
             var id = dbRef.collection("properties").document().id
             val property = Property(
@@ -58,6 +59,10 @@ class PropertiesRepositoryImpl @Inject constructor(
             Response.Failure(e)
         }
     }
+
+
+
+
 
 
 

@@ -27,8 +27,9 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun RoomeditScreen(propid:String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     var isPopupVisible by remember { mutableStateOf(false) }
+    viewmodel.propid = propid
 
-    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navController = navController)},
+    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", navController = navController)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
                 RoomOverview(rooms = viewmodel.processRooms(), onDeleteClicked = {viewmodel.deleteRoomFromProperty(it)} )

@@ -109,8 +109,10 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
     fun getIssuesForManager(){
         var issues = mutableListOf<IssueData>()
+        Log.d("ManagerHomeScreen","Trying to get all issues")
         when(val propertiesResponse = ownedPropertiesResponse){
             is Response.Success -> {
+                Log.d("ManagerHomeScreen","loading issues per property")
                 for(property in propertiesResponse.data){
                     getAllIssuesForProperty(property.propertyId!!)
                     when(val issuesResponse = issuesForBuildingResponse){

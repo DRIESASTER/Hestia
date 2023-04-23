@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImagePainter
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.domain.models.Response
@@ -80,6 +79,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                     onStateChanged = {
                         Data.currentState = it
                         Log.d("ManagerHomeScreen", "onStateChanged: $it")
+                        Data.getIssuesForManager()
                     },
                 )
             }

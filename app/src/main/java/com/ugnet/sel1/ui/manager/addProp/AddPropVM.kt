@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
@@ -58,9 +59,10 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     }
 
     //TODO: upload room to db
-    fun saveProp(managerID:String) = viewModelScope.launch{
+    fun saveProp(navigator:NavController,managerID:String) = viewModelScope.launch{
         Log.d("TAG", "saveProp: $managerID")
         addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
+        //TODO:fix navigation here?
 
     } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
 

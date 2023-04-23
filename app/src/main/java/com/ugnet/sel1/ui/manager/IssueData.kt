@@ -10,7 +10,6 @@ data class IssueData(val title: String,
                      val status:Status,
                      val tenant:String,
                      val room:String,
-                     val building: String,
                      val issuekind:IssueType,
                      val date : com.google.firebase.Timestamp
                      )

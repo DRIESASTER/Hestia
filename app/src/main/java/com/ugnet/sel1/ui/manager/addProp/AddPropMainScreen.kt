@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowRight
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,7 +44,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 IconButton(onClick = { trySave(viewmodel,navController) },Modifier.background(
                     AccentLicht, RoundedCornerShape(20.dp))) {
-                    Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
+                    Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "next", tint = MainGroen)
                 }
             }
 

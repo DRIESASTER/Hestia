@@ -27,7 +27,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
     var ownedPropertiesResponseFormatted by mutableStateOf<Response<MutableList<PropertyData>>>(Response.Loading)
         private set
 
-    var issuesForBuildingResponse by mutableStateOf<Response<MutableList<IssueData>>>(Response.Loading)
+    var issuesForBuildingResponse by mutableStateOf<IssuesResponse>(Response.Loading)
         private set
 
     var issuesForManagerResponse by mutableStateOf<Response<MutableList<IssueData>>>(Response.Loading)
@@ -67,8 +67,11 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
     private fun formatPropertyData(data: List<Property>): Response<MutableList<PropertyData>> {
         var properties = mutableListOf<PropertyData>()
         for(property in data){
-            getRoomsForProperty(property.propertyId.toString())
-            getAllIssuesForProperty(property.propertyId.toString())
+            getRoomsForProperty(property.propertyId!!)
+            getAllIssuesForProperty(property.propertyId!!)
+            // is too quick, need to wait for response
+                Log.d("ManagerHomeVM", "formatPropertyData issues: ${issuesForBuildingResponse}")
+                Log.d("ManagerHomeVM", "formatPropertyData prop: ${roomsForPropertyResponse}")
             properties.add(PropertyData(propertyId = property.propertyId!!, name = property.straat + " " + property.huisnummer
                 , address = property.straat + " " + property.huisnummer + ", " + property.postcode + " " + property.stad,
                 tenants = (when(val roomsResponse = roomsForPropertyResponse){
@@ -107,7 +110,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         }
     }
 
-    fun getIssuesForManager(){
+    fun getIssuesForManager() {
         var issues = mutableListOf<IssueData>()
         Log.d("ManagerHomeScreen","Trying to get all issues")
         when(val propertiesResponse = ownedPropertiesResponse){
@@ -115,12 +118,15 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
                 Log.d("ManagerHomeScreen","loading issues per property")
                 for(property in propertiesResponse.data){
                     getAllIssuesForProperty(property.propertyId!!)
-                    when(val issuesResponse = issuesForBuildingResponse){
+                    var issuesForBuilding= issuesForBuildingResponse
+                    while(issuesForBuilding is Response.Loading){
+                        issuesForBuilding = issuesForBuildingResponse
+                    }
+                        Log.d("ManagerHomeScreen","waiting for issues to load")
+                    when(issuesForBuilding){
                         is Response.Success -> {
-                            for(issue in issuesResponse.data){
-                                issues.add(issue)
-                            }
-
+                            Log.d("ManagerHomeScreen","adding issues to list ${issuesForBuilding.data}")
+                            issues.addAll(processIssues(issuesForBuilding.data))
                         }
                         else -> {}
                     }
@@ -132,42 +138,25 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
     }
 
-    fun getAllIssuesForProperty(propertyId: String) = viewModelScope.launch {
-        var issues = mutableListOf<IssueData>()
-        getRoomsForProperty(propertyId)
-        when (val roomresponse = roomsForPropertyResponse) {
-            is Response.Success -> {
-                for (room in roomresponse.data) {
-                    getIssuesForRoom(propertyId, room.roomId!!)
-                    when (val issuesResponse = issuesForRoomResponse) {
-                        is Response.Success -> {
-                            for (issue in issuesResponse.data) {
-                                issues.add(processIssueData(issue,room,propertyId))
-                            }
-                        }
-                        else -> {}
-                    }
-                }
-            }
-            else -> {}
+    private fun processIssues(issues: List<Issue>): MutableList<IssueData> {
+        var issuesData = mutableListOf<IssueData>()
+        for(issue in issues){
+            //var user = getUser(issue.userId!!)
+            Log.d("ManagerHomeScreen","adding issue ${issue.issueId} to list")
+            issuesData.add(IssueData(id = issue.issueId!!, room = issue.roomId!!,
+                description = issue.beschrijving!!, status = issue.status!!, date = issue.datum!!, tenant = ""/*user.voornaam + " " + user.achternaam*/, issuekind = issue.issueType!!, title = issue.titel!!))
         }
-        issuesForBuildingResponse = Response.Success(issues)
+        return issuesData
     }
 
-    private fun processIssueData(issue: Issue, room: Room, propertyid: String): IssueData {
-        var user = getUser(room.huurderId!!)
-        return IssueData(
-            title = issue.titel!!,
-            id = issue.issueId!!,
-            description = issue.beschrijving!!,
-            status =issue.status!!,
-            date = issue.datum!!,
-            room=room.naam!!,
-            tenant = user.voornaam!! + " " + user.achternaam!!,
-            building =propertyid,
-            issuekind = issue.issueType!!,
-        )
+
+    //Function comes FIXME
+    fun getAllIssuesForProperty(propertyId: String) = viewModelScope.launch {
+        useCases.getIssuesPerProperty(propertyId).collect { response ->
+            issuesForBuildingResponse = response
+        }
     }
+
 
     private fun getUser(huurderId: String): User {
         var user = User()

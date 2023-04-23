@@ -29,7 +29,6 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun IssueCard(id:String,
-              building:String,
               title: String,
               tenant:String,
               room:String,
@@ -136,7 +135,7 @@ fun IssueCard(id:String,
                             "Finished" ->  Status.finished
                             else -> Status.notStarted
                         }
-                            onStatusClicked(currentStatus.value,id,building)}
+                            onStatusClicked(currentStatus.value,id,room)}
                     )
                 }
             }
@@ -156,5 +155,12 @@ fun getStatus(status: Status): String {
 @Preview
 @Composable
 fun IssueCardPreview() {
-    IssueCard(building ="hoi", id = "hoi", title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted, onClick = {}, onStatusClicked = {int1,int2,int3-> println(int1.toString()+int2+int3) })
+    IssueCard(
+        id = "hoi",
+        title = "leaky faucet",
+        tenant = "Ben De Meurichy",
+        room = "room 001",
+        description = "gas",
+        status = Status.notStarted,
+        onClick = {}) { int1, int2, int3 -> println(int1.toString() + int2 + int3) }
 }

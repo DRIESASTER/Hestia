@@ -61,7 +61,7 @@ fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
             when(val propertyresponse = viewmodel.addPropertyResponse){
                 is Response.Success -> {
                     //add propid to appstate//
-                    openAndPopUp(MyDestinations.EDIT_ROOMS,MyDestinations.ADD_PROPERTY)
+                    openAndPopUp(MyDestinations.ROOM_EDIT_ROUTE,MyDestinations.ADD_PROPERTY)
                 }
                 else -> {
                     CircularProgressIndicator()}

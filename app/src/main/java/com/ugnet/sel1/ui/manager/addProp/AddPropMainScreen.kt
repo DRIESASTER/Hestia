@@ -50,13 +50,24 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
 fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
-            IconButton(onClick = { trySave(viewmodel,openAndPopUp) },Modifier.background(
-                AccentLicht, RoundedCornerShape(20.dp)).size(20.dp)) {
+            IconButton(onClick = { viewmodel.saveProp(userresponse.data?.uid.toString()) },
+                Modifier
+                    .background(
+                        AccentLicht, RoundedCornerShape(20.dp)
+                    )
+                    .size(20.dp)) {
                 Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "next", tint = MainGroen)
             }
-            viewmodel.saveProp(userresponse.data?.uid.toString())
+            when(val propertyresponse = viewmodel.addPropertyResponse){
+                is Response.Success -> {
+                    //add propid to appstate//
+                    openAndPopUp(MyDestinations.EDIT_ROOMS,MyDestinations.ADD_PROPERTY)
+                }
+                else -> {
+                    CircularProgressIndicator()}
+            }
             //TODO: navigate to roomeditscreen and pass the propid
-            openAndPopUp(MyDestinations.EDIT_ROOMS,MyDestinations.ADD_PROPERTY)
+
 
         }
         else -> {}

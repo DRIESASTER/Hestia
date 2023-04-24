@@ -19,7 +19,7 @@ import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 
-
+// no longer in use
 // todo work with screens and appstate, and pass nav functions instead of navcontroller
 @Composable
 fun NavGraph(

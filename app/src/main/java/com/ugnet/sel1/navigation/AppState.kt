@@ -30,6 +30,7 @@ class AppState(
     }
 
 
+
     fun setRole(role: String) {
         _role.value = role
     }

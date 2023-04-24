@@ -24,6 +24,8 @@ class AppState(
     private val _role  = mutableStateOf("")
     val role: State<String?> get() = _role
 
+
+
     fun setRole(role: String) {
         _role.value = role
     }

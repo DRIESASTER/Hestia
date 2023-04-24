@@ -15,6 +15,7 @@ import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.presentation.profile.ProfileScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
+import com.ugnet.sel1.ui.manager.addProp.RoomeditScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 @ExperimentalMaterialApi
@@ -43,18 +44,6 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         )
     }
 
-/*    composable(
-        route = MyDestinations.SIGN_UP_ROUTE,
-        arguments = listOf(navArgument("role") { type = NavType.StringType })
-    ) { backStackEntry ->
-        val role = backStackEntry.arguments?.getString("role")
-        if (role != null) {
-            SignUpScreen(
-                role = role,
-                openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
-            )
-        }
-    }*/
     composable(MyDestinations.PROFILE_ROUTE) {
         UserProfileScreen(navController = appState.navController)
     }
@@ -68,6 +57,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         })
     }
 
+    composable(MyDestinations.ROOM_EDIT_ROUTE){
+        //RoomeditScreen(propid = )
+    }
+
     composable(MyDestinations.HIREE_HOME_ROUTE) {
         ResidentHomeScreen()
     }
@@ -75,6 +68,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     composable(MyDestinations.ADD_PROPERTY) {
         AddPropMainScreen(modifier = Modifier)
     }
+
+
+
+    // roomeditscreen
 
 
 /*    composable(SETTINGS_SCREEN) {

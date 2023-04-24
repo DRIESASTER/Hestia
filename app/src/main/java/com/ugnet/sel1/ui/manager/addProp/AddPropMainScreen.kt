@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
@@ -57,12 +58,13 @@ fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
                     .background(
                         AccentLicht, RoundedCornerShape(20.dp)
                     )
-                    .size(20.dp)) {
+                    .size(40.dp)) {
                 Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "next", tint = MainGroen)
             }} else {
                 when (val propertyresponse = viewmodel.addPropertyResponse) {
                     is Response.Success -> {
                         //add propid to appstate//
+
                         openAndPopUp(MyDestinations.ROOM_EDIT_ROUTE, MyDestinations.ADD_PROPERTY)
                     }
                     else -> {

@@ -16,7 +16,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun SimpleTopBar(name:String,openAndPopup: (String, String) -> Unit) {
-    TopAppBar(
+    TopAppBar(modifier = Modifier.background(MainGroen),
         title = { Text(text = name, color = Color.White) },
         navigationIcon = {
             IconButton(onClick = { openAndPopup(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ADD_PROPERTY) },Modifier.background(MainGroen)) {

@@ -23,7 +23,11 @@ class AppState(
 
     private val _role  = mutableStateOf("")
     val role: State<String?> get() = _role
+    var propid = ""
 
+    fun setPropid(propid:String){
+        this.propid=propid
+    }
 
 
     fun setRole(role: String) {

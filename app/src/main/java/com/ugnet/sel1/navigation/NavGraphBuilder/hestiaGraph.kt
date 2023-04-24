@@ -12,10 +12,8 @@ import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
 import com.ugnet.sel1.authentication.signup.SignUpScreen
 import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
-import com.ugnet.sel1.presentation.profile.ProfileScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
-import com.ugnet.sel1.ui.manager.addProp.RoomeditScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 @ExperimentalMaterialApi
@@ -66,7 +64,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.ADD_PROPERTY) {
-        AddPropMainScreen(modifier = Modifier, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp)})
+        AddPropMainScreen(modifier = Modifier,
+            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp)}) { propid: String -> appState.setPropid(propid) }
     }
 
 

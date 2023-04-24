@@ -39,7 +39,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
+                trySave(viewmodel = viewmodel, openAndPopUp = openAndPopUp)
             }
 
         })

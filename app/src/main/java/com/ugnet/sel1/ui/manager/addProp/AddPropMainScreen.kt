@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
@@ -22,7 +21,9 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp: (String, String) -> Unit, setPropId: (String) -> Unit) {
+fun AddPropMainScreen(
+    viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,
+    openAndPopUp: (String, String) -> Unit, navigate : (String) -> Unit, setPropId: (String) -> Unit) {
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", openAndPopup = openAndPopUp)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -40,7 +41,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                trySave(viewmodel = viewmodel, openAndPopUp = openAndPopUp, setPropId = setPropId)
+                trySave(viewmodel = viewmodel, navigate = navigate, setPropId = setPropId)
             }
 
         })
@@ -48,7 +49,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
 
 //TODO: fix input validation
 @Composable
-fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
+fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
             if(!viewmodel.saveClicked){
@@ -66,7 +67,7 @@ fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM,openAndPopUp: (Str
                         //add propid to appstate//
                         setPropId(propertyresponse.data)
 
-                        openAndPopUp(MyDestinations.ROOM_EDIT_ROUTE, MyDestinations.ADD_PROPERTY)
+                        navigate(MyDestinations.ROOM_EDIT_ROUTE)
                     }
                     else -> {
                         CircularProgressIndicator()

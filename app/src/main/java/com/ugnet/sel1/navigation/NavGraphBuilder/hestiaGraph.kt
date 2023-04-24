@@ -7,10 +7,12 @@ import androidx.navigation.compose.composable
 import com.ugnet.sel1.AuthViewModel
 import com.ugnet.sel1.navigation.SplashScreen
 import com.ugnet.sel1.authentication.login.LoginScreen
+import com.ugnet.sel1.authentication.profile.UserProfileScreen
 import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
 import com.ugnet.sel1.authentication.signup.SignUpScreen
 import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
+import com.ugnet.sel1.presentation.profile.ProfileScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
@@ -54,7 +56,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         }
     }*/
     composable(MyDestinations.PROFILE_ROUTE) {
-
+        UserProfileScreen(navController = appState.navController)
     }
 
     composable(MyDestinations.MANAGER_HOME_ROUTE) {

@@ -67,7 +67,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         topBarTitle = currentTitle
     )}, drawerContent = {
             DrawerHeader()
-            DrawerBody(items=drawerItems,onItemClick={})
+            DrawerBody(items=drawerItems,onItemClick={item->openAndPopUp(item.route,MyDestinations.MANAGER_HOME_ROUTE)})
         }, content={ padding ->
 
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,modifier = Modifier

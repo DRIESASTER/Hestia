@@ -27,6 +27,7 @@ interface IssuesRepository {
         issueType: IssueType
     ): AddIssueResponse
 //
+    fun getIssuesForRenterFromFirestore(propertyId:String, userId:String) : Flow<IssuesResponse>
     fun getIssuesPerPropertyFromFirestore(propertyId: String) : Flow<IssuesResponse>
     suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
 //

@@ -23,20 +23,10 @@ interface RoomsRepository {
 
     fun getRoomsForPropertyFromFirestore(pandId: String): Flow<RoomsResponse>
 
-    fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse>
+    fun getRentedRoomsByUserInFirestore(user: String): Flow<RoomsResponse>
 
     suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurder:String?): AddRoomResponse
 
     suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse
 
 }
-
-//    fun getKamerFromFirestore(kamerId: String): Flow<KamerResponse>
-//
-//    fun getKamersFromFirestore(): Flow<KamersResponse>
-
-//    suspend fun addKamerToFirestore(huurder: String, naam: String): AddKamerResponse
-//
-//    suspend fun deleteKamerFromFirestore(kamerId: String): DeleteKamerResponse
-//
-//    suspend fun editKamerFromFirestore(kamerId: String, huurder: String, naam: String, issues: List<String>): EditKamerResponse

@@ -64,6 +64,7 @@ object AppModule {
         addIssue = AddIssue(issuesRepo),
         deleteIssue = DeleteIssue(issuesRepo),
         getUserByEmail = GetUserByEmail(usersRepo),
-        getIssuesPerProperty = GetIssuesPerProperty(issuesRepo)
+        getIssuesPerProperty = GetIssuesPerProperty(issuesRepo),
+        getIssuesForRenter = GetIssuesForRenter(issuesRepo)
     )
 }

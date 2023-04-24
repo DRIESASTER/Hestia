@@ -1,6 +1,5 @@
 package com.ugnet.sel1.data.repositories
 
-import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.*
@@ -25,6 +24,10 @@ class RoomsRepositoryImpl @Inject constructor(
             trySend(roomsResponse)
         }
         awaitClose { snapshotListener.remove() }
+    }
+
+    override fun getRentedRoomsByUserInFirestore(user: String): Flow<RoomsResponse> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurderId:String?): AddRoomResponse {
@@ -56,23 +59,22 @@ class RoomsRepositoryImpl @Inject constructor(
         }
     }
 
-
-    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
-//        var propRef = dbRef.collection("properties").whereArrayContains("huurders", userId).
-        //dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener()
-        val snapshotListener = dbRef.collectionGroup("rooms").whereEqualTo("huurderId", "gq8qZljKY73A9X3SQzAb").addSnapshotListener() { snapshot, e ->
-            val roomsResponse = if (snapshot != null) {
-                val rooms = snapshot.toObjects(Room::class.java)
-                Response.Success(rooms)
-            } else {
-                Log.d("TAG", "getRentedRoomsByUserInFirestore: ${e?.message}")
-                Response.Failure(e)
-            }
-            trySend(roomsResponse)
-        }
-        awaitClose { snapshotListener.remove()
-    }
-    }
+//    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
+////        var propRef = dbRef.collection("properties").whereArrayContains("huurders", userId).
+//        //dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener()
+//        val snapshotListener = dbRef.collectionGroup("rooms").whereEqualTo("huurderId", "gq8qZljKY73A9X3SQzAb").addSnapshotListener() { snapshot, e ->
+//            val roomsResponse = if (snapshot != null) {
+//                val rooms = snapshot.toObjects(Room::class.java)
+//                Response.Success(rooms)
+//            } else {
+//                Log.d("TAG", "getRentedRoomsByUserInFirestore: ${e?.message}")
+//                Response.Failure(e)
+//            }
+//            trySend(roomsResponse)
+//        }
+//        awaitClose { snapshotListener.remove()
+//    }
+//    }
 
 
 //    override fun getKamersFromFirestore() = callbackFlow {

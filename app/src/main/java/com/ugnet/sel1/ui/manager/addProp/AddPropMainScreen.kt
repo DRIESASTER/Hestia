@@ -6,15 +6,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowRight
-import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.components.SwitchButton2
@@ -23,9 +21,8 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navController = navController)},
+fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp: (String, String) -> Unit) {
+    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", openAndPopup = openAndPopUp)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             SwitchButton2(
@@ -42,22 +39,24 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { trySave(viewmodel,navController) },Modifier.background(
-                    AccentLicht, RoundedCornerShape(20.dp))) {
-                    Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "next", tint = MainGroen)
-                }
+
             }
 
         })
 }
 
 //TODO: fix input validation
-fun trySave(viewmodel: AddPropVM,navigator:NavController) {
+@Composable
+fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
+            IconButton(onClick = { trySave(viewmodel,openAndPopUp) },Modifier.background(
+                AccentLicht, RoundedCornerShape(20.dp)).size(20.dp)) {
+                Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "next", tint = MainGroen)
+            }
             viewmodel.saveProp(userresponse.data?.uid.toString())
-            //TODO: navigate to roomeditscreen and pass the propid, new viewmodel will be made @milan check pls
-            //fix navigation in savemethod so it waits for the response
+            //TODO: navigate to roomeditscreen and pass the propid
+            openAndPopUp(MyDestinations.EDIT_ROOMS,MyDestinations.ADD_PROPERTY)
 
         }
         else -> {}

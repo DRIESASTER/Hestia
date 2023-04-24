@@ -60,7 +60,7 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel(),
                 }
                 Button(
                     onClick = { userViewModel.signOut()
-                              navController.navigate(MyDestinations.SPLASH_ROUTE)},
+                              navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE)},
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Sign Out", fontSize = 16.sp, fontWeight = FontWeight.Bold)

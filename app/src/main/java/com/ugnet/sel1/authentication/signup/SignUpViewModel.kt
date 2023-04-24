@@ -11,6 +11,7 @@ import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.authentication.selection.SendEmailVerificationResponse
 import com.ugnet.sel1.authentication.selection.SignUpResponse
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.MyDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,14 +30,30 @@ class SignUpViewModel @Inject constructor(
     )
         private set
 
-    fun signUpWithEmailAndPassword(email: String, password: String, role : String, surname : String, name : String) = viewModelScope.launch {
+    fun signUpWithEmailAndPassword(
+        email: String,
+        password: String,
+        role: String,
+        surname: String,
+        name: String,
+        openAndPopUp: (String, String) -> Unit
+    ) = viewModelScope.launch {
         println("signUpWithEmailAndPassword called")
         signUpResponse = Response.Loading
         println("before calling repo.firebaseSignUpWithEmailAndPassword")
         signUpResponse = repo.firebaseSignUpWithEmailAndPassword(email, password, role, surname, name)
         println("after calling repo.firebaseSignUpWithEmailAndPassword")
-    }
 
+        when (signUpResponse) {
+            is Response.Success -> {
+                openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.SIGN_UP_ROUTE)
+            }
+            is Response.Failure -> {
+                //openAndPopUp("Error", (signUpResponse as Response.Failure).throwable.localizedMessage ?: "Error signing up")
+            }
+            else -> { /* Do nothing */ }
+        }
+    }
     fun sendEmailVerification() = viewModelScope.launch {
         sendEmailVerificationResponse = Response.Loading
         sendEmailVerificationResponse = repo.sendEmailVerification()

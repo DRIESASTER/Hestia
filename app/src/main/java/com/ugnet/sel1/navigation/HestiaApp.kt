@@ -1,35 +1,29 @@
 package com.ugnet.sel1.navigation
 
+
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import com.ugnet.sel1.AuthViewModel
+import com.ugnet.sel1.navigation.NavGraphBuilder.hestiaGraph
 
 
 @Composable
 @ExperimentalMaterialApi
-fun MakeItSoApp() {
+fun HestiaApp(viewModel: AuthViewModel) {
 
 
-}
-/*    Surface(color = MaterialTheme.colors.background) {
+    Surface(color = MaterialTheme.colors.background) {
         val appState = rememberAppState()
-
-
-        Scaffold(
-            snackbarHost = { SnackbarHost(...)
-            },
-            scaffoldState = appState.scaffoldState
-        ) { innerPaddingModifier ->
             NavHost(
                 navController = appState.navController,
-                startDestination = SPLASH_SCREEN,
-                modifier = Modifier.padding(innerPaddingModifier)
+                startDestination = MyDestinations.SPLASH_ROUTE,
             ) {
-                NavGraph(navController = )
+                hestiaGraph(appState, viewModel)
+
             }
-        }
-    }*/
+    }
+}
 

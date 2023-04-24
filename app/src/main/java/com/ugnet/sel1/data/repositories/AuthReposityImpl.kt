@@ -16,6 +16,7 @@ import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.repository.UsersRepository
 import com.ugnet.sel1.domain.useCases.UseCases
+import com.ugnet.sel1.navigation.AppState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -29,32 +30,16 @@ import javax.inject.Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val usersRepository: UsersRepository,
-    private val userSession: UserSession,
     private val useCases: UseCases
 ) : AuthRepository {
-    //override val currentUser get() = auth.currentUser
+
+    override val currentUser get() = auth.currentUser
 
 
-    private val _currentUser = MutableStateFlow<FirebaseUser?>(auth.currentUser)
-    override val currentUser: StateFlow<FirebaseUser?> get() = _currentUser.asStateFlow()
+    //private val _currentUser = MutableStateFlow<FirebaseUser?>(auth.currentUser)
+    //override val currentUser: StateFlow<FirebaseUser?> get() = _currentUser.asStateFlow()
 
-    init {
-        val authStateListener = FirebaseAuth.AuthStateListener { auth ->
-            _currentUser.value = auth.currentUser
-        }
-        auth.addAuthStateListener(authStateListener)
-    }
 
-    override fun getUserResponseFlow(): Flow<UserResponse> = _currentUser.mapLatest { user ->
-        user?.let {
-            try {
-                val response = useCases.getUser(it.uid).first()
-                response
-            } catch (e: Exception) {
-                Response.Failure(e)
-            }
-        } ?: Response.Loading
-    }
 
     override suspend fun firebaseSignUpWithEmailAndPassword(
         email: String, password: String, role : String, surname : String,
@@ -65,6 +50,7 @@ class AuthRepositoryImpl @Inject constructor(
             print("oproep werkt")
             val userId = result.user?.uid ?: throw Exception("User ID not found")
             //saveUserData(userId, name, surname, username, role)
+
             usersRepository.saveUserData(userId, name, surname,email, role)
 
             Response.Success(true)
@@ -124,6 +110,9 @@ class AuthRepositoryImpl @Inject constructor(
             Response.Failure(e)
         }
     }
+
+
+
 
     override fun getAuthState(viewModelScope: CoroutineScope) = callbackFlow {
         val authStateListener = AuthStateListener { auth ->

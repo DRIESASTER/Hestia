@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -15,20 +16,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.ugnet.sel1.authentication.login.SignInViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
-import com.ugnet.sel1.authentication.signup.SignUpViewModel
 import com.ugnet.sel1.authentication.signup.components.SignUp
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.showMessage
 
 @Composable
 fun SignUpScreen(
-    roleSelectionViewModel: RoleSelectionViewModel,
-    viewModel: SignUpViewModel,
-    navController: NavController,
-    signUp : (email: String, password: String, role : String, name: String, surname: String) -> Unit
+    viewModel: SignUpViewModel = hiltViewModel(),
+    openAndPopUp: (String, String) -> Unit,
+    role: State<String?>,
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -81,7 +79,17 @@ fun SignUpScreen(
         Button(
             onClick = {
                 println("Button clicked")
-                signUp(email.value, password.value, roleSelectionViewModel.selectedRole.value, name.value, surname.value) },
+                role.value?.let {
+                    viewModel.signUpWithEmailAndPassword(
+                        email.value,
+                        password.value,
+                        it,
+                        name.value,
+                        surname.value,
+                        openAndPopUp
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")
@@ -90,7 +98,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(
-            onClick = { navController.navigate(MyDestinations.LOGIN_ROUTE) },
+            onClick = { openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.SIGN_UP_ROUTE) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Already have an account? Login")

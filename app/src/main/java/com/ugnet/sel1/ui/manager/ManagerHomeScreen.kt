@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 
-fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false, navController: NavController){
+fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false,
+                      openAndPopUp: (String, String) -> Unit){
 
     //data
     val drawerItems = listOf(
@@ -112,7 +113,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             }
             }
     },
-        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {navController.navigate(MyDestinations.ADD_PROPERTY)})}}
+        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {})}}
     )
 
 }
@@ -134,6 +135,6 @@ fun addButton(contentDescription: String, onClick: () -> Unit) {
 @Preview
 @Composable
 fun ManagerHomeScreenPreview(){
-    ManagerHomeScreen(navController = rememberNavController())
+    //ManagerHomeScreen()
 }
 

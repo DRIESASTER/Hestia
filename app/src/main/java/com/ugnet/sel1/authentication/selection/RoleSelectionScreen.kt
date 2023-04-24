@@ -9,19 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.ugnet.sel1.authentication.login.SignInViewModel
 import com.ugnet.sel1.navigation.MyDestinations
 
 
 @Composable
 fun RoleSelectionScreen(
-    navController: NavController,
-    viewModel: RoleSelectionViewModel = hiltViewModel(),
-)
-{
-
+    openAndPopUp: (String, String) -> Unit,
+    setRole: (String) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,8 +29,8 @@ fun RoleSelectionScreen(
 
         Button(
             onClick = {
-                viewModel.selectedRole.value = "Manager"
-                navController.navigate(MyDestinations.LOGIN_ROUTE)
+                setRole("Manager")
+                openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -45,8 +40,8 @@ fun RoleSelectionScreen(
 
         Button(
             onClick = {
-                viewModel.selectedRole.value = "Huurder"
-                navController.navigate(MyDestinations.LOGIN_ROUTE)
+                setRole("Huurder")
+                openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
             },
             modifier = Modifier.fillMaxWidth()
         ) {

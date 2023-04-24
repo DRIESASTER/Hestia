@@ -6,15 +6,21 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.oudeShit.Adreses
+import com.ugnet.sel1.navigation.HestiaApp
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.navigation.NavGraph
 import com.ugnet.sel1.presentation.profile.adres.AdresesScreen
@@ -26,56 +32,72 @@ class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
     private val viewModel by viewModels<AuthViewModel>()
 
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            navController = rememberNavController()
+            HestiaApp(viewModel)
+
+/*            navController = rememberNavController()
             NavGraph(navController = navController)
-            AuthState()
+            AuthState()*/
         }
     }
 
 
     // bron : https://medium.com/firebase-developers/how-to-authenticate-to-firebase-using-email-and-password-in-jetpack-compose-bd70ca56ea91
-    @Composable
+
+
+/*    @Composable
     private fun AuthState() {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
-        val userResponse = viewModel.userResponse.collectAsState().value
-
-        if (isUserSignedOut) { // Navigate to Role Selection Screen if user is signed out
-            NavigateToRoleSelectionScreen()
+        if (isUserSignedOut) {
+            NavigateToSignInScreen()
         } else {
-            NavigateToProfileScreen()
+            if (viewModel.isEmailVerified) {
+                NavigateToProfileScreen()
+            } else {
+                NavigateToVerifyEmailScreen()
+            }
         }
-           /* when (userResponse) {
-                is Response.Loading -> {
-                    // Show a progress indicator while loading the user's role
+    }*/
+
+    // todo work with app state to updata en get acces to userdata
+    // todo route to right home screen
+    //@Composable
+    /*private fun AuthState() {
+        //val isUserSignedOut = viewModel.getAuthState().collectAsState().value
+        val userResponse = viewModel.userResponse.collectAsState().value
+        when (userResponse) {
+            is Response.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
-                is Response.Success -> {
-                    val userRole = userResponse.data?.accountType
-                    when (userRole) {
-                        "Manager" -> {
-                            NavigateToManagerHomeScreen()
-                        }
-                        "Hiree" -> {
-                            NavigateToHireeHomeScreen()
-                        }
-                        else -> {
-                            if (userRole != null) {
-                                Log.d("ROLE", userRole)
-                            }
-                            // Handle other roles or error cases
-                        }
+            }
+            is Response.Success -> {
+                val user = (userResponse as Response.Success).data
+                if (user?.accountType == "Manager") {
+                    navController.navigate(MyDestinations.MANAGER_HOME_ROUTE) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                } else if (user?.accountType == "Huurder") {
+                    navController.navigate(MyDestinations.HIREE_HOME_ROUTE) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                } else {
+                    navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE) {
+                        popUpTo(navController.graph.id) { inclusive = true }
                     }
                 }
-                is Response.Failure -> {
-                    // Handle the error
+            }
+            is Response.Failure -> {
+                navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE) {
+                    popUpTo(navController.graph.id) { inclusive = true }
                 }
             }
-        }*/
+        }
     }
-
+*/
 
 
     @Composable

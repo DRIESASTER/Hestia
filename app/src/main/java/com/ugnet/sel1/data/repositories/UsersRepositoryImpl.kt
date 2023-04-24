@@ -6,13 +6,14 @@ import com.ugnet.sel1.domain.models.Room
 import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.repository.AddUserResponse
 import com.ugnet.sel1.domain.repository.UsersRepository
+import com.ugnet.sel1.navigation.AppState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor(
-    private val dbRef: FirebaseFirestore
+    private val dbRef: FirebaseFirestore,
 ): UsersRepository {
     override fun getUserFromFirestore(id: String) = callbackFlow {
         val snapshotListener = dbRef.collection("users").document(id).addSnapshotListener{ snapshot, e ->

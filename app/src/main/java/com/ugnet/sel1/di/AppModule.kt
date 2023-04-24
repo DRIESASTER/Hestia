@@ -8,6 +8,7 @@ import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.*
 import com.ugnet.sel1.domain.useCases.GetUser
 import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
+import com.ugnet.sel1.navigation.AppState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +37,7 @@ object AppModule {
     fun provideRoomsRepository(
         dbRef: FirebaseFirestore
     ): RoomsRepository = RoomsRepositoryImpl(dbRef)
+
 
     @Provides
     fun provideUsersRepository(

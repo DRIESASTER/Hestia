@@ -1,10 +1,7 @@
 package com.ugnet.sel1.authentication.login
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -15,18 +12,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ugnet.sel1.authentication.login.SignInViewModel
 import com.ugnet.sel1.authentication.login.components.SignIn
+import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.showMessage
 
 
 @Composable
 fun LoginScreen(
-    signInViewModel: SignInViewModel,
-    navController: NavController,
-    login : (email: String, password: String) -> Unit
+    openAndPopUp: (String, String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -58,10 +57,8 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-
-
         Button(
-            onClick = { login(email.value, password.value)  },
+            onClick = { viewModel.onSignInClick(email.value, password.value, openAndPopUp) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
@@ -70,17 +67,22 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(
-            onClick = { navController.navigate(MyDestinations.SIGN_UP_ROUTE) },
+            onClick = { openAndPopUp(MyDestinations.SIGN_UP_ROUTE, MyDestinations.LOGIN_ROUTE) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Don't have an account? Sign Up")
         }
-        SignIn(
-            showErrorMessage = { errorMessage ->
-                if (errorMessage != null) {
-                    showMessage(context, errorMessage)
-                }
-            },
-        )
+
+        // Show CircularProgressIndicator when signInResponse is Response.Loading
+        if (viewModel.signInResponse is Response.Loading) {
+            Spacer(modifier = Modifier.height(16.dp))
+            CircularProgressIndicator()
+        }
     }
 }
+
+
+
+
+
+

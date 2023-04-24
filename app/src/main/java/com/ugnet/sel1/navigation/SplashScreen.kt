@@ -22,6 +22,7 @@ fun SplashScreen(
     val isSignOut = viewModel.getAuthState().collectAsState().value
 
     if (isSignOut) {
+        Log.d("LOGGED OUT", isSignOut.toString())
         navigate(MyDestinations.ROLE_SELECTION_ROUTE)
     } else {
         Log.d("SPALSSCRRENUSERRESPOSNE", viewModel.userResponse.toString())

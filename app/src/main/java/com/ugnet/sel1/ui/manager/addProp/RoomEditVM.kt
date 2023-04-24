@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager.addProp
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,11 +25,10 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
     var roomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
-    init {
-        getRoomsForProperty(propid)
-    }
+
 
     fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
+        Log.d("PROP ID", propertyId)
         useCases.getRoomsForProperty(propertyId).collect { response ->
             roomsResponse = response
         }

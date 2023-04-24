@@ -1,5 +1,6 @@
 package com.ugnet.sel1.navigation.NavGraphBuilder
 
+import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -13,6 +14,7 @@ import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
+import com.ugnet.sel1.ui.manager.addProp.RoomeditScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 @ExperimentalMaterialApi
@@ -55,7 +57,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.ROOM_EDIT_ROUTE){
-        //RoomeditScreen(propid = )
+        Log.d("LOG ID", appState.propid.value!!)
+        RoomeditScreen(propid = appState.propid.value!!, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
     composable(MyDestinations.HIREE_HOME_ROUTE) {

@@ -55,7 +55,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
 fun trySave(viewmodel: AddPropVM,navigator:NavController) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
-            viewmodel.saveProp(navigator, userresponse.data?.uid.toString())
+            viewmodel.saveProp(userresponse.data?.uid.toString())
             //TODO: navigate to roomeditscreen and pass the propid, new viewmodel will be made @milan check pls
             //fix navigation in savemethod so it waits for the response
 

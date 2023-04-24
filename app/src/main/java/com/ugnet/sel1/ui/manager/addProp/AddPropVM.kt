@@ -59,10 +59,9 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     }
 
     //TODO: upload room to db
-    fun saveProp(navigator:NavController,managerID:String) = viewModelScope.launch{
+    fun saveProp(managerID:String) = viewModelScope.launch{
         Log.d("TAG", "saveProp: $managerID")
         addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
-        //TODO:fix navigation here?
 
     } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
 

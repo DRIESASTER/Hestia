@@ -23,7 +23,6 @@ fun IssueOverview(modifier: Modifier = Modifier,issues:List<IssueData>,onIssueCl
             itemsIndexed(issues) { _, issue ->
                 IssueCard(
                     id = issue.id,
-                    building = issue.building,
                     title = issue.title,
                     tenant = issue.tenant,
                     room = issue.room,
@@ -57,7 +56,6 @@ fun createMockIssueDataList(): List<IssueData> {
             status = Status.notStarted,
             tenant = "test${i}",
             room = "test${i}",
-            building = "test${i}",
             issuekind = IssueType.electricity,
             date = Timestamp.now()
         )

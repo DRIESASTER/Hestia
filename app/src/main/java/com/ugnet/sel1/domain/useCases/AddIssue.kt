@@ -6,5 +6,5 @@ import com.ugnet.sel1.domain.repository.IssuesRepository
 class AddIssue constructor(
     private val repo: IssuesRepository
 ) {
-    suspend operator fun invoke(beschrijving:String, titel:String, roomId:String, issueType:IssueType) = repo.addIssueToFirestore(beschrijving, titel, roomId, issueType)
+    suspend operator fun invoke(beschrijving:String, titel:String, propertyId:String, roomId:String, issueType:IssueType) = repo.addIssueToFirestore(beschrijving, titel, propertyId, roomId, issueType)
 }

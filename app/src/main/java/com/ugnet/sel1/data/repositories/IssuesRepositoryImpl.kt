@@ -6,10 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.type.Date
-import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.domain.models.IssueType
-import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.models.Status
+import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -38,28 +35,67 @@ class IssuesRepositoryImpl @Inject constructor(
         }
     }
 
+
+
+    override fun getIssuesPerPropertyFromFirestore(
+        propertyId: String
+    ) = callbackFlow {
+        val snapshotListener =
+            dbRef.collection("properties/${propertyId}/issues")
+                .addSnapshotListener { snapshot, e ->
+                    val issuesResponse = if (snapshot != null) {
+                        val issues = snapshot.toObjects(Issue::class.java)
+                        Response.Success(issues)
+                    } else {
+                        Response.Failure(e)
+                    }
+                    trySend(issuesResponse)
+                }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
     override suspend fun addIssueToFirestore(
         beschrijving: String,
         titel: String,
+        propertyId: String,
         roomId: String,
-        issueType: IssueType
-    ) = callbackFlow {
-        val id = dbRef.collection("properties/${roomId}/issues").document().id
-        val issue = hashMapOf(
-            "titel" to titel,
-            "beschrijving" to beschrijving,
-            "roomId" to roomId,
-            "issueType" to issueType.toString(),
-            "status" to Status.notStarted.toString(),
-            "datum" to serverTimestamp()
-        )
-        val issueRef =
-            dbRef.document("properties/${roomId}/issues/${id}").set(issue).addOnSuccessListener {
-                trySend(Response.Success(id))
-            }.addOnFailureListener {
-                trySend(Response.Failure(it))
-            }
+        issueType: IssueType) : AddIssueResponse {
+        return try{
+            val id = dbRef.collection("properties/${propertyId}/issues").document().id
+            val issue = Issue(
+                beschrijving = beschrijving,
+                titel = titel,
+                roomId = roomId,
+                issueType = issueType,
+                status = Status.notStarted,
+                datum = null,
+                issueId = id
+            )
+            dbRef.collection("properties/${propertyId}/issues").document(id).set(issue).await()
+            Response.Success(id)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
     }
+//    ) = callbackFlow {
+//        val id = dbRef.collection("properties/${roomId}/issues").document().id
+//        val issue = hashMapOf(
+//            "titel" to titel,
+//            "beschrijving" to beschrijving,
+//            "roomId" to roomId,
+//            "issueType" to issueType.toString(),
+//            "status" to Status.notStarted.toString(),
+//            "datum" to serverTimestamp()
+//        )
+//        val issueRef =
+//            dbRef.document("properties/${roomId}/issues/${id}").set(issue).addOnSuccessListener {
+//                trySend(Response.Success(id))
+//            }.addOnFailureListener {
+//                trySend(Response.Failure(it))
+//            }
+//    }
 
 
         override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {

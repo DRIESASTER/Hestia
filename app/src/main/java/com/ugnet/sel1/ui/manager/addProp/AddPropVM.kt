@@ -1,10 +1,13 @@
 package com.ugnet.sel1.ui.manager.addProp
 
+import android.util.Log
+import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
@@ -31,8 +34,14 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 
     var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Loading)
         private set
+
+
+//    var deleteRoomFromPropertyResponse by mutableStateOf<DeleteRoomResponse>(Response.Success(false))
+//        private set
+
     init{
         getUser(Firebase.auth.currentUser?.uid.toString())
+//        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
     }
 
     fun getUser(id: String) = viewModelScope.launch {
@@ -45,31 +54,33 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
         isHouse = !isHouse
     }
 
-    fun removeRoom(naam:String): (String) -> Unit {
-        rooms.filter{ it.roomName != naam }
-        return {}
+    fun removeRoom(naam:String)= viewModelScope.launch{
+        rooms = rooms.filter{ it.roomName != naam }.toMutableList()
     }
 
     //TODO: upload room to db
-    fun saveProp(managerID:String) = viewModelScope.launch{
+    fun saveProp(navigator:NavController,managerID:String) = viewModelScope.launch{
+        Log.d("TAG", "saveProp: $managerID")
         addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
-        when(val addPropResponse = addPropertyResponse){
-            is Response.Success -> {
-                for(room in rooms){
-                    useCases.addRoomToProperty(addPropResponse.data,room.roomName, room.tenantName)
-                }
-            }
-            else -> {}
-        } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
-    }
+        //TODO:fix navigation here?
+
+    } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
 
     fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
-        useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat).collect { response ->
-            addPropertyResponse = response
-        }
+        addPropertyResponse = Response.Loading
+        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
+        Log.d("ADDPROP", addPropertyResponse.toString())
     }
+//    fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
+//        addPropertyResponse = Response.Loading
+//        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
+//    }
 
-    fun addRoom(roomname:String, tenantname:String){
+    //not necessary anymore because of extra screen
+    fun addRoom(roomname:String, tenantname:String)= viewModelScope.launch{
         rooms.add(RoomData(roomname,tenantname))
     }
+
+
+
 }

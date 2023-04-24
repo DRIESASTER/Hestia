@@ -22,10 +22,12 @@ interface IssuesRepository {
     suspend fun addIssueToFirestore(
         beschrijving: String,
         titel: String,
+        propertyId: String,
         roomId: String,
         issueType: IssueType
-    ): Flow<AddIssueResponse>
+    ): AddIssueResponse
 //
+    fun getIssuesPerPropertyFromFirestore(propertyId: String) : Flow<IssuesResponse>
     suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
 //
 //    suspend fun changeIssueStatus(issueId: String, status: Status): ChangeIssueStatusResponse

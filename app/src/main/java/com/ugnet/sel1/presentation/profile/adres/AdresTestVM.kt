@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.*
@@ -47,14 +48,27 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       var deletePropertyResponse by mutableStateOf<DeletePropertyResponse>(Response.Success(false))
             private set
 
+      var userByEmailResponse by mutableStateOf<UsersResponse>(Response.Loading)
+            private set
+
+      var addIssueResponse by mutableStateOf<AddIssueResponse>(Response.Loading)
+            private set
+
 
 
       init {
 //            getUser("4YNpPq1e3Gg2FTrnqPoW")
 //            getOwnedProperties("4YNpPq1e3Gg2FTrnqPoW")
-            changeIssueStatus("kUXh7T1OH6CDyuYOuEEJ", Status.inProgress, "QTx6rzIOf8Y5G1KQQPUB")
+//            changeIssueStatus("kUXh7T1OH6CDyuYOuEEJ", Status.inProgress, "QTx6rzIOf8Y5G1KQQPUB")
+            getIssuesForRoom("QTx6rzIOf8Y5G1KQQPUB","2gLemNlYgYghm7InAZW3")
       }
 
+
+      fun getUserByEmail(email: String) = viewModelScope.launch {
+            useCases.getUserByEmail(email).collect { response ->
+                  userByEmailResponse = response
+            }
+      }
 
 
 
@@ -99,10 +113,15 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             deleteRoomFromPropertyResponse = useCases.deleteRoomFromProperty(propertyId, roomId)
       }
 
-      fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
-            useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat).collect { response ->
-                  addPropertyResponse = response
-            }
+//      fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
+//            useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat).collect { response ->
+//                  addPropertyResponse = response
+//            }
+//      }
+
+      fun addIssue(beschrijving:String, titel:String, propertyId: String, roomId:String, issueType: IssueType) = viewModelScope.launch {
+            addIssueResponse = Response.Loading
+            addIssueResponse = useCases.addIssue(beschrijving, titel, propertyId, roomId, issueType)
       }
 
       fun deleteProperty(propertyId: String) = viewModelScope.launch {

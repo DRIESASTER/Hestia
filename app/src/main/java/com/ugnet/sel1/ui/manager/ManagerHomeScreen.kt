@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.*
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
@@ -68,7 +69,9 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             DrawerBody(items=drawerItems,onItemClick={})
         }, content={ padding ->
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,modifier = Modifier.fillMaxWidth().padding(padding)){
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,modifier = Modifier
+            .fillMaxWidth()
+            .padding(padding)){
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 SwitchButton2(
                     option1 = "Issues",
@@ -77,22 +80,32 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                     onStateChanged = {
                         Data.currentState = it
                         Log.d("ManagerHomeScreen", "onStateChanged: $it")
+                        Data.getIssuesForManager()
                     },
                 )
             }
 
-            Column(horizontalAlignment = Alignment.Start,modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.Start)) {
+            Column(horizontalAlignment = Alignment.Start,modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.Start)) {
                 if (!Data.currentState) {
                     /*show issues overview*/
-                    IssueOverview(modifier = Modifier.padding(padding),
-                        issues = when (val allissues = Data.issuesForManagerResponse) {
-                            is Response.Success -> allissues.data
-                            else -> listOf()
-                        },
-                        onIssueClicked = {/*route to DetailsScreen*/ },
-                        onStatusClicked = { status, issue, building ->
-                            Data.changeIssueStatus(issue, status, building)
-                        })
+                    when (val allissues = Data.issuesForManagerResponse) {
+                        is Response.Success -> {
+                            if (allissues.data.isEmpty()) {
+                                Text(text = "No issues found")
+                            } else {
+                                IssueOverview(
+                                    issues = allissues.data,
+                                    onIssueClicked = {/*route to details*/ },
+                                    onStatusClicked = { status,issueid,propertyid -> Data.changeIssueStatus(propertyid,status,propertyid) })
+                            }
+                        }
+                        else -> {
+                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
+                        }
+                    }
+
                 } else {
                     /*show properties overview*/
                     when (val allproperties = Data.ownedPropertiesResponseFormatted) {
@@ -106,7 +119,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                             }
                         }
                         else -> {
-                            Text(text = "Loading properties...")
+                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
                         }
                     }
                 }

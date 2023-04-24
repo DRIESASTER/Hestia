@@ -1,4 +1,4 @@
-package com.ugnet.sel1.di
+package com.ugnet.sel1.navigation.di
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -62,6 +62,8 @@ object AppModule {
         deleteProperty = DeleteProperty(propertyRepo),
         getRentedRoomsByUser = GetRentedRoomsByUser(roomsRepo),
         addIssue = AddIssue(issuesRepo),
-        deleteIssue = DeleteIssue(issuesRepo)
+        deleteIssue = DeleteIssue(issuesRepo),
+        getUserByEmail = GetUserByEmail(usersRepo),
+        getIssuesPerProperty = GetIssuesPerProperty(issuesRepo)
     )
 }

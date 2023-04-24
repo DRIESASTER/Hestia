@@ -22,7 +22,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp: (String, String) -> Unit) {
+fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp: (String, String) -> Unit, setPropId: (String) -> Unit) {
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", openAndPopup = openAndPopUp)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -40,7 +40,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                trySave(viewmodel = viewmodel, openAndPopUp = openAndPopUp)
+                trySave(viewmodel = viewmodel, openAndPopUp = openAndPopUp, setPropId = setPropId)
             }
 
         })
@@ -48,7 +48,7 @@ fun AddPropMainScreen(viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier
 
 //TODO: fix input validation
 @Composable
-fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
+fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
             if(!viewmodel.saveClicked){
@@ -64,6 +64,7 @@ fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
                 when (val propertyresponse = viewmodel.addPropertyResponse) {
                     is Response.Success -> {
                         //add propid to appstate//
+                        setPropId(propertyresponse.data)
 
                         openAndPopUp(MyDestinations.ROOM_EDIT_ROUTE, MyDestinations.ADD_PROPERTY)
                     }
@@ -72,7 +73,6 @@ fun trySave(viewmodel: AddPropVM,openAndPopUp: (String, String) -> Unit) {
                     }
                 }
             }
-            //TODO: navigate to roomeditscreen and pass the propid
 
 
         }

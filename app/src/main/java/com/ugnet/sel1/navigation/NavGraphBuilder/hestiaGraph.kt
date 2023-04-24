@@ -66,7 +66,9 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.ADD_PROPERTY) {
-        AddPropMainScreen(modifier = Modifier, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp)})
+        AddPropMainScreen(openAndPopUp = { route, popUp ->
+            appState.navigateAndPopUp(route, popUp)}
+        ) { propId: String -> appState.setPropid(propId) }
 
 
     }

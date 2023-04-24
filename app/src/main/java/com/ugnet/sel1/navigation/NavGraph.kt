@@ -64,7 +64,7 @@ fun NavGraph(
         }*/
 
         composable(MyDestinations.HIREE_HOME_ROUTE) {
-            ResidentHomeScreen { propid: String -> appState.setPropid(propid) }
+            //ResidentHomeScreen { propid: String -> appState.setPropid(propid) }
         }
 
 

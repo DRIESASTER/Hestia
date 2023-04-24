@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel() {
-
+    var saveClicked : Boolean by mutableStateOf(false)
     var tenant : String by mutableStateOf("")
     var city : String by mutableStateOf("")
     var street : String by mutableStateOf("")

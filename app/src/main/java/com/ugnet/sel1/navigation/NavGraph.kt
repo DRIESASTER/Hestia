@@ -71,9 +71,6 @@ fun NavGraph(
             ResidentHomeScreen()
         }
 
-        composable(MyDestinations.ADD_PROPERTY){
-            AddPropMainScreen(modifier = androidx.compose.ui.Modifier)
-        }
 
 
 

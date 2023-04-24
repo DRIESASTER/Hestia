@@ -129,6 +129,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             }
     },
         floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {openAndPopUp(MyDestinations.ADD_PROPERTY, MyDestinations.MANAGER_HOME_ROUTE)})}}
+
     )
 
 }

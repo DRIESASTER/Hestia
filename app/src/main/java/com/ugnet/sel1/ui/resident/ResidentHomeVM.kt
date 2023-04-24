@@ -29,6 +29,8 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
     var rentedRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
+    var issuesForRenterResponse by mutableStateOf<IssuesResponse>(Response.Loading)
+
     init{
         getUser(Firebase.auth.currentUser?.uid.toString())
 //        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
@@ -45,4 +47,17 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
             rentedRoomsResponse = response
         }
     }
+
+//    fun getIssuesForRenterByPand(propertyId:String, userId: String) = viewModelScope.launch {
+//        useCases.getIssuesForRenter(userId).collect { response ->
+//            issuesForRenterResponse = response
+//        }
+//    }
+
+
+
+
+
+
+
 }

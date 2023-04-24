@@ -10,4 +10,5 @@ data class User(
     var accountType : String? = null,
     var voornaam : String? = null,
     var achternaam : String? = null,
+    var roomPermissions : List<String> = listOf()
 )

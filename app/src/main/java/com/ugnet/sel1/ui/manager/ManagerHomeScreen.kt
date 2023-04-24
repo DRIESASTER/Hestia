@@ -18,10 +18,10 @@ import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-
 fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false, navController: NavController){
 
     //data
@@ -107,20 +107,21 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
 
                 } else {
                     /*show properties overview*/
-                    when (val allproperties = Data.ownedPropertiesResponseFormatted) {
-                        is Response.Success -> {
-                            if (allproperties.data.isEmpty()) {
-                                Text(text = "No properties found")
-                            } else {
-                                PropertyOverview(
-                                    properties = allproperties.data,
-                                    onPropertyClicked = {/*route to details*/ })
-                            }
-                        }
-                        else -> {
-                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-                        }
-                    }
+                    formatPropertyData(viewModel = Data)
+//                    when (val allproperties = Data.ownedPropertiesResponseFormatted) {
+//                        is Response.Success -> {
+//                            if (allproperties.data.isEmpty()) {
+//                                Text(text = "No properties found")
+//                            } else {
+//                                PropertyOverview(
+//                                    properties = allproperties.data,
+//                                    onPropertyClicked = {/*route to details*/ })
+//                            }
+//                        }
+//                        else -> {
+//                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
+//                        }
+//                    }
                 }
             }
             }
@@ -128,6 +129,34 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {navController.navigate(MyDestinations.ADD_PROPERTY)})}}
     )
 
+}
+
+
+@Composable
+private fun formatPropertyData(viewModel:ManagerHomeVM) {
+//    ownedPropertiesResponseFormatted = Response.Loading
+    var properties = mutableListOf<PropertyData>()
+    when (val propertiesResponse = viewModel.ownedPropertiesResponse) {
+        is Response.Success -> {
+            for (property in propertiesResponse.data) {
+                viewModel.formatProperty(property)
+                when (val formatPropertyResponse = viewModel.formatPropertyResponse) {
+                    is Response.Success -> {
+                        properties.add(formatPropertyResponse.data)
+                    }
+                    else -> {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
+            PropertyOverview(
+                properties = properties,
+                onPropertyClicked = {/*route to details*/ })
+        }
+        else -> {
+            CircularProgressIndicator()
+        }
+    }
 }
 
 

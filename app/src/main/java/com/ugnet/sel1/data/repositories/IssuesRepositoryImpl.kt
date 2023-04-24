@@ -9,6 +9,7 @@ import com.google.type.Date
 import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.*
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
@@ -78,6 +79,13 @@ class IssuesRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Response.Failure(e)
         }
+    }
+
+    override fun getIssuesForRenterFromFirestore(
+        propertyId: String,
+        userId: String
+    ): Flow<IssuesResponse> {
+        TODO("Not yet implemented")
     }
 //    ) = callbackFlow {
 //        val id = dbRef.collection("properties/${roomId}/issues").document().id

@@ -1,11 +1,13 @@
 package com.ugnet.sel1.ui.manager
 
 import android.util.Log
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Tasks.await
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.*
@@ -13,7 +15,9 @@ import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import javax.inject.Inject
+import androidx.compose.material.CircularProgressIndicator
 
 
 //add issues later
@@ -43,6 +47,12 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
     var IssueStatusResponse by mutableStateOf<ChangeIssueStatusResponse>(Response.Loading)
         private set
 
+    var formattedPropertiesResponse by mutableStateOf<Response<MutableList<PropertyData>>>(Response.Loading)
+        private set
+
+    var formatPropertyResponse by mutableStateOf<Response<PropertyData>>(Response.Loading)
+        private set
+
 
     init{
         getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
@@ -57,40 +67,99 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
             when(response){
                 is Response.Success -> {
                     Log.d("ManagerHomeVM", "getOwnedProperties: ${response.data}")
-                    ownedPropertiesResponseFormatted = formatPropertyData(response.data)
                 }
                 else -> {}
             }
         }
     }
 
-    private fun formatPropertyData(data: List<Property>): Response<MutableList<PropertyData>> {
+    fun formatProperty(property:Property){
+        getRoomsForProperty(property.propertyId!!)
+        getAllIssuesForProperty(property.propertyId!!)
+        when{
+            roomsForPropertyResponse is Response.Success && issuesForBuildingResponse is Response.Success -> {
+                val formattedProperty = PropertyData(
+                    propertyId = property.propertyId!!,
+                    name = property.straat + " " + property.huisnummer,
+                    address = property.straat + " " + property.huisnummer + ", " + property.postcode + " " + property.stad,
+                    tenants = (roomsForPropertyResponse as Response.Success<Rooms>).data.size,
+                    issues = (issuesForBuildingResponse as Response.Success<Issues>).data.size
+                )
+                formatPropertyResponse = Response.Success(formattedProperty)
+            }
+            else -> {
+                //todo
+            }
+        }
+    }
+
+    private suspend fun formatPropertyData() {
         var properties = mutableListOf<PropertyData>()
-        for(property in data){
-            getRoomsForProperty(property.propertyId!!)
-            getAllIssuesForProperty(property.propertyId!!)
-            // is too quick, need to wait for response
-                Log.d("ManagerHomeVM", "formatPropertyData issues: ${issuesForBuildingResponse}")
-                Log.d("ManagerHomeVM", "formatPropertyData prop: ${roomsForPropertyResponse}")
-            properties.add(PropertyData(propertyId = property.propertyId!!, name = property.straat + " " + property.huisnummer
-                , address = property.straat + " " + property.huisnummer + ", " + property.postcode + " " + property.stad,
-                tenants = (when(val roomsResponse = roomsForPropertyResponse){
-                    is Response.Success -> {
-                        roomsResponse.data
+        ownedPropertiesResponseFormatted = Response.Loading
+        when (val propertiesResponse = ownedPropertiesResponse) {
+            is Response.Success -> {
+                for (property in propertiesResponse.data) {
+                    Log.d("TEST", property.toString())
+                    getRoomsForProperty(property.propertyId!!)
+                    getAllIssuesForProperty(property.propertyId!!)
+                    when {
+                        roomsForPropertyResponse is Response.Success && issuesForBuildingResponse is Response.Success -> {
+                            Log.d("GOED", "hoppa")
+                            properties.add(
+                                PropertyData(
+                                    propertyId = property.propertyId!!,
+                                    name = property.straat + " " + property.huisnummer,
+                                    address = property.straat + " " + property.huisnummer + ", " + property.postcode + " " + property.stad,
+                                    tenants = (roomsForPropertyResponse as Response.Success<Rooms>).data.size,
+                                    issues = (issuesForBuildingResponse as Response.Success<Issues>).data.size
+                                )
+                            )
+                            Log.d("HEYYY", properties.toString())
+                        }
+                        roomsForPropertyResponse is Response.Loading || issuesForBuildingResponse is Response.Loading ->{
+                            //wacht
+                        }
+                        else -> {
+                            Log.d("FAILED", "failed to format propertydata")
+                        }
                     }
-                    else -> {
-                        mutableListOf()
-                    }
-                }).size,issues = (when(val issuesResponse = issuesForBuildingResponse){
-                    is Response.Success -> {
-                        issuesResponse.data
-                    }
-                    else -> {
-                        mutableListOf()
-                    }
-                }).size))
+//                    properties.add(PropertyData(propertyId = property.propertyId!!, name = property.straat + " " + property.huisnummer, address = property.straat + " " + property.huisnummer + ", " + property.postcode + " " + property.stad, tenants
                 }
-        return Response.Success(properties)
+                ownedPropertiesResponseFormatted = Response.Success(properties)
+            }
+            else -> {//todo}
+            }
+        }
+
+
+
+//        var properties = mutableListOf<PropertyData>()
+//        for(property in data){
+//            getRoomsForProperty(property.propertyId!!)
+//            getAllIssuesForProperty(property.propertyId!!)
+//            // is too quick, need to wait for response
+//                Log.d("ManagerHomeVM", "formatPropertyData issues: ${issuesForBuildingResponse}")
+//                Log.d("ManagerHomeVM", "formatPropertyData prop: ${roomsForPropertyResponse}")
+//            properties.add(PropertyData(propertyId = property.propertyId!!, name = property.straat + " " + property.huisnummer
+//                , address = property.straat + " " + property.huisnummer + ", " + property.postcode + " " + property.stad,
+//                tenants = (when(val roomsResponse = roomsForPropertyResponse){
+//                    is Response.Success -> {
+//                        roomsResponse.data
+//                    }
+//                    else -> {
+//                        mutableListOf()
+//                    }
+//                }).size,issues = (when(val issuesResponse = issuesForBuildingResponse){
+//                    is Response.Success -> {
+//                        Log.d("HEYYYY", issuesResponse.data.size.toString())
+//                        issuesResponse.data
+//                    }
+//                    else -> {
+//                        mutableListOf()
+//                    }
+//                }).size))
+//                }
+//        return Response.Success(properties)
     }
 
     fun changeIssueStatus(issueId: String, status: Status, propertyId: String) = viewModelScope.launch {
@@ -150,7 +219,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
     }
 
 
-    //Function comes FIXME
+//    Function comes FIXME
     fun getAllIssuesForProperty(propertyId: String) = viewModelScope.launch {
         useCases.getIssuesPerProperty(propertyId).collect { response ->
             issuesForBuildingResponse = response
@@ -172,5 +241,4 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         }
         return user
     }
-
 }

@@ -91,11 +91,11 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             }
       }
 
-      fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
-            useCases.getRoomsForProperty(propertyId).collect { response ->
-                  roomsForPropertyResponse = response
-            }
-      }
+//      fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
+//            useCases.getRoomsForProperty(propertyId).collect { response ->
+//                  roomsForPropertyResponse = response
+//            }
+//      }
 
 
       fun changeIssueStatus(issueId: String, status: Status, propertyId: String) = viewModelScope.launch {

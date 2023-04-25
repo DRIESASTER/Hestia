@@ -25,14 +25,14 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
         private set
 
     init {
-        getRoomsForProperty(propid)
+//        getRoomsForProperty(propid)
     }
 
-    fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
-        useCases.getRoomsForProperty(propertyId).collect { response ->
-            roomsResponse = response
-        }
-    }
+//    fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
+//        useCases.getRoomsForProperty(propertyId).collect { response ->
+//            roomsResponse = response
+//        }
+//    }
 
     fun processRooms() : MutableList<RoomData> {
         return mutableListOf()

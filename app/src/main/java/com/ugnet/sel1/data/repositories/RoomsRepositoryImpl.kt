@@ -14,10 +14,10 @@ class RoomsRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): RoomsRepository {
     override fun getRoomsForPropertyFromFirestore(propertyId: String) = callbackFlow {
-        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").addSnapshotListener{ snapshot, e ->
+        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").addSnapshotListener { snapshot, e ->
             val roomsResponse = if (snapshot != null) {
-                val room = snapshot.toObjects(Room::class.java)
-                Response.Success(room)
+                val rooms = snapshot.toObjects(Room::class.java)
+                Response.Success(rooms)
             } else {
                 Response.Failure(e)
             }

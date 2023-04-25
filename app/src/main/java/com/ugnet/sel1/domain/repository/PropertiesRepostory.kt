@@ -26,6 +26,9 @@ interface PropertiesRepository {
     ): AddPropertyResponse
 
     suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
+
+
+    suspend fun addUserToProperty(userId:String, propertyId:String) : Response<Boolean>
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 

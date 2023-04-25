@@ -12,22 +12,4 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ugnet.sel1.ui.components.PropertyCard
 
-@Composable
-fun PropertyOverview(modifier: Modifier = Modifier,properties:List<PropertyData>,onPropertyClicked:(PropertyData)->Unit) {
-    Surface(modifier = modifier) {
-        LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()){
-            itemsIndexed(properties) { _, property ->
-                PropertyCard(
-                    propName = property.name,
-                    propAddress = property.address,
-                    tennants = property.tenants,
-                    issueCount = property.issues,
-                    onClick = { onPropertyClicked(property) }
-                )
-                Spacer(modifier = Modifier.height(0.dp))
-            }
-        }
-
-    }
-}
 

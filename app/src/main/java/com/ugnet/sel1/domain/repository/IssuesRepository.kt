@@ -40,4 +40,3 @@ interface IssuesRepository {
 //
 //    suspend fun deleteBookFromFirestore(bookId: String): DeleteBookResponse
     suspend fun changeIssueStatusInFirestore(propertyId: String, status: Status, issueId: String) : ChangeIssueStatusResponse
-}

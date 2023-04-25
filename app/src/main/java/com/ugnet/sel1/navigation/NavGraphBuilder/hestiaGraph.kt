@@ -1,7 +1,7 @@
 package com.ugnet.sel1.navigation.NavGraphBuilder
 
+import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ugnet.sel1.AuthViewModel
@@ -12,7 +12,6 @@ import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
 import com.ugnet.sel1.authentication.signup.SignUpScreen
 import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
-import com.ugnet.sel1.presentation.profile.ProfileScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreen
@@ -58,7 +57,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.ROOM_EDIT_ROUTE){
-        //RoomeditScreen(propid = )
+        Log.d("LOG ID", appState.propid.value!!)
+        RoomeditScreen(propid = appState.propid.value!!, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
     composable(MyDestinations.HIREE_HOME_ROUTE) {
@@ -66,7 +66,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.ADD_PROPERTY) {
-        AddPropMainScreen(modifier = Modifier, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp)})
+        AddPropMainScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, navigate =  { route -> appState.navigate(route) }
+        ) { propId: String -> appState.setPropid(propId) }
+
+
     }
 
 

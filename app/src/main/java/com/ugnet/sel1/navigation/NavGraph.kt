@@ -6,16 +6,12 @@ package com.ugnet.sel1.navigation
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
-import com.ugnet.sel1.authentication.signup.SignUpScreen
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.authentication.login.SignInViewModel
 import com.ugnet.sel1.authentication.profile.UserProfileScreen
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
-import com.ugnet.sel1.ui.manager.ManagerHomeScreen
-import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 
@@ -68,7 +64,7 @@ fun NavGraph(
         }*/
 
         composable(MyDestinations.HIREE_HOME_ROUTE) {
-            ResidentHomeScreen()
+            //ResidentHomeScreen { propid: String -> appState.setPropid(propid) }
         }
 
 

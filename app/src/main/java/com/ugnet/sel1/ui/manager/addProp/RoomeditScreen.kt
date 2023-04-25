@@ -24,12 +24,12 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreen(propid:String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndpopup:(String,String)->Unit) {
-    val navController = rememberNavController()
+fun RoomeditScreen(propid:String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
-    viewmodel.propid = propid
 
-    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndpopup)},
+    viewmodel.getRoomsForProperty(propid)
+
+    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
                 RoomOverview(rooms = viewmodel.processRooms(), onDeleteClicked = {viewmodel.deleteRoomFromProperty(it)} )

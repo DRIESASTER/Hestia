@@ -34,9 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val repo: AuthRepository,
-    private val useCases: UseCases
 ): ViewModel() {
-
 
 
     var signInResponse by mutableStateOf<SignInResponse>(Response.Success(false))

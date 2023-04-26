@@ -1,21 +1,19 @@
 package com.ugnet.sel1.ui.manager
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.domain.models.*
+import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.Status
+import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -71,6 +69,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
     fun getIssuesPerProperty(propertyId: String): Flow<IssuesResponse> = useCases.getIssuesPerProperty(propertyId)
 
+    fun getUser(userid: String): Flow<UserResponse> = useCases.getUser(userid)
 
 
     fun changeIssueStatus(issueId: String, status: Status, propertyId: String) = viewModelScope.launch {
@@ -83,36 +82,17 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         useCases.getIssuesForRoom(pandId, roomId).collect { response ->
             issuesForRoomResponse = response
         }
-    }
+    }}
 
 
-    private fun processIssues(issues: List<Issue>): MutableList<IssueData> {
-        var issuesData = mutableListOf<IssueData>()
-        for(issue in issues){
-            //var user = getUser(issue.userId!!)
-            Log.d("ManagerHomeScreen","adding issue ${issue.issueId} to list")
-            issuesData.add(IssueData(id = issue.issueId!!, room = issue.roomId!!,
-                description = issue.beschrijving!!, status = issue.status!!, date = issue.datum!!, tenant = ""/*user.voornaam + " " + user.achternaam*/, issuekind = issue.issueType!!, title = issue.titel!!))
-        }
-        return issuesData
-    }
+//    private fun processIssues(issues: List<Issue>): MutableList<IssueData> {
+//        var issuesData = mutableListOf<IssueData>()
+//        for(issue in issues){
+//            //var user = getUser(issue.userId!!)
+//            Log.d("ManagerHomeScreen","adding issue ${issue.issueId} to list")
+//            issuesData.add(IssueData(id = issue.issueId!!, room = issue.roomId!!,
+//                description = issue.beschrijving!!, status = issue.status!!, date = issue.datum!!, tenant = ""/*user.voornaam + " " + user.achternaam*/, issuekind = issue.issueType!!, title = issue.titel!!))
+//        }
+//        return issuesData
+//    }
 
-
-
-
-
-    private fun getUser(huurderId: String): User {
-        var user = User()
-        viewModelScope.launch {
-            useCases.getUser(huurderId).collect { response ->
-                when (response) {
-                    is Response.Success -> {
-                        user = response.data!!
-                    }
-                    else -> {}
-                }
-            }
-        }
-        return user
-    }
-}

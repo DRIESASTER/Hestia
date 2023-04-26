@@ -21,6 +21,7 @@ fun SplashScreen(
     ) {
     val isSignOut = viewModel.getAuthState().collectAsState().value
 
+
     if (isSignOut) {
         Log.d("LOGGED OUT", isSignOut.toString())
         navigate(MyDestinations.ROLE_SELECTION_ROUTE)
@@ -35,7 +36,7 @@ fun SplashScreen(
                     val user = (viewModel.userResponse as Response.Success).data
                     if (user?.accountType == "Manager") {
                         navigate(MyDestinations.MANAGER_HOME_ROUTE)
-                    } else if (user?.accountType == "Hiree") {
+                    } else if (user?.accountType == "Huurder") {
                         navigate(MyDestinations.HIREE_HOME_ROUTE)
                     } else {
                         navigate(MyDestinations.ROLE_SELECTION_ROUTE)

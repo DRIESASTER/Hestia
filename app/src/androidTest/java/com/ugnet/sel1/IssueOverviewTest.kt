@@ -13,6 +13,9 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -41,7 +44,8 @@ fun createMockIssueDataList(): List<IssueData> {
             tenant = "tenant${i}",
             room = "room${i}",
             building = "building${i}",
-            issuekind = IssueType.gas
+            issuekind = IssueType.gas,
+            date = com.google.firebase.Timestamp.now()
         )
         mockIssueDataList.add(issueData)
     }

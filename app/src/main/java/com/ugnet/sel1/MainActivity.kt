@@ -29,7 +29,6 @@ import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
     private val viewModel by viewModels<AuthViewModel>()
 
     @OptIn(ExperimentalMaterialApi::class)
@@ -100,7 +99,7 @@ class MainActivity : ComponentActivity() {
 */
 
 
-    @Composable
+    /*@Composable
     fun NavigateToManagerHomeScreen() {
         navController.navigate(MyDestinations.MANAGER_HOME_ROUTE) {
             popUpTo(navController.graph.id) {
@@ -133,7 +132,7 @@ class MainActivity : ComponentActivity() {
                 inclusive = true
             }
         }
-    }
+    }*/
 
 }
 

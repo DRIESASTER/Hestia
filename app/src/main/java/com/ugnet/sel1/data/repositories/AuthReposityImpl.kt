@@ -47,10 +47,7 @@ class AuthRepositoryImpl @Inject constructor(
     ): SignUpResponse {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
-            print("oproep werkt")
             val userId = result.user?.uid ?: throw Exception("User ID not found")
-            //saveUserData(userId, name, surname, username, role)
-
             usersRepository.saveUserData(userId, name, surname,email, role)
 
             Response.Success(true)

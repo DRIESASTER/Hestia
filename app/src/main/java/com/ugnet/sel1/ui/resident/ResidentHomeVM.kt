@@ -43,7 +43,7 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
     }
 
     fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
-        useCases.getRentedRoomsByUser(userId).collect { response ->
+        useCases.getAccesibleRoomsPerUser(userId).collect { response ->
             rentedRoomsResponse = response
         }
     }

@@ -8,12 +8,10 @@ import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.*
 import com.ugnet.sel1.domain.useCases.GetUser
 import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
-import com.ugnet.sel1.navigation.AppState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -60,11 +58,12 @@ object AppModule {
         deleteRoomFromProperty = DeleteRoomFromProperty(roomsRepo),
         addProperty = AddProperty(propertyRepo),
         deleteProperty = DeleteProperty(propertyRepo),
-        getRentedRoomsByUser = GetRentedRoomsByUser(roomsRepo),
+        getAccesibleRoomsPerUser = GetAccesibleRoomsPerUser(roomsRepo),
         addIssue = AddIssue(issuesRepo),
         deleteIssue = DeleteIssue(issuesRepo),
         getUserByEmail = GetUserByEmail(usersRepo),
         getIssuesPerProperty = GetIssuesPerProperty(issuesRepo),
-        getIssuesForRenter = GetIssuesForRenter(issuesRepo)
+        getIssuesForRenter = GetIssuesForRenter(issuesRepo),
+        getRentedProperties = GetRentedProperties(propertyRepo)
     )
 }

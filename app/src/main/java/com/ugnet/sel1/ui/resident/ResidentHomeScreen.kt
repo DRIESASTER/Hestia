@@ -62,16 +62,16 @@ fun ResidentHomeScreen(Data: ResidentHomeVM = hiltViewModel()) {
                 }
             )
         },
-        content = { GetCorrectDisplay(currentTitle) }
+        content = { GetCorrectDisplay(currentTitle, Data) }
     )
 }
 
 //TODO: pass actual data and implement all screens
 @Composable
-fun GetCorrectDisplay(title:String = "Profile") {
+fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM) {
     when (title) {
         "Profile" -> Text(text = "TODO: implement profile screen")
-        "Issues" -> ResidentIssueOverview(issues = emptyList())
+        "Issues" -> ResidentIssueOverview(data = vm,issues = emptyList())
         "Logout" -> Text(text = "TODO: implement Logout")
     }
 }

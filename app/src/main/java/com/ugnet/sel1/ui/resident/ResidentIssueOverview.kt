@@ -16,24 +16,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.firebase.Timestamp
-import com.ugnet.sel1.domain.models.IssueType
-import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.manager.IssueData
-import com.ugnet.sel1.ui.manager.ManagerHomeVM
-import com.ugnet.sel1.ui.manager.createMockIssueDataList
 import com.ugnet.sel1.ui.theme.MainGroen
+import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.ui.theme.AccentLicht
 
 @Composable
 fun ResidentIssueOverview(
-    Data: ResidentHomeVM = hiltViewModel(),
+    data: ResidentHomeVM,
     modifier: Modifier = Modifier,
     issues:List<IssueData>,
 ) {
     Surface(
         modifier = modifier,
-
     ) {
         Column(
             modifier = modifier
@@ -42,6 +37,14 @@ fun ResidentIssueOverview(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            when(val response = data.allRentedPropertiesResponse) {
+                is Response.Success -> {
+                    
+                }
+                else -> {
+                    CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
+                }
+            }
             if (issues.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -60,7 +63,9 @@ fun ResidentIssueOverview(
             } else {
                 LazyColumn(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth().weight(1f)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
                 ) {
                     itemsIndexed(issues) { _, issue ->
                         ResidentIssueCard(
@@ -107,7 +112,7 @@ fun addIssueButton(onAddButtonClick:() -> Unit) {
 @Preview
 @Composable
 fun ResidentIssueOverviewPreview() {
-    ResidentIssueOverview(issues = createMockIssueDataList())
+    //ResidentIssueOverview(issues = createMockIssueDataList())
 }
 
 /*

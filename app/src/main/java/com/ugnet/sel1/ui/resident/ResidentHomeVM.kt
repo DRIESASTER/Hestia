@@ -9,6 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.IssuesResponse
+import com.ugnet.sel1.domain.repository.PropertiesResponse
 import com.ugnet.sel1.domain.repository.RoomsResponse
 import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.useCases.UseCases
@@ -30,11 +31,15 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
         private set
 
     var allIssuesForRoom by mutableStateOf<IssuesResponse>(Response.Loading)
+        private set
 
     var allRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
+        private set
+
+    var allRentedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
 
     init{
-        getUser(Firebase.auth.currentUser?.uid.toString())
+        getRentedProperties()
 //        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
     }
 
@@ -44,21 +49,27 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
         }
     }
 
-    fun getRooms() = viewModelScope.launch {
-        useCases.getRentedRoomsByUser(Firebase.auth.currentUser?.uid.toString()).collect { response ->
+    fun getRentedProperties() = viewModelScope.launch {
+        useCases.getRentedProperties(Firebase.auth.currentUser?.uid.toString()).collect { response ->
+            allRentedPropertiesResponse = response
+        }
+    }
+
+    fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
+        useCases.getAccesibleRoomsPerUser(Firebase.auth.currentUser?.uid.toString(), propertyId).collect { response ->
             allRoomsResponse = response
         }
     }
 
+//    fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
+//        useCases.getAccesibleRoomsPerUser(userId).collect { response ->
+//            rentedRoomsResponse = response
+//        }
+//    }
+
     fun getIssuesForRenter(propertyId: String) = viewModelScope.launch {
         useCases.getIssuesForRenter(propertyId, Firebase.auth.currentUser?.uid.toString()).collect { response ->
             allIssuesForRoom = response
-        }
-    }
-
-    fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
-        useCases.getAccesibleRoomsPerUser(userId).collect { response ->
-            rentedRoomsResponse = response
         }
     }
 

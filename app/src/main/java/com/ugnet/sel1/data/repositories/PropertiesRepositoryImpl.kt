@@ -19,8 +19,22 @@ class PropertiesRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): PropertiesRepository {
 
-    override fun getOwnedPropertiesFromFirestore(id: String) = callbackFlow {
+    override fun getOwnedPropertiesFromFirestore(id: String): Flow<Response<MutableList<Property>>> = callbackFlow {
         val snapshotListener = dbRef.collection("properties").whereEqualTo("ownedBy", id)
+            .addSnapshotListener { snapshot, e ->
+                val propertyResponse = if (snapshot != null) {
+                    val panden = snapshot.toObjects(Property::class.java)
+                    Response.Success(panden)
+                } else {
+                    Response.Failure(e)
+                }
+                trySend(propertyResponse)
+            }
+        awaitClose { snapshotListener.remove() }
+    }
+
+    override fun getRentedPropertiesFromFirestore(id: String): Flow<Response<MutableList<Property>>> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", id)
             .addSnapshotListener { snapshot, e ->
                 val propertyResponse = if (snapshot != null) {
                     val panden = snapshot.toObjects(Property::class.java)
@@ -99,6 +113,10 @@ class PropertiesRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Response.Failure(e)
         }
+    }
+
+    override suspend fun addUserToProperty(userId: String, propertyId: String): Response<Boolean> {
+        TODO("Not yet implemented")
     }
 
 }

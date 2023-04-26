@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import androidx.compose.runtime.collectAsState
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.*
@@ -14,10 +15,27 @@ class RoomsRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): RoomsRepository {
     override fun getRoomsForPropertyFromFirestore(propertyId: String) = callbackFlow {
-        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").addSnapshotListener{ snapshot, e ->
+        val snapshotListener =
+            dbRef.collection("properties/${propertyId}/rooms").addSnapshotListener { snapshot, e ->
+                val roomsResponse = if (snapshot != null) {
+                    val rooms = snapshot.toObjects(Room::class.java)
+                    Response.Success(rooms)
+                } else {
+                    Response.Failure(e)
+                }
+                trySend(roomsResponse)
+            }
+        awaitClose { snapshotListener.remove() }
+    }
+
+    override fun getAccesibleRoomsByUserInFirestore(
+        user: String,
+        propertyId: String
+    ): Flow<RoomsResponse>  = callbackFlow {
+        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", user)).addSnapshotListener{snapshot, e ->
             val roomsResponse = if (snapshot != null) {
-                val room = snapshot.toObjects(Room::class.java)
-                Response.Success(room)
+                val rooms = snapshot.toObjects(Room::class.java)
+                Response.Success(rooms)
             } else {
                 Response.Failure(e)
             }
@@ -26,13 +44,55 @@ class RoomsRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
-    override fun getRentedRoomsByUserInFirestore(user: String): Flow<RoomsResponse> {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurderId:String?): AddRoomResponse {
-        return try{
-            dbRef.collection("properties/${pandId}").document().update("huurders", FieldValue.arrayUnion((huurderId)))
+
+//    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> =
+//        callbackFlow {
+////        val properties = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener{snapshot, e ->
+////        val propertiesResponse = if (snapshot != null) {
+////            val properties = snapshot.toObjects(Property::class.java)
+////            properties.forEach() { property ->
+////                dbRef.collection("properties/${property.propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", userId)).addSnapshotListener{snapshot, e ->
+////                    val roomsResponse = if (snapshot != null) {
+////                        val rooms = snapshot.toObjects(Room::class.java)
+////                        Response.Success(rooms)
+////                    } else {
+////                        Response.Failure(e)
+////                    }
+////                    trySend(roomsResponse)
+////                }
+////            }
+////        } else {
+////            Response.Failure(e)
+////        }
+////    }
+////        awaitClose { properties.remove() }
+////    }
+//
+////        val query = db.collection("cities")
+////        val countQuery = query.count()
+////        countQuery.get(AggregateSource.SERVER).addOnCompleteListener { task ->
+////            if (task.isSuccessful) {
+////                // Count fetched successfully
+////                val snapshot = task.result
+////                Log.d(TAG, "Count: ${snapshot.count}")
+////            } else {
+////                Log.d(TAG, "Count failed: ", task.getException())
+////            }
+////        }
+//        }
+//
+//    //3 cases : all the rooms where huurderId = userId, "ALL" or ArrayContains
+
+
+    override suspend fun addRoomToPropertyInFirestore(
+        pandId: String,
+        naam: String,
+        huurderId: String?
+    ): AddRoomResponse {
+        return try {
+            dbRef.collection("properties/${pandId}").document()
+                .update("huurders", FieldValue.arrayUnion((huurderId)))
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(
                 naam = naam,
@@ -47,10 +107,14 @@ class RoomsRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse {
+    override suspend fun deleteRoomFromPropertyInFirestore(
+        pandId: String,
+        roomId: String
+    ): DeleteRoomResponse {
         return try {
             dbRef.document("properties/${pandId}/rooms/${roomId}").delete().await()
-            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get().await().documents.forEach {issue ->
+            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get()
+                .await().documents.forEach { issue ->
                 issue.reference.delete().await()
             }
             Response.Success(true)

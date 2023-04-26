@@ -11,5 +11,6 @@ data class Property(
     var postcode: Int? = null,
     var ownedBy: String? = null,
     var propertyId: String? = null,
-    var type: String? = null
+    var type: String? = null,
+    var huurders: List<String> = listOf()
 )

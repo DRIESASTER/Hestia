@@ -1,27 +1,22 @@
 package com.ugnet.sel1.data.repositories
 
 import android.util.Log
-import com.google.firebase.firestore.FieldValue.serverTimestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.type.Date
 import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 
 class IssuesRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): IssuesRepository {
-    override fun getIssuesByRoomFromFirestore(propertyId: String, roomId: String) = callbackFlow {
+    override fun getIssuesByRoomFromFirestore(pandId: String, roomId: String) = callbackFlow {
         val snapshotListener =
-            dbRef.collection("properties/${propertyId}/issues").whereEqualTo("roomId", roomId)
+            dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId)
                 .addSnapshotListener { snapshot, e ->
                     val issuesResponse = if (snapshot != null) {
                         val issues = snapshot.toObjects(Issue::class.java)
@@ -38,9 +33,11 @@ class IssuesRepositoryImpl @Inject constructor(
 
 
 
+
+
     override fun getIssuesPerPropertyFromFirestore(
         propertyId: String
-    ) = callbackFlow {
+    ): Flow<IssuesResponse> = callbackFlow {
         val snapshotListener =
             dbRef.collection("properties/${propertyId}/issues")
                 .addSnapshotListener { snapshot, e ->
@@ -117,9 +114,9 @@ class IssuesRepositoryImpl @Inject constructor(
 
 
         override suspend fun changeIssueStatusInFirestore(
-            issueId: String,
+            propertyId: String,
             status: Status,
-            propertyId: String
+            issueId: String
         ): ChangeIssueStatusResponse {
             return try {
                 dbRef.collection("properties/${propertyId}/issues").document(issueId)

@@ -17,7 +17,7 @@ typealias DeleteIssueResponse = Response<Boolean>
 
 interface IssuesRepository {
 
-    fun getIssuesByRoomFromFirestore(pandId:String, roomId:String): Flow<IssuesResponse>
+    fun getIssuesByRoomFromFirestore(pandId: String, roomId: String): Flow<IssuesResponse>
 
     suspend fun addIssueToFirestore(
         beschrijving: String,
@@ -26,9 +26,10 @@ interface IssuesRepository {
         roomId: String,
         issueType: IssueType
     ): AddIssueResponse
-//
-    fun getIssuesForRenterFromFirestore(propertyId:String, userId:String) : Flow<IssuesResponse>
-    fun getIssuesPerPropertyFromFirestore(propertyId: String) : Flow<IssuesResponse>
+
+    //
+    fun getIssuesForRenterFromFirestore(propertyId: String, userId: String): Flow<IssuesResponse>
+    fun getIssuesPerPropertyFromFirestore(propertyId: String): Flow<IssuesResponse>
     suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
 //
 //    suspend fun changeIssueStatus(issueId: String, status: Status): ChangeIssueStatusResponse
@@ -36,8 +37,12 @@ interface IssuesRepository {
 //
 //    fun getAdresesFromFirestore(): Flow<AdresesResponse>
 
-//    suspend fun addBookToFirestore(title: String, author: String): AddBookResponse
+    //    suspend fun addBookToFirestore(title: String, author: String): AddBookResponse
 //
 //    suspend fun deleteBookFromFirestore(bookId: String): DeleteBookResponse
-    suspend fun changeIssueStatusInFirestore(propertyId: String, status: Status, issueId: String) : ChangeIssueStatusResponse
+    suspend fun changeIssueStatusInFirestore(
+        propertyId: String,
+        status: Status,
+        issueId: String
+    ): ChangeIssueStatusResponse
 }

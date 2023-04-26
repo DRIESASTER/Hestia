@@ -1,6 +1,7 @@
 package com.ugnet.sel1.domain.repository
 
 
+import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Room
 import com.ugnet.sel1.domain.models.Response
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +24,7 @@ interface RoomsRepository {
 
     fun getRoomsForPropertyFromFirestore(pandId: String): Flow<RoomsResponse>
 
-    fun getRentedRoomsByUserInFirestore(user: String): Flow<RoomsResponse>
+    fun getAccesibleRoomsByUserInFirestore(user: String, propertyId:String): Flow<RoomsResponse>
 
     suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurder:String?): AddRoomResponse
 

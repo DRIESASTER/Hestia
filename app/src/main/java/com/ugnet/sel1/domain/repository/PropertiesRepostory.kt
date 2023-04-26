@@ -16,6 +16,8 @@ interface PropertiesRepository {
 
     //    fun getPandFromFirestore(id: String): Flow<PandResponse>
     fun getOwnedPropertiesFromFirestore(userId: String): Flow<PropertiesResponse>
+
+    fun getRentedPropertiesFromFirestore(userId: String): Flow<PropertiesResponse>
     suspend fun addPropertyToFirestore(
         huisnummer: Int,
         type: String,
@@ -26,6 +28,9 @@ interface PropertiesRepository {
     ): AddPropertyResponse
 
     suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
+
+
+    suspend fun addUserToProperty(userId:String, propertyId:String) : Response<Boolean>
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 

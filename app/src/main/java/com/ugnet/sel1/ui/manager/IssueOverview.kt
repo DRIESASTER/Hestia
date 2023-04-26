@@ -69,8 +69,8 @@ fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIs
                                                 description = issue.beschrijving!!,
                                                 status = issue.status!!,
                                                 onClick = { onIssueClicked(issue) },
-                                                onStatusClicked = onStatusClicked
-                                            )
+                                                onStatusClicked = onStatusClicked,
+                                                propertyid = property.propertyId!!)
                                         }
                                         else -> {
                                             CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)

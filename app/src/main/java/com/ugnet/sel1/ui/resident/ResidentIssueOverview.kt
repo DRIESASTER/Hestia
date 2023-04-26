@@ -16,15 +16,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.Timestamp
 import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.manager.IssueData
+import com.ugnet.sel1.ui.manager.ManagerHomeVM
 import com.ugnet.sel1.ui.manager.createMockIssueDataList
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun ResidentIssueOverview(
+    Data: ResidentHomeVM = hiltViewModel(),
     modifier: Modifier = Modifier,
     issues:List<IssueData>,
 ) {

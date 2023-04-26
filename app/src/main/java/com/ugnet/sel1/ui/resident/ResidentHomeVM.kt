@@ -29,7 +29,9 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
     var rentedRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
-    var issuesForRenterResponse by mutableStateOf<IssuesResponse>(Response.Loading)
+    var allIssuesForRoom by mutableStateOf<IssuesResponse>(Response.Loading)
+
+    var allRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
 
     init{
         getUser(Firebase.auth.currentUser?.uid.toString())
@@ -39,6 +41,18 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
     fun getUser(id: String) = viewModelScope.launch {
         useCases.getUser(id).collect { response ->
             userResponse = response
+        }
+    }
+
+    fun getRooms() = viewModelScope.launch {
+        useCases.getRentedRoomsByUser(Firebase.auth.currentUser?.uid.toString()).collect { response ->
+            allRoomsResponse = response
+        }
+    }
+
+    fun getIssuesForRenter(propertyId: String) = viewModelScope.launch {
+        useCases.getIssuesForRenter(propertyId, Firebase.auth.currentUser?.uid.toString()).collect { response ->
+            allIssuesForRoom = response
         }
     }
 

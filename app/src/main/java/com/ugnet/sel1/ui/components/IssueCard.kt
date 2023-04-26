@@ -32,6 +32,7 @@ fun IssueCard(id:String,
               title: String,
               tenant:String,
               room:String,
+              propertyid:String,
               description:String,
               status:Status, modifier: Modifier = Modifier, onClick: () -> Unit, onStatusClicked: (Status,String,String) -> Unit) {
     val currentStatus = remember { mutableStateOf(status)}
@@ -52,7 +53,7 @@ fun IssueCard(id:String,
                 .wrapContentWidth()
                 .height(90.dp)) {
                 Column(modifier = Modifier
-                    .width(150.dp)
+                    .width(170.dp)
                     .padding(5.dp)
                     ) {
                     //left side
@@ -76,7 +77,7 @@ fun IssueCard(id:String,
                     //lowest container
                     Row(modifier= Modifier
                         .padding(0.dp, 8.dp, 0.dp, 8.dp)
-                        .width(150.dp),horizontalArrangement = Arrangement.Start) {
+                        .width(170.dp),horizontalArrangement = Arrangement.Start) {
                         //room
                         Row(
                             verticalAlignment = Alignment.CenterVertically, modifier = Modifier
@@ -135,7 +136,7 @@ fun IssueCard(id:String,
                             "Finished" ->  Status.finished
                             else -> Status.notStarted
                         }
-                            onStatusClicked(currentStatus.value,id,room)}
+                            onStatusClicked(currentStatus.value,id,propertyid)}
                     )
                 }
             }
@@ -162,5 +163,5 @@ fun IssueCardPreview() {
         room = "room 001",
         description = "gas",
         status = Status.notStarted,
-        onClick = {}) { int1, int2, int3 -> println(int1.toString() + int2 + int3) }
+        onClick = {}, propertyid = "1") { int1, int2, int3 -> println(int1.toString() + int2 + int3) }
 }

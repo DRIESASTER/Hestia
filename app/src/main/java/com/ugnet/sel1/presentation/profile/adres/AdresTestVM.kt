@@ -130,8 +130,8 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
       }
 
 
-     fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
-            useCases.getAccesibleRoomsPerUser(userId).collect { response ->
+     fun getRentedRoomsByUser(userId: String,propertyId: String) = viewModelScope.launch {
+            useCases.getAccesibleRoomsPerUser(userId,propertyId).collect { response ->
                   rentedRoomsResponse = response
             }
       }

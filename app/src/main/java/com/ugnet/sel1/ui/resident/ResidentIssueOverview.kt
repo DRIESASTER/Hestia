@@ -39,7 +39,25 @@ fun ResidentIssueOverview(
         ) {
             when(val response = data.allRentedPropertiesResponse) {
                 is Response.Success -> {
-                    
+                    //TODO: for each property -> load rented rooms -> for each room load all issues
+                    if (response.data.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(1.0f)
+                                //.fillMaxSize(1.0f) // it will fill parent box
+                                .padding(8.dp)
+                        ) {
+                            Text(
+                                text = "You are currently not renting any properties",
+                                color = Color.Gray.copy(alpha = 0.5f),
+                                fontSize = 24.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                    } else {
+                        IssueList()
+                    }
                 }
                 else -> {
                     CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
@@ -83,6 +101,12 @@ fun ResidentIssueOverview(
     }
 }
 
+//TODO: place the actual issue list in this function for readability
+@Composable
+fun IssueList() {
+
+}
+
 @Composable
 fun addIssueButton(onAddButtonClick:() -> Unit) {
     Box(
@@ -114,25 +138,3 @@ fun addIssueButton(onAddButtonClick:() -> Unit) {
 fun ResidentIssueOverviewPreview() {
     //ResidentIssueOverview(issues = createMockIssueDataList())
 }
-
-/*
-fun createMockIssueDataList(): List<IssueData> {
-    val mockIssueDataList = mutableListOf<IssueData>()
-
-    for (i in 0..12) {
-        val issueData = IssueData(
-            id = i.toString(),
-            title = "test${i}",
-            description = "test${i}",
-            status = Status.notStarted,
-            tenant = "test${i}",
-            room = "test${i}",
-            building = "test${i}",
-            issuekind = IssueType.electricity,
-            date = Timestamp.now()
-        )
-        mockIssueDataList.add(issueData)
-    }
-
-    return mockIssueDataList
-}*/

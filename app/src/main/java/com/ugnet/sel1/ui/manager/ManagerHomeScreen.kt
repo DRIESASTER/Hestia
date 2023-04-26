@@ -158,45 +158,6 @@ private fun PropertiesOverview(viewModel:ManagerHomeVM) {
 }
 
 
-
-//@Composable
-//private fun RoomsOverview(viewModel:ManagerHomeVM){
-//    viewModel.getRentedPropertiesByUser("1nkSD1lWsaX9f46cLTahgPmhirh1").collectAsState(initial = Response.Loading).value.let {
-//        when (it) {
-//            is Response.Success -> {
-//                if (it.data.isEmpty()) {
-//                    Text(text = "No properties found")
-//                } else {
-//                    viewModel.getAccesibleRoomsPerProperty(it.data[0].propertyId!!, "userid").collectAsState(
-//                        initial = Response.Loading).value.let { it1 ->
-//                        when (it1) {
-//                            is Response.Success -> {
-//                                if (it1.data.isEmpty()) {
-//                                    Text(text = "No rooms found")
-//                                } else {
-//                                    Text(text = "Rooms found" + it1.data[0].naam)
-//                                }
-//                            }
-//                            else -> {
-//                                CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            else -> {
-//                CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-//            }
-//        }
-//    }
-//}
-
-
-
-
-
-
-
 @Composable
 fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM) {
     Surface(modifier = modifier) {

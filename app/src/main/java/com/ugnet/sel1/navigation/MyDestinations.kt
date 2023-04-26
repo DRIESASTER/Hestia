@@ -11,4 +11,5 @@ object MyDestinations {
     const val MANAGER_HOME_ROUTE = "manager_home"
     const val HIREE_HOME_ROUTE = "hiree_home"
     const val ROOM_EDIT_ROUTE = "room_edit"
+    const val EMAIL_VER_ROUTE = "email_ver"
 }

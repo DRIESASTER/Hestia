@@ -38,12 +38,8 @@ class SignUpViewModel @Inject constructor(
         name: String,
         openAndPopUp: (String, String) -> Unit
     ) = viewModelScope.launch {
-        println("signUpWithEmailAndPassword called")
         signUpResponse = Response.Loading
-        println("before calling repo.firebaseSignUpWithEmailAndPassword")
         signUpResponse = repo.firebaseSignUpWithEmailAndPassword(email, password, role, surname, name)
-        println("after calling repo.firebaseSignUpWithEmailAndPassword")
-
         when (signUpResponse) {
             is Response.Success -> {
                 openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.SIGN_UP_ROUTE)

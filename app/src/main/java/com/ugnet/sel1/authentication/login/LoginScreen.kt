@@ -24,12 +24,11 @@ import com.ugnet.sel1.ui.components.showMessage
 @Composable
 fun LoginScreen(
     openAndPopUp: (String, String) -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -72,6 +71,15 @@ fun LoginScreen(
         ) {
             Text("Don't have an account? Sign Up")
         }
+
+        TextButton(
+            onClick = { openAndPopUp(MyDestinations.SIGN_UP_ROUTE, MyDestinations.LOGIN_ROUTE) },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Forgot password?")
+        }
+
+
 
         // Show CircularProgressIndicator when signInResponse is Response.Loading
         if (viewModel.signInResponse is Response.Loading) {

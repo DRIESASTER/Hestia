@@ -56,6 +56,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         })
     }
 
+
+
     composable(MyDestinations.ROOM_EDIT_ROUTE){
         Log.d("LOG ID", appState.propid.value!!)
         RoomeditScreen(propid = appState.propid.value!!, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })

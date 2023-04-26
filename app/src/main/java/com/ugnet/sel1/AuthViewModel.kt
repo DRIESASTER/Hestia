@@ -28,7 +28,6 @@ class AuthViewModel @Inject constructor(
 
     val currentUser: FirebaseUser? get() = repo.currentUser
 
-
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
@@ -67,10 +66,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
-
-
     var userResponse by mutableStateOf<UserResponse>(Response.Loading)
+
+
+    val isEmailVerified get() = repo.currentUser?.isEmailVerified ?: false
 
 
     fun getUser(id: String) = viewModelScope.launch {

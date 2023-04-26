@@ -2,24 +2,20 @@ package com.ugnet.sel1.ui.manager
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ugnet.sel1.domain.models.Manager
-import com.ugnet.sel1.domain.models.Property
-import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.*
-import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
@@ -93,6 +89,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                 .wrapContentWidth(Alignment.Start)) {
                 if (!Data.currentState) {
                     /*show issues overview*/
+                    IssuesOverview(viewModel = Data)
 //                    when (val allissues = Data.issuesForManagerResponse) {
 //                        is Response.Success -> {
 //                            if (allissues.data.isEmpty()) {
@@ -135,65 +132,6 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     )
 
 }
-
-
-@Composable
-private fun PropertiesOverview(viewModel:ManagerHomeVM) {
-//    ownedPropertiesResponseFormatted = Response.Loading
-    when(val response = viewModel.ownedPropertiesResponse){
-        is Response.Success -> {
-            if (response.data.isEmpty()) {
-                Text(text = "No properties found")
-            } else {
-                PropertyOverview(
-                    properties = response.data,
-                    onPropertyClicked = {/*route to details*/ },
-                    viewModel = viewModel)
-            }
-        }
-        else -> {
-            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-        }
-    }
-}
-
-
-@Composable
-fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM) {
-    Surface(modifier = modifier) {
-        LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()){
-            itemsIndexed(properties) { _, property ->
-                viewModel.getIssuesPerProperty(property.propertyId!!).collectAsState(initial = Response.Loading).value.let {
-                    when (it) {
-                        is Response.Success -> {
-                            var issueCount = 0
-                            if (!it.data.isEmpty()) {
-                                issueCount = it.data.size
-                            }
-                            viewModel.getIssuesPerProperty(property.propertyId!!).collectAsState(
-                                initial = Response.Loading
-                            )
-                            PropertyCard(
-                                propName = property.straat!!,
-                                propAddress = property.straat!!,
-                                tennants = property.huurders.size,
-                                issueCount = issueCount,
-                                onClick = { onPropertyClicked(property) }
-                            )
-                        }
-                        else -> {
-                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(0.dp))
-            }
-        }
-
-    }
-}
-
-
 
 @Composable
 fun addButton(contentDescription: String, onClick: () -> Unit) {

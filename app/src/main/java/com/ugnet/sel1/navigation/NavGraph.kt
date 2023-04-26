@@ -23,9 +23,6 @@ fun NavGraph(
     startDestination: String = MyDestinations.ROLE_SELECTION_ROUTE
 ) {
 
-
-
-
     val signInViewModel: SignInViewModel = hiltViewModel()
     val signUpViewModel : SignUpViewModel = hiltViewModel()
     val roleSelectionViewModel : RoleSelectionViewModel = hiltViewModel()

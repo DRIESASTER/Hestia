@@ -27,7 +27,9 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun RoomeditScreen(propid:String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
 
-    viewmodel.getRoomsForProperty(propid)
+    LaunchedEffect(Unit) {
+        viewmodel.getRoomsForProperty(propid)
+    }
 
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
         content = { padding ->

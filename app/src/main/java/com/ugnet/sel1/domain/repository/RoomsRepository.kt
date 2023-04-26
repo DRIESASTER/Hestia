@@ -24,7 +24,7 @@ interface RoomsRepository {
 
     fun getRoomsForPropertyFromFirestore(pandId: String): Flow<RoomsResponse>
 
-    fun getRentedRoomsByUserInFirestore(user: String): Flow<RoomsResponse>
+    fun getAccesibleRoomsByUserInFirestore(user: String, propertyId:String): Flow<RoomsResponse>
 
     suspend fun addRoomToPropertyInFirestore(pandId: String, naam: String, huurder:String?): AddRoomResponse
 

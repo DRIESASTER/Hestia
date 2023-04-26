@@ -1,6 +1,5 @@
 package com.ugnet.sel1.domain.useCases
 
-import com.ugnet.sel1.domain.repository.DeletePropertyResponse
 import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
 
 
@@ -9,7 +8,7 @@ data class UseCases constructor(
     val getIssuesForRoom: GetIssuesForRoom,
     val getRoomsForProperty: GetRoomsForProperty,
     val getOwnedProperties: GetOwnedProperties,
-    val getRentedRoomsByUser: GetRentedRoomsByUser,
+    val getAccesibleRoomsPerUser: GetAccesibleRoomsPerUser,
     val changeIssueStatus: ChangeIssueStatus,
     val addRoomToProperty: AddRoomToProperty,
     val deleteRoomFromProperty: DeleteRoomFromProperty,
@@ -19,5 +18,6 @@ data class UseCases constructor(
     val deleteIssue: DeleteIssue,
     val getUserByEmail: GetUserByEmail,
     val getIssuesPerProperty: GetIssuesPerProperty,
-    val getIssuesForRenter: GetIssuesForRenter
+    val getIssuesForRenter: GetIssuesForRenter,
+    val getRentedProperties: getRentedProperties
 )

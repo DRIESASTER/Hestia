@@ -28,59 +28,61 @@ class RoomsRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
-    fun getRentedPropertiesByUserInFirestore(userId: String): Flow<PropertiesResponse> =
-        callbackFlow {
-            val propertiesResponse =
-                dbRef.collection("properties").whereArrayContains("huurders", userId)
-                    .addSnapshotListener { snapshot, e ->
-                        val propertiesResponse = if (snapshot != null) {
-                            val properties = snapshot.toObjects(Property::class.java)
-                            Response.Success(properties)
-                        } else {
-                            Response.Failure(e)
-                        }
-                        trySend(propertiesResponse)
-                    }
+    override fun getAccesibleRoomsByUserInFirestore(
+        user: String,
+        propertyId: String
+    ): Flow<RoomsResponse>  = callbackFlow {
+        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", user)).addSnapshotListener{snapshot, e ->
+            val roomsResponse = if (snapshot != null) {
+                val rooms = snapshot.toObjects(Room::class.java)
+                Response.Success(rooms)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(roomsResponse)
         }
+        awaitClose { snapshotListener.remove() }
+    }
 
 
-    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> =
-        callbackFlow {
-//        val properties = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener{snapshot, e ->
-//        val propertiesResponse = if (snapshot != null) {
-//            val properties = snapshot.toObjects(Property::class.java)
-//            properties.forEach() { property ->
-//                dbRef.collection("properties/${property.propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", userId)).addSnapshotListener{snapshot, e ->
-//                    val roomsResponse = if (snapshot != null) {
-//                        val rooms = snapshot.toObjects(Room::class.java)
-//                        Response.Success(rooms)
-//                    } else {
-//                        Response.Failure(e)
-//                    }
-//                    trySend(roomsResponse)
-//                }
-//            }
-//        } else {
-//            Response.Failure(e)
+
+//    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> =
+//        callbackFlow {
+////        val properties = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener{snapshot, e ->
+////        val propertiesResponse = if (snapshot != null) {
+////            val properties = snapshot.toObjects(Property::class.java)
+////            properties.forEach() { property ->
+////                dbRef.collection("properties/${property.propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", userId)).addSnapshotListener{snapshot, e ->
+////                    val roomsResponse = if (snapshot != null) {
+////                        val rooms = snapshot.toObjects(Room::class.java)
+////                        Response.Success(rooms)
+////                    } else {
+////                        Response.Failure(e)
+////                    }
+////                    trySend(roomsResponse)
+////                }
+////            }
+////        } else {
+////            Response.Failure(e)
+////        }
+////    }
+////        awaitClose { properties.remove() }
+////    }
+//
+////        val query = db.collection("cities")
+////        val countQuery = query.count()
+////        countQuery.get(AggregateSource.SERVER).addOnCompleteListener { task ->
+////            if (task.isSuccessful) {
+////                // Count fetched successfully
+////                val snapshot = task.result
+////                Log.d(TAG, "Count: ${snapshot.count}")
+////            } else {
+////                Log.d(TAG, "Count failed: ", task.getException())
+////            }
+////        }
 //        }
-//    }
-//        awaitClose { properties.remove() }
-//    }
-
-//        val query = db.collection("cities")
-//        val countQuery = query.count()
-//        countQuery.get(AggregateSource.SERVER).addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                // Count fetched successfully
-//                val snapshot = task.result
-//                Log.d(TAG, "Count: ${snapshot.count}")
-//            } else {
-//                Log.d(TAG, "Count failed: ", task.getException())
-//            }
-//        }
-        }
-
-    //3 cases : all the rooms where huurderId = userId, "ALL" or ArrayContains
+//
+//    //3 cases : all the rooms where huurderId = userId, "ALL" or ArrayContains
 
 
     override suspend fun addRoomToPropertyInFirestore(

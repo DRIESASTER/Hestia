@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
@@ -139,24 +140,61 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
 @Composable
 private fun PropertiesOverview(viewModel:ManagerHomeVM) {
 //    ownedPropertiesResponseFormatted = Response.Loading
-    viewModel.getOwnedProperties("1nkSD1lWsaX9f46cLTahgPmhirh1").collectAsState(initial = Response.Loading).value.let {
-        when (it) {
-            is Response.Success -> {
-                if (it.data.isEmpty()) {
-                    Text(text = "No properties found")
-                } else {
-                    PropertyOverview(
-                        properties = it.data,
-                        onPropertyClicked = {/*route to details*/ },
-                        viewModel = viewModel)
-                }
+    when(val response = viewModel.ownedPropertiesResponse){
+        is Response.Success -> {
+            if (response.data.isEmpty()) {
+                Text(text = "No properties found")
+            } else {
+                PropertyOverview(
+                    properties = response.data,
+                    onPropertyClicked = {/*route to details*/ },
+                    viewModel = viewModel)
             }
-            else -> {
-                CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-            }
+        }
+        else -> {
+            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
         }
     }
 }
+
+
+
+//@Composable
+//private fun RoomsOverview(viewModel:ManagerHomeVM){
+//    viewModel.getRentedPropertiesByUser("1nkSD1lWsaX9f46cLTahgPmhirh1").collectAsState(initial = Response.Loading).value.let {
+//        when (it) {
+//            is Response.Success -> {
+//                if (it.data.isEmpty()) {
+//                    Text(text = "No properties found")
+//                } else {
+//                    viewModel.getAccesibleRoomsPerProperty(it.data[0].propertyId!!, "userid").collectAsState(
+//                        initial = Response.Loading).value.let { it1 ->
+//                        when (it1) {
+//                            is Response.Success -> {
+//                                if (it1.data.isEmpty()) {
+//                                    Text(text = "No rooms found")
+//                                } else {
+//                                    Text(text = "Rooms found" + it1.data[0].naam)
+//                                }
+//                            }
+//                            else -> {
+//                                CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            else -> {
+//                CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
+//            }
+//        }
+//    }
+//}
+
+
+
+
+
 
 
 @Composable
@@ -194,30 +232,6 @@ fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, o
     }
 }
 
-
-
-//    when (val propertiesResponse = viewModel.ownedPropertiesResponse) {
-//        is Response.Success -> {
-//            for (property in propertiesResponse.data) {
-//                viewModel.formatProperty(property)
-//                when (val formatPropertyResponse = viewModel.formatPropertyResponse) {
-//                    is Response.Success -> {
-//                        properties.add(formatPropertyResponse.data)
-//                    }
-//                    else -> {
-//                        CircularProgressIndicator()
-//                    }
-//                }
-//            }
-//            PropertyOverview(
-//                properties = properties,
-//                onPropertyClicked = {/*route to details*/ })
-//        }
-//        else -> {
-//            CircularProgressIndicator()
-//        }
-//    }
-//}
 
 
 @Composable

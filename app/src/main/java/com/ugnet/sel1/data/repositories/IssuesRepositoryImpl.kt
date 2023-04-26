@@ -33,6 +33,8 @@ class IssuesRepositoryImpl @Inject constructor(
 
 
 
+
+
     override fun getIssuesPerPropertyFromFirestore(
         propertyId: String
     ): Flow<IssuesResponse> = callbackFlow {

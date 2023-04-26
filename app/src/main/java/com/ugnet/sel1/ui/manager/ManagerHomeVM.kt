@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.*
@@ -27,8 +28,9 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
-//    var ownedPropertiesResponseFormatted by mutableStateOf<Response<MutableList<PropertyData>>>(Response.Loading)
-//        private set
+
+    var ownedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
+        private set
 
     var issuesForBuildingResponse by mutableStateOf<IssuesResponse>(Response.Loading)
         private set
@@ -53,17 +55,26 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 //        private set
 
     init {
-//        getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
-//        getOwnedProperties("Azi4i3r0iFfW57QAntbNebBn1Kr2")
+        getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
 //        getIssuesForManager()
     }
 
 
-    fun getOwnedProperties(id: String): Flow<PropertiesResponse> = useCases.getOwnedProperties(id)
+    fun getOwnedProperties(id: String) = viewModelScope.launch {
+        useCases.getOwnedProperties(id).collect() {response ->
+            ownedPropertiesResponse = response
+        }
+    }
 
     fun getRoomsPerProperty(propertyId: String): Flow<RoomsResponse> = useCases.getRoomsForProperty(propertyId)
 
+        //List<Response<Issue>>
     fun getIssuesPerProperty(propertyId: String): Flow<IssuesResponse> = useCases.getIssuesPerProperty(propertyId)
+
+//    fun getRentedPropertiesByUser(userId:String): Flow<PropertiesResponse> = useCases.getRentedPropertiesByUser(userId)
+//
+//    fun getAccesibleRoomsPerProperty(userId:String, propertyId: String): Flow<RoomsResponse> = useCases.getAccesibleRoomsPerProperty(userId, propertyId)
+
     fun test() {
 
     }

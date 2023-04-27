@@ -114,9 +114,9 @@ class IssuesRepositoryImpl @Inject constructor(
 
 
         override suspend fun changeIssueStatusInFirestore(
-            propertyId: String,
+            issueId: String,
             status: Status,
-            issueId: String
+            propertyId: String
         ): ChangeIssueStatusResponse {
             return try {
                 dbRef.collection("properties/${propertyId}/issues").document(issueId)

@@ -9,6 +9,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.ui.components.DrawerBody
 import com.ugnet.sel1.ui.components.DrawerHeader
 import com.ugnet.sel1.ui.components.MenuItem
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ResidentHomeScreen() {
+fun ResidentHomeScreen(Data: ResidentHomeVM = hiltViewModel()) {
     val drawerItems = listOf(
         MenuItem(
             name = "Profile",
@@ -30,20 +31,10 @@ fun ResidentHomeScreen() {
             icon = Icons.Rounded.Notifications,
         ),
         MenuItem(
-            name = "Chat",
-            route = "chat",
-            icon = Icons.Rounded.Chat,
+            name = "Logout",
+            route = "logout",
+            icon = Icons.Rounded.Logout,
         ),
-        MenuItem(
-            name = "Events",
-            route = "events",
-            icon = Icons.Rounded.CalendarToday
-        ),
-        MenuItem(
-            name = "Announcements",
-            route = "announcements",
-            icon = Icons.Rounded.Campaign
-        )
     )
 
     var currentTitle by rememberSaveable { mutableStateOf(drawerItems[0].name) }
@@ -71,19 +62,17 @@ fun ResidentHomeScreen() {
                 }
             )
         },
-        content = { GetCorrectDisplay(currentTitle) }
+        content = { GetCorrectDisplay(currentTitle, Data) }
     )
 }
 
 //TODO: pass actual data and implement all screens
 @Composable
-fun GetCorrectDisplay(title:String = "Profile") {
+fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM) {
     when (title) {
         "Profile" -> Text(text = "TODO: implement profile screen")
-        "Issues" -> ResidentIssueOverview(issues = emptyList())
-        "Chat" -> Text(text = "TODO: implement chat")
-        "Events" -> Text(text = "TODO: implement events screen")
-        "Announcements" -> Text(text = "TODO: implement announcements screen")
+        "Issues" -> ResidentIssueOverview(data = vm,issues = emptyList())
+        "Logout" -> Text(text = "TODO: implement Logout")
     }
 }
 

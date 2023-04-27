@@ -17,9 +17,13 @@ fun HestiaApp(viewModel: AuthViewModel) {
 
     Surface(color = MaterialTheme.colors.background) {
         val appState = rememberAppState()
+        val startDestination = when (appState.userState) {
+            true -> MyDestinations.SPLASH_ROUTE
+            false -> MyDestinations.ROLE_SELECTION_ROUTE
+        }
             NavHost(
                 navController = appState.navController,
-                startDestination = MyDestinations.SPLASH_ROUTE,
+                startDestination = startDestination,
             ) {
                 hestiaGraph(appState, viewModel)
 

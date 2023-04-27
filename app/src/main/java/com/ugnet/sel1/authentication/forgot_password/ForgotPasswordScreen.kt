@@ -10,11 +10,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun ForgotPasswordScreen(onResetPasswordClick: (String) -> Unit) {
+fun ForgotPasswordScreen(
+    viewModel: ForgotPasswordViewModel = hiltViewModel(),
+    navigateTo: (String) -> Unit
+) {
 
-    var email by remember { mutableStateOf(TextFieldValue("")) }
+    var email by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -32,7 +36,7 @@ fun ForgotPasswordScreen(onResetPasswordClick: (String) -> Unit) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(onClick = { onResetPasswordClick(email.text) }) {
+            Button(onClick = { viewModel.onResetPasswordClick(navigateTo, email) }) {
                 Text(text = "Reset Password")
             }
         }

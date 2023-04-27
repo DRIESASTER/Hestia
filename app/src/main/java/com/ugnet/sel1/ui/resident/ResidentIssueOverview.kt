@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.resident
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,10 +21,12 @@ import com.ugnet.sel1.ui.manager.IssueData
 import com.ugnet.sel1.ui.theme.MainGroen
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.ui.theme.AccentLicht
+import androidx.compose.runtime.collectAsState
+import com.ugnet.sel1.ui.components.IssueCard
 
 @Composable
 fun ResidentIssueOverview(
-    data: ResidentHomeVM,
+    viewModel: ResidentHomeVM,
     modifier: Modifier = Modifier,
     issues:List<IssueData>,
 ) {
@@ -37,14 +40,13 @@ fun ResidentIssueOverview(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when(val response = data.allRentedPropertiesResponse) {
+            //Get all properties that the current user is renting
+            when(val response = viewModel.allRentedPropertiesResponse) {
                 is Response.Success -> {
-                    //TODO: for each property -> load rented rooms -> for each room load all issues
                     if (response.data.isEmpty()) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth(1.0f)
-                                //.fillMaxSize(1.0f) // it will fill parent box
                                 .padding(8.dp)
                         ) {
                             Text(
@@ -56,55 +58,56 @@ fun ResidentIssueOverview(
                             )
                         }
                     } else {
-                        IssueList()
+                        LazyColumn(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) {
+                            itemsIndexed(response.data) {_, property ->
+                                //Get all issues for each room that user has access to in a given property
+                                viewModel.getIssuesForRenter(property.propertyId!!).collectAsState(initial = Response.Loading).value.let {
+                                    when(it) {
+                                        is Response.Success -> {
+                                            for (issue in it.data) {
+                                                //Get the user for an issue(for display purposes)
+                                                viewModel.getUser(issue.userId!!).collectAsState(initial = Response.Loading).value.let { user ->
+                                                    when (user){
+                                                        is Response.Success -> {
+                                                            val username = user.data!!.voornaam + " " + user.data.achternaam
+                                                            Log.d("IssueOverview", "IssueOverview loading user: $username")
+                                                            ResidentIssueCard(
+                                                                title = issue.titel!!,
+                                                                tenant = username,
+                                                                room = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
+                                                                description = issue.beschrijving!!,
+                                                                status = issue.status!!
+                                                            )
+                                                        }
+                                                        else -> {
+                                                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                        else -> {
+                                            Spacer(modifier = Modifier.height(0.dp))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        addIssueButton {}
                     }
                 }
                 else -> {
                     CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
                 }
             }
-            if (issues.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(1.0f)
-                        //.fillMaxSize(1.0f) // it will fill parent box
-                        .padding(8.dp)
-                ) {
-                    Text(
-                        text = "you currently have no issues",
-                        color = Color.Gray.copy(alpha = 0.5f),
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            } else {
-                LazyColumn(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    itemsIndexed(issues) { _, issue ->
-                        ResidentIssueCard(
-                            title = issue.title,
-                            tenant = issue.tenant,
-                            room = issue.room,
-                            description = issue.description,
-                            status = issue.status
-                        )
-                    }
-                }
-            }
-            addIssueButton {}
         }
     }
-}
-
-//TODO: place the actual issue list in this function for readability
-@Composable
-fun IssueList() {
-
 }
 
 @Composable

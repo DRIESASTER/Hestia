@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,7 +40,18 @@ class AuthRepositoryImpl @Inject constructor(
     //private val _currentUser = MutableStateFlow<FirebaseUser?>(auth.currentUser)
     //override val currentUser: StateFlow<FirebaseUser?> get() = _currentUser.asStateFlow()
 
-
+    override suspend fun checkIfEmailExists(email: String): Boolean {
+        return try {
+            val result = auth.fetchSignInMethodsForEmail(email).await()
+            result.signInMethods?.isNotEmpty() ?: false
+        } catch (e: FirebaseAuthException) {
+            if (e.errorCode == "ERROR_USER_NOT_FOUND") {
+                false
+            } else {
+                throw e
+            }
+        }
+    }
 
     override suspend fun firebaseSignUpWithEmailAndPassword(
         email: String, password: String, role : String, surname : String,
@@ -91,6 +103,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun sendPasswordResetEmail(email: String): SendPasswordResetEmailResponse {
         return try {
             auth.sendPasswordResetEmail(email).await()
+            Log.d("sendPasswordResetEmail", "succes")
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

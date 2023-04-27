@@ -1,5 +1,6 @@
 package com.ugnet.sel1.authentication.forgot_password
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +9,9 @@ import com.ugnet.sel1.authentication.selection.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.ugnet.sel1.authentication.isValidEmail
+import com.ugnet.sel1.navigation.MyDestinations
 
-/*@HiltViewModel
-class SignInViewModel @Inject constructor(
-    private val repo: AuthRepository,
-): ViewModel() {*/
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
@@ -28,9 +27,16 @@ class ForgotPasswordViewModel @Inject constructor(
         _email.value = newEmail
     }
 
-    fun onResetPasswordClick() {
+    fun onResetPasswordClick(navigateTo: (String) -> Unit, email: String) {
         viewModelScope.launch {
-            repo.sendPasswordResetEmail(_email.value!!)
+            Log.d("EMail on reset", email)
+            if (!email.isValidEmail() || !repo.checkIfEmailExists(email)) {
+                // todo snackbarmanager show if unvalid
+                return@launch
+            } else {
+                repo.sendPasswordResetEmail(email)
+                navigateTo(MyDestinations.LOGIN_ROUTE)
+            }
         }
     }
 }

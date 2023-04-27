@@ -5,6 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ugnet.sel1.AuthViewModel
+import com.ugnet.sel1.authentication.forgot_password.ForgotPasswordScreen
 import com.ugnet.sel1.navigation.SplashScreen
 import com.ugnet.sel1.authentication.login.LoginScreen
 import com.ugnet.sel1.authentication.profile.UserProfileScreen
@@ -22,6 +23,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
 
     composable(MyDestinations.ROLE_SELECTION_ROUTE) {
+        Log.d("ROLESELECTOIN", "ROUTE")
         RoleSelectionScreen(
             openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
         ) { role: String -> appState.setRole(role) }
@@ -35,6 +37,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     composable(MyDestinations.LOGIN_ROUTE) {
         LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
+    
+    composable(MyDestinations.FORGOT_PASSWORD_ROUTE){
+        ForgotPasswordScreen(navigateTo = { route -> appState.navigate(route) })
+    }
 
     composable(MyDestinations.SIGN_UP_ROUTE) {
         SignUpScreen(
@@ -44,7 +50,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.PROFILE_ROUTE) {
-        UserProfileScreen(navController = appState.navController)
+        UserProfileScreen(navController = appState.navController,
+        clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 
     composable(MyDestinations.MANAGER_HOME_ROUTE) {

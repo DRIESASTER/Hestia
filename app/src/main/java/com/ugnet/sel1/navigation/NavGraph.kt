@@ -12,7 +12,6 @@ import com.ugnet.sel1.authentication.login.SignInViewModel
 import com.ugnet.sel1.authentication.profile.UserProfileScreen
 import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
 import com.ugnet.sel1.authentication.signup.SignUpViewModel
-import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 
 // no longer in use
@@ -52,9 +51,11 @@ fun NavGraph(
                 signUpViewModel.signUpWithEmailAndPassword(email, password, role, name, surname)
             })*/
         }
-        composable(MyDestinations.PROFILE_ROUTE) {
-            UserProfileScreen(navController = navController)
-        }
+/*        composable(MyDestinations.PROFILE_ROUTE) {
+            UserProfileScreen(
+                navController = navController,
+                clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+        }*/
 
  /*       composable(MyDestinations.MANAGER_HOME_ROUTE) {
             ManagerHomeScreen(openAndPopUp = )

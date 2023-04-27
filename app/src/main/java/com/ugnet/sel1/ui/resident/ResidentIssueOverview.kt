@@ -99,13 +99,13 @@ fun ResidentIssueOverview(
                                 }
                             }
                         }
+                        addIssueButton {}
                     }
                 }
                 else -> {
                     CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
                 }
             }
-            addIssueButton {}
         }
     }
 }

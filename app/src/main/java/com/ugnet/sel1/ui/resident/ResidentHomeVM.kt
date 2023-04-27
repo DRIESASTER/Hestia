@@ -61,7 +61,7 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
 //            rentedRoomsResponse = response
 //        }
 //    }
-    
+
     fun getIssuesForRenter(propertyId: String): Flow<IssuesResponse> = useCases.getIssuesForRenter(propertyId, Firebase.auth.currentUser?.uid.toString())
 
 //    fun getIssuesForRenterByPand(propertyId:String, userId: String) = viewModelScope.launch {

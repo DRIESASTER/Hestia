@@ -129,8 +129,7 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             deletePropertyResponse = useCases.deleteProperty(propertyId)
       }
 
-
-<<<<<<< HEAD
+      
 /*
      fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
             useCases.getAccesibleRoomsPerUser(userId).collect { response ->

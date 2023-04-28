@@ -1,13 +1,11 @@
 package com.ugnet.sel1.ui.manager.addProp
 
 import android.util.Log
-import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
@@ -59,17 +57,17 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
     }
 
     //TODO: upload room to db
-    fun saveProp(managerID:String) = viewModelScope.launch{
-        Log.d("TAG", "saveProp: $managerID")
-        addProperty(number.toInt(), if (isHouse) "Huis" else "Appartement", managerID, postalCode.toInt(), city, street)
-
-    } //            useCases.addRoomToProperty(addPropertyResponse.data?.,room.roomName, room.tenantName)
-
-    fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
+    fun saveProp(managerID:String) = viewModelScope.launch {
         addPropertyResponse = Response.Loading
-        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)
+        addPropertyResponse = useCases.addProperty(huisnummer = number.toInt(),
+            type = if (isHouse) "Huis" else "Appartement",
+            ownedBy = managerID,
+            postcode = postalCode.toInt(),
+            stad = city,
+            straat = street)
         Log.d("ADDPROP", addPropertyResponse.toString())
     }
+
 //    fun addProperty(huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String) = viewModelScope.launch {
 //        addPropertyResponse = Response.Loading
 //        addPropertyResponse = useCases.addProperty(huisnummer, type, ownedBy, postcode, stad, straat)

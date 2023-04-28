@@ -3,14 +3,9 @@ package com.ugnet.sel1.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.PriorityHigh
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +24,7 @@ fun PropertyCard(propName: String,
                  tennants:Int,
                  issueCount:Int,
                  onClick: () -> Unit,
-                 modifier: Modifier = Modifier ) {
+                 modifier: Modifier = Modifier,onDelete: () -> Unit,onEdit: () -> Unit ) {
 
     Card(
         modifier = modifier
@@ -62,7 +57,9 @@ fun PropertyCard(propName: String,
                 Row(
                     verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                         .clip(RoundedCornerShape(30.dp))
-                        .background(AccentLicht).padding(horizontal = 5.dp)
+                        .wrapContentSize()
+                        .background(AccentLicht)
+                        .padding(horizontal = 5.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.LocationOn,
@@ -128,6 +125,22 @@ fun PropertyCard(propName: String,
                 }
 
             }
+            Column {
+                Spacer(modifier = Modifier.height(10.dp))
+                IconButton(onClick = onEdit ) {
+                    Icon (imageVector = Icons.Rounded.Edit,
+                        contentDescription = "edit",
+                        tint = AccentLicht,
+                        modifier = Modifier
+                            .padding(3.dp)
+                            .size(30.dp))
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                IconButton(onClick = onDelete) {
+                    Icon(imageVector = Icons.Rounded.Delete, contentDescription ="remove",
+                    tint = AccentLicht,modifier = Modifier.padding(3.dp).size(30.dp))
+                }
+            }
         }
     }
 }
@@ -135,5 +148,5 @@ fun PropertyCard(propName: String,
 @Preview
 @Composable
 fun PropertyCardPreview() {
-    PropertyCard(propName = "test", propAddress = "test", tennants = 1, issueCount = 1, onClick = {})
+    PropertyCard(propName = "test", propAddress = "test", tennants = 1, issueCount = 1, onClick = {}, modifier = Modifier, onDelete = {}, onEdit = {})
 }

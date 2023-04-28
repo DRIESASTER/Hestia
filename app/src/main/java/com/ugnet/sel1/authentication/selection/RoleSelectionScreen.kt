@@ -14,7 +14,7 @@ import com.ugnet.sel1.navigation.MyDestinations
 
 @Composable
 fun RoleSelectionScreen(
-    openAndPopUp: (String, String) -> Unit,
+    navigate : (String) -> Unit,
     setRole: (String) -> Unit,
 ) {
     Column(
@@ -30,7 +30,7 @@ fun RoleSelectionScreen(
         Button(
             onClick = {
                 setRole("Manager")
-                openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
+                navigate(MyDestinations.LOGIN_ROUTE)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -41,7 +41,7 @@ fun RoleSelectionScreen(
         Button(
             onClick = {
                 setRole("Huurder")
-                openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
+                navigate(MyDestinations.LOGIN_ROUTE)
             },
             modifier = Modifier.fillMaxWidth()
         ) {

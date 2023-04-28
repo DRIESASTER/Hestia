@@ -27,7 +27,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     composable(MyDestinations.ROLE_SELECTION_ROUTE) {
         Log.d("ROLESELECTOIN", "ROUTE")
         RoleSelectionScreen(
-            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
+            navigate = { route -> appState.navigate(route) }
         ) { role: String -> appState.setRole(role) }
 
     }
@@ -37,7 +37,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.LOGIN_ROUTE) {
-        LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        LoginScreen(navigate = { route -> appState.navigate(route) })
     }
     
     composable(MyDestinations.FORGOT_PASSWORD_ROUTE){

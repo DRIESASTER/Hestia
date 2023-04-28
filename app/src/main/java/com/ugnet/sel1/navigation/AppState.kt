@@ -47,7 +47,7 @@ class AppState(
 
 
     fun navigate(route: String) {
-        navController.navigate(route)
+        navController.navigate(route) { launchSingleTop = true }
     }
 
     fun navigateAndPopUp(route: String, popUp: String) {

@@ -24,7 +24,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreen(propid:String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
+fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {

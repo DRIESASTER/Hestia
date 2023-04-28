@@ -3,7 +3,9 @@ package com.ugnet.sel1.navigation.NavGraphBuilder
 import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.ugnet.sel1.AuthViewModel
 import com.ugnet.sel1.authentication.forgot_password.ForgotPasswordScreen
 import com.ugnet.sel1.navigation.SplashScreen
@@ -64,11 +66,15 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
 
-
-    composable(MyDestinations.ROOM_EDIT_ROUTE){
-        Log.d("LOG ID", appState.propid.value!!)
-        RoomeditScreen(propid = appState.propid.value!!, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    composable(
+        MyDestinations.ROOM_EDIT_ROUTE,
+        arguments = listOf(navArgument(MyDestinations.RoomEditArgs.PropId) { type = NavType.StringType })
+    ) { backStackEntry ->
+        val propId = backStackEntry.arguments?.getString(MyDestinations.RoomEditArgs.PropId)!!
+        Log.d("ROUTING_TO_ROOM_edit", "")
+        RoomeditScreen(propid = propId, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
+
 
     composable(MyDestinations.HIREE_HOME_ROUTE) {
         ResidentHomeScreen()

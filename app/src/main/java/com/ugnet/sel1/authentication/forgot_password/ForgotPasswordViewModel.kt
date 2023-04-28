@@ -32,7 +32,6 @@ class ForgotPasswordViewModel @Inject constructor(
             Log.d("EMail on reset", email)
             if (!email.isValidEmail() || !repo.checkIfEmailExists(email)) {
                 // todo snackbarmanager show if unvalid
-                return@launch
             } else {
                 repo.sendPasswordResetEmail(email)
                 navigateTo(MyDestinations.LOGIN_ROUTE)

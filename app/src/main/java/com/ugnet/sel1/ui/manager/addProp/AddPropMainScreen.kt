@@ -65,9 +65,9 @@ fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String
                 when (val propertyresponse = viewmodel.addPropertyResponse) {
                     is Response.Success -> {
                         //add propid to appstate//
-                        setPropId(propertyresponse.data)
-
-                        navigate(MyDestinations.ROOM_EDIT_ROUTE)
+                        //setPropId(propertyresponse.data)
+                        val route = MyDestinations.ROOM_EDIT_ROUTE.replace("{${MyDestinations.RoomEditArgs.PropId}}", propertyresponse.data)
+                        navigate(route)
                     }
                     else -> {
                         CircularProgressIndicator()

@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import android.util.Log
 import androidx.compose.runtime.collectAsState
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -52,6 +53,7 @@ class RoomsRepositoryImpl @Inject constructor(
         return try {
 //            dbRef.collection("properties/${pandId}").document()
 //                .update("huurders", FieldValue.arrayUnion((huurderId)))
+            Log.d("HIERRRR", "${huurderId},+ ${pandId}")
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(
                 naam = naam,

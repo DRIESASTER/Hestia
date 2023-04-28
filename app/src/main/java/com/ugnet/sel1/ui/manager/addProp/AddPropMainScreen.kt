@@ -41,7 +41,7 @@ fun AddPropMainScreen(
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                trySave(viewmodel = viewmodel, navigate = navigate, setPropId = setPropId)
+                trySave(viewmodel = viewmodel, navigate = navigate, setPropId = setPropId, openAndPopUp = openAndPopUp)
             }
 
         })
@@ -49,7 +49,7 @@ fun AddPropMainScreen(
 
 //TODO: fix input validation
 @Composable
-fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String) -> Unit) {
+fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String) -> Unit,openAndPopUp: (String, String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
             if(!viewmodel.saveClicked){
@@ -64,8 +64,6 @@ fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String
             }} else {
                 when (val propertyresponse = viewmodel.addPropertyResponse) {
                     is Response.Success -> {
-                        //add propid to appstate//
-                        //setPropId(propertyresponse.data)
                         val route = MyDestinations.ROOM_EDIT_ROUTE.replace("{${MyDestinations.RoomEditArgs.PropId}}", propertyresponse.data)
                         navigate(route)
                     }

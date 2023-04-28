@@ -16,15 +16,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.navigation.MyDestinations
 
 
 @Composable
-fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel(),
-                      navController: NavController) {
+fun UserProfileScreen(
+    userViewModel: UserViewModel = hiltViewModel(),
+    navController: NavController,
+    clearAndNavigate: (String) -> Unit
+) {
 //    Log.d("USER", Firebase.auth.currentUser?.uid.toString())
 
     fun navigateToHomeScreen(user : User) {
@@ -60,7 +62,7 @@ fun UserProfileScreen(userViewModel: UserViewModel = hiltViewModel(),
                 }
                 Button(
                     onClick = { userViewModel.signOut()
-                              navController.navigate(MyDestinations.ROLE_SELECTION_ROUTE)},
+                              clearAndNavigate(MyDestinations.ROLE_SELECTION_ROUTE)},
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Sign Out", fontSize = 16.sp, fontWeight = FontWeight.Bold)

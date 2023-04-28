@@ -73,7 +73,7 @@ fun LoginScreen(
         }
 
         TextButton(
-            onClick = { openAndPopUp(MyDestinations.SIGN_UP_ROUTE, MyDestinations.LOGIN_ROUTE) },
+            onClick = { openAndPopUp(MyDestinations.FORGOT_PASSWORD_ROUTE, MyDestinations.LOGIN_ROUTE) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Forgot password?")

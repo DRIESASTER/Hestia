@@ -9,7 +9,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
-import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -77,7 +76,9 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         IssueStatusResponse = useCases.changeIssueStatus(issueId, status, propertyId)
     }
 
-
+    fun removeProperty(propertyId: String) = viewModelScope.launch {
+        useCases.deleteProperty(propertyId)
+    }
     fun getIssuesForRoom(pandId: String, roomId: String) = viewModelScope.launch {
         useCases.getIssuesForRoom(pandId, roomId).collect { response ->
             issuesForRoomResponse = response

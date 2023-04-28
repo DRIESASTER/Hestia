@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.*
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 import kotlinx.coroutines.launch
 
@@ -137,10 +138,11 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
 fun addButton(contentDescription: String, onClick: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         FloatingActionButton(
+            backgroundColor = MainGroen,
             onClick = onClick,
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
-            Icon(imageVector = Icons.Rounded.Add, contentDescription = contentDescription, tint = MainGroen)
+            Icon(imageVector = Icons.Rounded.Add, contentDescription = contentDescription, tint = AccentLicht)
         }
     }
 }

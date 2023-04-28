@@ -23,7 +23,7 @@ interface AuthRepository {
 
    // val currentUser: StateFlow<FirebaseUser?>
 
-
+    suspend fun checkIfEmailExists(email: String): Boolean
     suspend fun firebaseSignUpWithEmailAndPassword(email: String, password: String, role : String, surname : String, name : String): SignUpResponse
 
     suspend fun sendEmailVerification(): SendEmailVerificationResponse

@@ -12,13 +12,14 @@ import com.ugnet.sel1.domain.repository.RoomsResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.components.RoomData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(){
 
-    var propid : String by mutableStateOf("")
+    var propertyid : String by mutableStateOf("")
     var removeRoomsResponse by mutableStateOf<DeleteRoomResponse>(Response.Loading)
         private set
 
@@ -27,25 +28,21 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
 
 
 
-    fun getRoomsForProperty(propertyId: String) = viewModelScope.launch {
-        Log.d("PROP ID", propertyId)
-        useCases.getRoomsForProperty(propertyId).collect { response ->
-            roomsResponse = response
-        }
-    }
+    fun getRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getRoomsForProperty(propertyId)
 
     fun processRooms() : MutableList<RoomData> {
         return mutableListOf()
     }
 
-    fun deleteRoomFromProperty(roomId: String) = viewModelScope.launch {
+    fun deleteRoomFromProperty(propid:String,roomId: String) = viewModelScope.launch {
         removeRoomsResponse = Response.Loading
         removeRoomsResponse = useCases.deleteRoomFromProperty(propid, roomId)
     }
 
 
-    fun addroom(roomName: String, tenantName: String) = viewModelScope.launch {
+    fun addroom(propid:String,roomName: String, tenantName: String) = viewModelScope.launch {
         useCases.addRoomToProperty(propid,roomName, tenantName)
+        Log.d("RoomEditVM", "addroom: $propid $roomName $tenantName")
     }
 
 }

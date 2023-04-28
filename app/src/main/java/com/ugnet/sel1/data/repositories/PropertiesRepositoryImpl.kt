@@ -47,6 +47,19 @@ class PropertiesRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
+    override fun getRentersList(propertyId:String) = callbackFlow {
+        val snapshotListener = dbRef.collection("properties/${propertyId}/huurders").addSnapshotListener { snapshot, e ->
+            val usersResponse = if (snapshot != null) {
+                val users = snapshot.toObjects(User::class.java)
+                Response.Success(users)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(usersResponse)
+        }
+        awaitClose { snapshotListener.remove() }
+    }
+
 
     override suspend fun addPropertyToFirestore(
         huisnummer: Int,

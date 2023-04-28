@@ -51,8 +51,6 @@ class RoomsRepositoryImpl @Inject constructor(
         huurderId: String?
     ): AddRoomResponse {
         return try {
-//            dbRef.collection("properties/${pandId}").document()
-//                .update("huurders", FieldValue.arrayUnion((huurderId)))
             Log.d("HIERRRR", "${huurderId},+ ${pandId}")
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(

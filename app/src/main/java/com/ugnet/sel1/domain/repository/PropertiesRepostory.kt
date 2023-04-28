@@ -2,6 +2,7 @@ package com.ugnet.sel1.domain.repository
 
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.User
 import kotlinx.coroutines.flow.Flow
 
 typealias Properties = List<Property>
@@ -29,8 +30,8 @@ interface PropertiesRepository {
 
     suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
 
-
     suspend fun addUserToProperty(userId:String, propertyId:String) : Response<Boolean>
+    fun getRentersList(propertyId: String): Flow<Response<MutableList<User>>>
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 

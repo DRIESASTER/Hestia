@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager.addProp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,7 +42,7 @@ fun AddPropMainScreen(
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                trySave(viewmodel = viewmodel, navigate = navigate, setPropId = setPropId, openAndPopUp = openAndPopUp)
+                TrySave(viewmodel = viewmodel, navigate = navigate, setPropId = setPropId, openAndPopUp = openAndPopUp)
             }
 
         })
@@ -49,31 +50,43 @@ fun AddPropMainScreen(
 
 //TODO: fix input validation
 @Composable
-fun trySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String) -> Unit,openAndPopUp: (String, String) -> Unit) {
+fun TrySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String) -> Unit, openAndPopUp: (String, String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
-            if(!viewmodel.saveClicked){
-            IconButton(onClick = { viewmodel.saveProp(userresponse.data?.uid.toString())
-                                 viewmodel.saveClicked=true},
-                Modifier
-                    .background(
-                        AccentLicht, RoundedCornerShape(20.dp)
+            if (!viewmodel.saveClicked) {
+                IconButton(
+                    onClick = { viewmodel.saveProp(userresponse.data?.uid.toString())
+                        viewmodel.saveClicked = true },
+                    Modifier
+                        .background(
+                            MainGroen, RoundedCornerShape(20.dp)
+                        )
+                        .size(50.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowRight,
+                        contentDescription = "next",
+                        tint = AccentLicht
                     )
-                    .size(40.dp)) {
-                Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "next", tint = MainGroen)
-            }} else {
-                when (val propertyresponse = viewmodel.addPropertyResponse) {
+                }
+            } else {
+                when (val response = viewmodel.addPropertyResponse) {
                     is Response.Success -> {
-                        val route = MyDestinations.ROOM_EDIT_ROUTE.replace("{${MyDestinations.RoomEditArgs.PropId}}", propertyresponse.data)
+                        val route = MyDestinations.ROOM_EDIT_ROUTE.replace("{${MyDestinations.RoomEditArgs.PropId}}", response.data)
                         navigate(route)
+                        Log.d("AddPropMainScreen", "navigate to room edit")
+                        setPropId(response.data)
+                        viewmodel.saveClicked=false
+                    }
+                    is Response.Failure -> {
+                        openAndPopUp("Error", response.toString())
+                        viewmodel.saveClicked = false
                     }
                     else -> {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(color = MainGroen)
                     }
                 }
             }
-
-
         }
         else -> {}
     }

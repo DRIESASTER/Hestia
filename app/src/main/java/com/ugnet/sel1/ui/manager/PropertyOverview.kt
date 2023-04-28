@@ -31,7 +31,8 @@ fun PropertiesOverview(viewModel:ManagerHomeVM) {
                 PropertyOverview(
                     properties = response.data,
                     onPropertyClicked = {/*route to details*/ },
-                    viewModel = viewModel)
+                    viewModel = viewModel,
+                    onEditClicked = { /*route to edit*/ })
             }
         }
         else -> {
@@ -42,7 +43,7 @@ fun PropertiesOverview(viewModel:ManagerHomeVM) {
 
 
 @Composable
-fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM) {
+fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM, onEditClicked:(Property)->Unit) {
     Surface(modifier = modifier) {
         LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()){
             itemsIndexed(properties) { _, property ->
@@ -58,10 +59,12 @@ fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, o
                             )
                             PropertyCard(
                                 propName = property.straat!!,
-                                propAddress = property.straat!!,
+                                propAddress = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
                                 tennants = property.huurders.size,
                                 issueCount = issueCount,
-                                onClick = { onPropertyClicked(property) }
+                                onClick = { onPropertyClicked(property) },
+                                onDelete = { viewModel.removeProperty(property.propertyId!!) },
+                                onEdit = { onEditClicked(property)}
                             )
                         }
                         else -> {

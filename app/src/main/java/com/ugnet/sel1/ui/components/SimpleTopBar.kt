@@ -19,6 +19,7 @@ fun SimpleTopBar(name:String, openAndPopup: (String, String) -> Unit) {
     TopAppBar(modifier = Modifier.background(MainGroen),
         title = { Text(text = name, color = Color.White) },
         contentColor = MainGroen,
+        backgroundColor = MainGroen,
         navigationIcon = {
             IconButton(onClick = { openAndPopup(MyDestinations.MANAGER_HOME_ROUTE, MyDestinations.ADD_PROPERTY) },Modifier.background(MainGroen)) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "back", tint = AccentLicht)

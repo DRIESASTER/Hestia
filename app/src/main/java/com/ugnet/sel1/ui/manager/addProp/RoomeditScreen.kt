@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager.addProp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.theme.AccentLicht
 import androidx.compose.material.icons.Icons
@@ -19,6 +19,8 @@ import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.theme.MainGroen
 
@@ -27,27 +29,43 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        viewmodel.getRoomsForProperty(propid)
-    }
-
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
         content = { padding ->
+
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
-                RoomOverview(rooms = viewmodel.processRooms(), onDeleteClicked = {viewmodel.deleteRoomFromProperty(it)} )
+                Spacer(modifier = Modifier.height(10.dp))
+                Log.d("RoomeditScreen", "propid: ${propid.toString()}")
+            viewmodel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{
+            when (it) {
+                is Response.Success -> {
+                    if (it.data.isEmpty()) {
+                        Text(text = "No rooms found")
+                    } else {
+                        RoomOverview(
+                            rooms = viewmodel.processRooms(),
+                            onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it) })
+                    }
+                }
+                else -> {
+                    CircularProgressIndicator()}
+            }
                 DropdownMenu(
                     onDismissRequest = { isPopupVisible = false },
                     expanded = isPopupVisible,
                 ) {
                     AddRoomPopup(
+                        propid = propid,
                         onClose = { isPopupVisible = false },
-                        onAddRoom = { roomname,tenantmail -> viewmodel.addroom(roomname,tenantmail)
-                            isPopupVisible = false})
+                        onAddRoom = { propid,roomname, tenantmail ->
+                            viewmodel.addroom(propid,roomname, tenantmail)
+                            isPopupVisible = false
+                        })
                 }
+            }
                 AddRoomButton(onClick = { isPopupVisible = true })
             } }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { /*nav to the mainscreen of manager*/ },Modifier.background(
+                IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE) },Modifier.background(
                     AccentLicht, RoundedCornerShape(20.dp)
                 )) {
                     Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
@@ -62,21 +80,23 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
 
 @Composable
 fun AddRoomButton(modifier:Modifier = Modifier, onClick: () -> Unit = {}){
-    FloatingActionButton(onClick = onClick ,
-        Modifier
-            .background(Color.Transparent)
-            .border(
-                1.dp,
-                Color.DarkGray, RoundedCornerShape(30.dp)
-            )) {
-        Text(text ="Add Room", color = Color.White, modifier = Modifier.padding(start= 10.dp, end = 10.dp))
+    FloatingActionButton(onClick = onClick , backgroundColor = MainGroen, modifier =
+    Modifier
+        .background(Color.Transparent)
+        .border(
+            1.dp,
+            Color.DarkGray, RoundedCornerShape(30.dp)
+        )
+        .wrapContentSize()) {
+        Text(text ="Add Room" ,color = Color.White, modifier = Modifier.padding(start= 10.dp, end = 10.dp))
     }
 }
 
 @Composable
 fun AddRoomPopup(
+    propid:String,
     onClose: () -> Unit,
-    onAddRoom: (roomName: String, tenantName: String) -> Unit
+    onAddRoom: (propid:String,roomName: String, tenantMail: String) -> Unit
 ) {
     var roomName by remember { mutableStateOf("") }
     var tenantMail by remember { mutableStateOf("") }
@@ -111,7 +131,7 @@ fun AddRoomPopup(
                     Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
                 }
                 Button(
-                    onClick = { onAddRoom(roomName, tenantMail) },
+                    onClick = { onAddRoom(propid,roomName, tenantMail) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
                     Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
@@ -124,6 +144,6 @@ fun AddRoomPopup(
 @Preview
 @Composable
 fun AddRoomPopupPreview() {
-    AddRoomPopup(onClose = {}, onAddRoom = { _, _ -> })
+    AddRoomPopup(propid = "",onClose = {}, onAddRoom = {_, _, _ -> })
 }
 

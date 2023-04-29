@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ResidentHomeScreen(Data: ResidentHomeVM = hiltViewModel()) {
+fun ResidentHomeScreen(viewModel: ResidentHomeVM = hiltViewModel()) {
     val drawerItems = listOf(
         MenuItem(
             name = "Profile",
@@ -59,10 +59,15 @@ fun ResidentHomeScreen(Data: ResidentHomeVM = hiltViewModel()) {
                 items = drawerItems,
                 onItemClick = {
                     currentTitle = it.name
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.close()
+                    }
                 }
             )
         },
-        content = { GetCorrectDisplay(currentTitle, Data) }
+        content = {
+            GetCorrectDisplay(currentTitle, viewModel)
+        }
     )
 }
 
@@ -70,8 +75,8 @@ fun ResidentHomeScreen(Data: ResidentHomeVM = hiltViewModel()) {
 @Composable
 fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM) {
     when (title) {
-        "Profile" -> Text(text = "TODO: implement profile screen")
-        "Issues" -> ResidentIssueOverview(viewModel = vm,issues = emptyList())
+        "Profile" -> ResidentProfileScreen(viewModel = vm)
+        "Issues" -> ResidentIssueOverview(viewModel = vm)
         "Logout" -> Text(text = "TODO: implement Logout")
     }
 }

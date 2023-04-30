@@ -55,6 +55,8 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
 
     fun getUser(userid: String): Flow<UserResponse> = useCases.getUser(userid)
 
+    fun getCurrentUser(): Flow<UserResponse> = useCases.getUser(Firebase.auth.currentUser?.uid.toString())
+
 
 //    fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
 //        useCases.getAccesibleRoomsPerUser(userId).collect { response ->

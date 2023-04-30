@@ -65,6 +65,9 @@ object AppModule {
         getUserByEmail = GetUserByEmail(usersRepo),
         getIssuesPerProperty = GetIssuesPerProperty(issuesRepo),
         getIssuesForRenter = GetIssuesForRenter(issuesRepo),
-        getRentedProperties = GetRentedProperties(propertyRepo)
+        getRentedProperties = GetRentedProperties(propertyRepo),
+        getRentersList = GetRentersList(propertyRepo),
+        addUserToProperty = AddUserToProperty(propertyRepo),
+        removeUserFromProperty = RemoveUserFromProperty(propertyRepo)
     )
 }

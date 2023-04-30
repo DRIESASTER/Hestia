@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import android.util.Log
 import androidx.compose.runtime.collectAsState
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,55 +45,13 @@ class RoomsRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
-
-
-//    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> =
-//        callbackFlow {
-////        val properties = dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener{snapshot, e ->
-////        val propertiesResponse = if (snapshot != null) {
-////            val properties = snapshot.toObjects(Property::class.java)
-////            properties.forEach() { property ->
-////                dbRef.collection("properties/${property.propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", userId)).addSnapshotListener{snapshot, e ->
-////                    val roomsResponse = if (snapshot != null) {
-////                        val rooms = snapshot.toObjects(Room::class.java)
-////                        Response.Success(rooms)
-////                    } else {
-////                        Response.Failure(e)
-////                    }
-////                    trySend(roomsResponse)
-////                }
-////            }
-////        } else {
-////            Response.Failure(e)
-////        }
-////    }
-////        awaitClose { properties.remove() }
-////    }
-//
-////        val query = db.collection("cities")
-////        val countQuery = query.count()
-////        countQuery.get(AggregateSource.SERVER).addOnCompleteListener { task ->
-////            if (task.isSuccessful) {
-////                // Count fetched successfully
-////                val snapshot = task.result
-////                Log.d(TAG, "Count: ${snapshot.count}")
-////            } else {
-////                Log.d(TAG, "Count failed: ", task.getException())
-////            }
-////        }
-//        }
-//
-//    //3 cases : all the rooms where huurderId = userId, "ALL" or ArrayContains
-
-
     override suspend fun addRoomToPropertyInFirestore(
         pandId: String,
         naam: String,
         huurderId: String?
     ): AddRoomResponse {
         return try {
-            dbRef.collection("properties/${pandId}").document()
-                .update("huurders", FieldValue.arrayUnion((huurderId)))
+            Log.d("HIERRRR", "${huurderId},+ ${pandId}")
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(
                 naam = naam,

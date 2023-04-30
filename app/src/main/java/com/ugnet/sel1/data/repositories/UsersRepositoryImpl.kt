@@ -60,7 +60,7 @@ class UsersRepositoryImpl @Inject constructor(
                 accountType = role,
                 uid = userId
             )
-            dbRef.document("users/${userId}").set(user).await()
+            dbRef.document("users/${email}").set(user).await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

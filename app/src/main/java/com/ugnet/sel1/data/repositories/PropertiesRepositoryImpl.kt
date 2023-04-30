@@ -1,6 +1,7 @@
 package com.ugnet.sel1.data.repositories
 
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
@@ -47,6 +48,19 @@ class PropertiesRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
+    override fun getRentersList(propertyId:String) = callbackFlow {
+        val snapshotListener = dbRef.collection("properties/${propertyId}/huurders").addSnapshotListener { snapshot, e ->
+            val usersResponse = if (snapshot != null) {
+                val users = snapshot.toObjects(User::class.java)
+                Response.Success(users)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(usersResponse)
+        }
+        awaitClose { snapshotListener.remove() }
+    }
+
 
     override suspend fun addPropertyToFirestore(
         huisnummer: Int,
@@ -73,6 +87,8 @@ class PropertiesRepositoryImpl @Inject constructor(
             Response.Failure(e)
         }
     }
+
+
 
 
 
@@ -116,7 +132,24 @@ class PropertiesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addUserToProperty(userId: String, propertyId: String): Response<Boolean> {
-        TODO("Not yet implemented")
+        return try{
+            dbRef.collection("properties").document(propertyId).update("huurders", userId).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun removeUserFromProperty(
+        userId: String,
+        propertyId: String
+    ): Response<Boolean> {
+        return try{
+            dbRef.collection("properties/${propertyId}").document().update("huurders", FieldValue.arrayRemove(userId)).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
     }
 
 }

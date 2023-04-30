@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.DeleteRoomResponse
 import com.ugnet.sel1.domain.repository.RoomsResponse
+import com.ugnet.sel1.domain.repository.UsersResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.components.RoomData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,10 +24,13 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
     var removeRoomsResponse by mutableStateOf<DeleteRoomResponse>(Response.Loading)
         private set
 
+    var renters by mutableStateOf<UsersResponse>(Response.Loading)
+        private set
+
     var roomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
-
+    fun getUserbyMail(email:String): Flow<UsersResponse> = useCases.getUserByEmail(email)
 
     fun getRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getRoomsForProperty(propertyId)
 
@@ -39,9 +43,14 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
         removeRoomsResponse = useCases.deleteRoomFromProperty(propid, roomId)
     }
 
+    fun getRentinglist (propid:String) = viewModelScope.launch {
+        renters = Response.Loading
+        //get list of renters from property usecase in progress
+    }
 
     fun addroom(propid:String,roomName: String, tenantName: String) = viewModelScope.launch {
         useCases.addRoomToProperty(propid,roomName, tenantName)
+
         Log.d("RoomEditVM", "addroom: $propid $roomName $tenantName")
     }
 

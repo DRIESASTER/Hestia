@@ -28,7 +28,6 @@ import com.ugnet.sel1.ui.components.IssueCard
 fun ResidentIssueOverview(
     viewModel: ResidentHomeVM,
     modifier: Modifier = Modifier,
-    issues:List<IssueData>,
 ) {
     Surface(
         modifier = modifier,
@@ -99,7 +98,7 @@ fun ResidentIssueOverview(
                                 }
                             }
                         }
-                        addIssueButton {}
+                        addIssueButton { println("Add issue temp") }
                     }
                 }
                 else -> {

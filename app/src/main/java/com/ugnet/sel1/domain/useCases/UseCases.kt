@@ -20,5 +20,7 @@ data class UseCases constructor(
     val getIssuesPerProperty: GetIssuesPerProperty,
     val getIssuesForRenter: GetIssuesForRenter,
     val getRentedProperties: GetRentedProperties,
-    val getRentersList: GetRentersList
+    val getRentersList: GetRentersList,
+    val addUserToProperty: AddUserToProperty,
+    val removeUserFromProperty: RemoveUserFromProperty
 )

@@ -31,7 +31,12 @@ interface PropertiesRepository {
     suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse
 
     suspend fun addUserToProperty(userId:String, propertyId:String) : Response<Boolean>
+
+    suspend fun removeUserFromProperty(userId:String, propertyId:String) : Response<Boolean>
     fun getRentersList(propertyId: String): Flow<Response<MutableList<User>>>
+
+
+
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 

@@ -1,6 +1,7 @@
 package com.ugnet.sel1.data.repositories
 
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
@@ -93,6 +94,8 @@ class PropertiesRepositoryImpl @Inject constructor(
 
 
 
+
+
 //    override suspend fun addPropertyToFirestore(
 //        huisnummer: Int,
 //        type: String,
@@ -129,7 +132,24 @@ class PropertiesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addUserToProperty(userId: String, propertyId: String): Response<Boolean> {
-        TODO("Not yet implemented")
+        return try{
+            dbRef.collection("properties").document(propertyId).update("huurders", userId).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun removeUserFromProperty(
+        userId: String,
+        propertyId: String
+    ): Response<Boolean> {
+        return try{
+            dbRef.collection("properties/${propertyId}").document().update("huurders", FieldValue.arrayRemove(userId)).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
     }
 
 }

@@ -6,5 +6,5 @@ import com.ugnet.sel1.domain.repository.UsersRepository
 class AddUserToProperty constructor(
     private val repo: PropertiesRepository
 ) {
-//    suspend operator fun invoke(userId:String, propertyId:String) = repo.addUserToPropertyInFirestore(userId, propertyId)
+    suspend operator fun invoke(userId:String, propertyId:String) = repo.addUserToProperty(userId, propertyId)
 }

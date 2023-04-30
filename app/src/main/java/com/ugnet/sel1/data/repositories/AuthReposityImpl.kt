@@ -14,6 +14,7 @@ import com.ugnet.sel1.UserSession
 import com.ugnet.sel1.authentication.selection.*
 import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.repository.UsersRepository
 import com.ugnet.sel1.domain.useCases.UseCases
@@ -31,10 +32,23 @@ import javax.inject.Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val usersRepository: UsersRepository,
-    private val useCases: UseCases
 ) : AuthRepository {
 
     override val currentUser get() = auth.currentUser
+
+    override val currentUserId: String
+        get() = auth.currentUser?.uid.orEmpty()
+
+
+/*    override val currentUser: Flow<User>
+        get() = callbackFlow {
+            val listener =
+                FirebaseAuth.AuthStateListener { auth ->
+                    this.trySend(auth.currentUser?.let { User(it.uid) } ?: User())
+                }
+            auth.addAuthStateListener(listener)
+            awaitClose { auth.removeAuthStateListener(listener) }
+        }*/
 
 
     //private val _currentUser = MutableStateFlow<FirebaseUser?>(auth.currentUser)

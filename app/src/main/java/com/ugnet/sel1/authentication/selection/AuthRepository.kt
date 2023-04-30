@@ -4,7 +4,7 @@ package com.ugnet.sel1.authentication.selection
 
 import com.google.firebase.auth.FirebaseUser
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.repository.UserResponse
+import com.ugnet.sel1.domain.models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,9 +19,9 @@ typealias AuthStateResponse = StateFlow<Boolean>
 
 interface AuthRepository {
 
-    val currentUser: FirebaseUser?
+    val currentUserId: String
 
-   // val currentUser: StateFlow<FirebaseUser?>
+    val currentUser: FirebaseUser?
 
     suspend fun checkIfEmailExists(email: String): Boolean
     suspend fun firebaseSignUpWithEmailAndPassword(email: String, password: String, role : String, surname : String, name : String): SignUpResponse

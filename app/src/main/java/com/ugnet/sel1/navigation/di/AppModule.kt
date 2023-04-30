@@ -1,5 +1,6 @@
 package com.ugnet.sel1.navigation.di
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -39,7 +40,7 @@ object AppModule {
 
     @Provides
     fun provideUsersRepository(
-        dbRef: FirebaseFirestore
+        dbRef: FirebaseFirestore,
     ): UsersRepository = UsersRepositoryImpl(dbRef)
 
     @Provides

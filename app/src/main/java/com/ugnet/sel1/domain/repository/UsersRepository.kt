@@ -13,6 +13,7 @@ interface UsersRepository {
 
     fun getUserFromFirestore(id: String): Flow<UserResponse>
 
+
     fun getUserByEmail(email: String): Flow<UsersResponse>
 
 
@@ -23,4 +24,6 @@ interface UsersRepository {
         email: String,
         role: String
     ) : AddUserResponse
+
+    suspend fun getUser(personId: String): UserResponse?
 }

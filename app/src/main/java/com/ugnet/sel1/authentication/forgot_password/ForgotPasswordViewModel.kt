@@ -18,21 +18,26 @@ class ForgotPasswordViewModel @Inject constructor(
     private val repo : AuthRepository,
 ) : ViewModel() {
 
-
     private val _email = MutableLiveData("")
-
     val email: LiveData<String> = _email
+
+    private val _emailError = MutableLiveData<String?>()
+    val emailError: LiveData<String?> = _emailError
 
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
     }
 
-    fun onResetPasswordClick(navigateTo: (String) -> Unit, email: String) {
+    fun onResetPasswordClick(navigateTo: (String) -> Unit) {
         viewModelScope.launch {
-            Log.d("EMail on reset", email)
-            if (!email.isValidEmail() || !repo.checkIfEmailExists(email)) {
-                // todo snackbarmanager show if unvalid
+            val email = _email.value ?: ""
+            Log.d("onresetpassowrclick", email)
+            if (email.isBlank() || !email.isValidEmail()) {
+                _emailError.postValue("Please enter a valid email address")
+            } else if (!repo.checkIfEmailExists(email)) {
+                _emailError.postValue("Email not found")
             } else {
+                Log.d("sendPaswwordreset", email)
                 repo.sendPasswordResetEmail(email)
                 navigateTo(MyDestinations.LOGIN_ROUTE)
             }

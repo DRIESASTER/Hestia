@@ -1,4 +1,8 @@
 <resources>
+    <string name="generic_error">Something wrong happened. Please try again.</string>
+    <string name="empty_password_error">Something wrong happened. Please try again.</string>
+    <string name="email_error">Something wrong happened. Please try again.</string>
+    <string name="login_error">Login Failed</string>
     <string name="app_name">sel1</string>
     <string name="web_client_id">690801049307-hqg6d16hir154253f0e92lj3nie9p32s.apps.googleusercontent.com</string>
 </resources>

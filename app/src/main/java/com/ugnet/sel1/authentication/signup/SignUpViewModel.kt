@@ -10,11 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.authentication.selection.SendEmailVerificationResponse
 import com.ugnet.sel1.authentication.selection.SignUpResponse
+import com.ugnet.sel1.common.snackbar.SnackbarManager
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.ugnet.sel1.R.string as AppText
 
 
 @HiltViewModel
@@ -45,7 +47,8 @@ class SignUpViewModel @Inject constructor(
                 openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.SIGN_UP_ROUTE)
             }
             is Response.Failure -> {
-                //openAndPopUp("Error", (signUpResponse as Response.Failure).throwable.localizedMessage ?: "Error signing up")
+                // todo
+                SnackbarManager.showMessage(AppText.login_error)
             }
             else -> { /* Do nothing */ }
         }

@@ -1,29 +1,38 @@
 package com.ugnet.sel1.navigation
 
+import android.content.res.Resources
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.*
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.ugnet.sel1.AuthViewModel
+import com.ugnet.sel1.common.snackbar.SnackbarManager
+import com.ugnet.sel1.common.snackbar.SnackbarMessage.Companion.toMessage
 import com.ugnet.sel1.domain.models.User
-import com.ugnet.sel1.snackbar.SnackbarManager
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
-@Composable
-fun rememberAppState(): AppState {
-    val navController = rememberNavController()
-    val coroutineScope = rememberCoroutineScope()
-    val snackbarManager = SnackbarManager(coroutineScope)
-    return remember { AppState(navController, coroutineScope, snackbarManager) }
-}
 
+
+@Stable
 class AppState(
+    val scaffoldState: ScaffoldState,
     val navController: NavHostController,
-    private val coroutineScope: CoroutineScope,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
+    private val resources: Resources,
+    coroutineScope: CoroutineScope
 ) {
+    init {
+        coroutineScope.launch {
+            snackbarManager.snackbarMessages.filterNotNull().collect { snackbarMessage ->
+                val text = snackbarMessage.toMessage(resources)
+                scaffoldState.snackbarHostState.showSnackbar(text)
+            }
+        }
+    }
+
+
+
 
     val userState = FirebaseAuth.getInstance().currentUser != null
 

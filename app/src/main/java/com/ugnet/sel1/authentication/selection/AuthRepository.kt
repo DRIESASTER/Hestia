@@ -19,7 +19,7 @@ typealias AuthStateResponse = StateFlow<Boolean>
 
 interface AuthRepository {
 
-    val currentUserId: String
+    val currentUserEmail: String
 
     val currentUser: FirebaseUser?
 

@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.runtime.*
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,10 +13,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ugnet.sel1.authentication.selection.RoleSelectionViewModel
-import com.ugnet.sel1.authentication.signup.components.SignUp
+import com.ugnet.sel1.authentication.components.HestiaTextField
+import com.ugnet.sel1.authentication.components.PasswordTextField
 import com.ugnet.sel1.navigation.MyDestinations
-import com.ugnet.sel1.ui.components.showMessage
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
@@ -29,10 +25,7 @@ fun SignUpScreen(
     openAndPopUp: (String, String) -> Unit,
     role: State<String?>,
 ) {
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val surname = remember { mutableStateOf("") }
-    val name = remember { mutableStateOf("") }
+    val state by viewModel.uiState
     val context = LocalContext.current
 
     val scrollState = rememberScrollState()
@@ -59,55 +52,36 @@ fun SignUpScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
-                value = name.value,
-                onValueChange = { name.value = it },
-                label = { Text("Name", color = MainGroen) },
+            // Replace the OutlinedTextField for name and surname with your desired implementation
+
+            HestiaTextField(
+                value = state.name,
+                onValueChange = { newValue -> viewModel.onNameChange(newValue) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = MainGroen,
-                    cursorColor = MainGroen
-                )
+                label = { Text("Name", color = MainGroen) }
+            )
+
+
+            HestiaTextField(
+                value = state.surname,
+                onValueChange = { newValue -> viewModel.onSurnameChange(newValue) },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Surname", color = MainGroen) }
+            )
+
+            HestiaTextField(
+                value = state.email,
+                onValueChange = { newValue -> viewModel.onEmailChange(newValue) },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Email", color = MainGroen) }
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = surname.value,
-                onValueChange = { surname.value = it },
-                label = { Text("Surname", color = MainGroen) },
+            PasswordTextField(
+                value = state.password,
+                onValueChange = { newValue -> viewModel.onPasswordChange(newValue) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = MainGroen,
-                    cursorColor = MainGroen
-                )
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = email.value,
-                onValueChange = { email.value = it },
-                label = { Text("Email", color = MainGroen) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = MainGroen,
-                    cursorColor = MainGroen
-                )
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = password.value,
-                onValueChange = { password.value = it },
-                label = { Text("Password", color = MainGroen) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = MainGroen,
-                    cursorColor = MainGroen
-                )
+                label = { Text("Password", color = MainGroen) }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -115,16 +89,11 @@ fun SignUpScreen(
                 onClick = {
                     println("Button clicked")
                     viewModel.signUpWithEmailAndPassword(
-                        email.value,
-                        password.value,
                         role.value!!,
-                        name.value,
-                        surname.value,
                         openAndPopUp
                     )
                 },
-                modifier = Modifier.fillMaxWidth
-                    (),
+                modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
             ) {
                 Text("Create Account", color = AccentLicht)
@@ -145,14 +114,6 @@ fun SignUpScreen(
                 Text("Already have an account? Login")
             }
 
-            SignUp(
-                sendEmailVerification = {
-                    viewModel.sendEmailVerification()
-                },
-                showVerifyEmailMessage = {
-                    showMessage(context, "Verify email")
-                },
-            )
         }
     }
 }

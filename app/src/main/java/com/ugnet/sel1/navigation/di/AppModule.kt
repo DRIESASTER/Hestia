@@ -49,8 +49,10 @@ object AppModule {
         issuesRepo : IssuesRepository,
         roomsRepo: RoomsRepository,
         usersRepo: UsersRepository,
+        getUserRepo : GetUserRepository
     ) = UseCases(
-        getUser = GetUser(usersRepo),
+        //getUser = GetUser(usersRepo),
+        getUser = GetUserTest(getUserRepo),
         getOwnedProperties = GetOwnedProperties(propertyRepo),
         getIssuesForRoom = GetIssuesForRoom(issuesRepo),
         getRoomsForProperty = GetRoomsForProperty(roomsRepo),

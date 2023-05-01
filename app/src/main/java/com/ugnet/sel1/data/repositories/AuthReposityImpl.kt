@@ -36,8 +36,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val currentUser get() = auth.currentUser
 
-    override val currentUserId: String
-        get() = auth.currentUser?.uid.orEmpty()
+
+    override val currentUserEmail: String
+        get() = auth.currentUser?.email.orEmpty()
 
 
 /*    override val currentUser: Flow<User>
@@ -73,11 +74,12 @@ class AuthRepositoryImpl @Inject constructor(
     ): SignUpResponse {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
+            Log.d("firebaseSignup result", result.toString())
             val userId = result.user?.uid ?: throw Exception("User ID not found")
             usersRepository.saveUserData(userId, name, surname,email, role)
-
             Response.Success(true)
         } catch (e: Exception) {
+
             Response.Failure(e)
         }
     }

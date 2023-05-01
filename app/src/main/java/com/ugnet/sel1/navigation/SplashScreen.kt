@@ -1,24 +1,22 @@
 package com.ugnet.sel1.navigation
 
 import android.util.Log
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import com.ugnet.sel1.AuthViewModel
+import com.ugnet.sel1.common.snackbar.SnackbarManager
 import com.ugnet.sel1.domain.models.Response
 
 
+import com.ugnet.sel1.R.string as AppText
 
 @Composable
 fun SplashScreen(
     navigate: (String) -> Unit,
     viewModel: AuthViewModel,
     ) {
+    Log.d("userReponse", viewModel.userResponse.toString())
     LaunchedEffect(viewModel.userResponse) {
         when (viewModel.userResponse) {
             is Response.Loading -> {
@@ -31,13 +29,18 @@ fun SplashScreen(
                 } else if (user?.accountType == "Huurder") {
                     navigate(MyDestinations.HIREE_HOME_ROUTE)
                 } else {
+                    Log.d("user in splashscreen", user.toString())
                     navigate(MyDestinations.ROLE_SELECTION_ROUTE)
                 }
             }
             is Response.Failure -> {
+                SnackbarManager.showMessage(AppText.generic_error);
                 navigate(MyDestinations.ROLE_SELECTION_ROUTE)
             }
         }
+    }
+    if(viewModel.userResponse is Response.Loading){
+        CircularProgressIndicator()
     }
 }
 

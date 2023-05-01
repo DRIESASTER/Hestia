@@ -6,14 +6,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ugnet.sel1.authentication.components.HestiaTextField
+import com.ugnet.sel1.authentication.components.PasswordTextField
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.theme.AccentLicht
@@ -25,9 +26,9 @@ fun LoginScreen(
     navigate: (String) -> Unit,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
 
+
+    val state by viewModel.uiState
     val scrollState = rememberScrollState()
 
     Box(
@@ -47,36 +48,29 @@ fun LoginScreen(
             Text(text = "Login", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = MainGroen)
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
-                value = email.value,
-                onValueChange = { email.value = it },
-                label = { Text("Email", color = MainGroen) },
+            HestiaTextField(
+                value = state.email,
+                onValueChange = { newValue -> viewModel.onEmailChange(newValue) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = MainGroen,
-                    cursorColor = MainGroen
-                )
+                label = { Text("Email", color = MainGroen) }
             )
+
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = password.value,
-                onValueChange = { password.value = it },
-                label = { Text("Password", color = MainGroen) },
+            PasswordTextField(
+                value = state.password,
+                onValueChange = { newValue -> viewModel.onPasswordChange(newValue) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = MainGroen,
-                    cursorColor = MainGroen
-                )
+                label = { Text("Password", color = MainGroen) }
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.onSignInClick(email.value, password.value, navigate) },
+                onClick = { viewModel.onSignInClick(navigate) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
+                colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen),
+                enabled = state.email.isNotEmpty() && state.password.isNotEmpty()
             ) {
                 Text("Login", color = AccentLicht)
             }
@@ -107,6 +101,9 @@ fun LoginScreen(
         }
     }
 }
+
+
+
 
 
 

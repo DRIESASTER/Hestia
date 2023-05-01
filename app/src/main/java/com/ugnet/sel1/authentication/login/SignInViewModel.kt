@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 import com.ugnet.sel1.R.string as AppText
-// source https://medium.com/firebase-developers/how-to-authenticate-to-firebase-using-email-and-password-in-jetpack-compose-bd70ca56ea91
 
 
 @HiltViewModel
@@ -26,12 +25,29 @@ class SignInViewModel @Inject constructor(
     private val repo: AuthRepository,
 ): ViewModel() {
 
+    var uiState = mutableStateOf(LoginUiState())
+        private set
+
+    private val email
+        get() = uiState.value.email
+
+    private val password
+        get() = uiState.value.password
+
+    fun onEmailChange(newValue: String) {
+        uiState.value = uiState.value.copy(email = newValue.filter { !it.isWhitespace()})
+    }
+
+    fun onPasswordChange(newValue: String) {
+        uiState.value = uiState.value.copy(password = newValue.filter { !it.isWhitespace()})
+    }
+
 
     var signInResponse by mutableStateOf<SignInResponse>(Response.Success(false))
         private set
 
-    fun onSignInClick(email: String, password: String, navigate: (String) -> Unit) = viewModelScope.launch {
-        if (!email.isValidEmail()) {
+    fun onSignInClick(navigate: (String) -> Unit) = viewModelScope.launch {
+        if (!repo.checkIfEmailExists(email)) {
             SnackbarManager.showMessage(AppText.email_error)
         } else if (password.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_password_error)
@@ -54,12 +70,5 @@ class SignInViewModel @Inject constructor(
                 else -> {}
             }
         }
-    }
-
-
-
-    fun signInWithEmailAndPassword(email: String, password: String) = viewModelScope.launch {
-        signInResponse = Response.Loading
-        signInResponse = repo.firebaseSignInWithEmailAndPassword(email, password)
     }
 }

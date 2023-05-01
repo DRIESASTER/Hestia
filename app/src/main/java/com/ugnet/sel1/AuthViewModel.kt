@@ -70,6 +70,7 @@ class AuthViewModel @Inject constructor(
 
 
     fun getUser(id: String) = viewModelScope.launch {
+        Log.d("getUser", "oproep")
         useCases.getUser(id).collect { response ->
             userResponse = response
             Log.d("USERRESPONSE", userResponse.toString())

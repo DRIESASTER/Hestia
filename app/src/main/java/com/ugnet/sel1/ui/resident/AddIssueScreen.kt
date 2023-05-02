@@ -7,11 +7,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.ui.components.InputWithTitle
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -43,13 +45,21 @@ fun AddIssueScreen(
             expanded = propertyExpanded,
             onExpandedChange = { propertyExpanded = it }
         ) {
-            TextField(
+            OutlinedTextField(
                 value = "Select property",
                 onValueChange = {},
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = propertyExpanded)
                 },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MainGroen,
+                    unfocusedBorderColor = AccentLicht,
+                    focusedLabelColor = MainGroen,
+                    unfocusedLabelColor = AccentLicht,
+                    cursorColor = MainGroen,
+                    textColor = Color.Black,
+                    backgroundColor = AccentLicht
+                )
             )
             
             ExposedDropdownMenu(expanded = propertyExpanded, onDismissRequest = { propertyExpanded = false }) {

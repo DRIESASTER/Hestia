@@ -111,9 +111,9 @@ fun ResidentIssueOverview(
                                 }
                             }
                         }
-                        addButton(contentDescription = "addIssueButton") {
-                            navigate(MyDestinations.ADD_ISSUE_ROUTE)
-                        }
+                        addButton(contentDescription = "addIssueButton",
+                            modifier = Modifier.padding(15.dp),
+                            onClick = {navigate(MyDestinations.ADD_ISSUE_ROUTE)})
                     }
                 }
                 else -> {

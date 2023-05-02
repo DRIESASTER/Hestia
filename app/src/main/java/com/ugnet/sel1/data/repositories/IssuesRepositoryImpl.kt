@@ -63,23 +63,6 @@ class IssuesRepositoryImpl @Inject constructor(
 
 
 
-
-
-    override fun getIssue(propId:String, issueId:String): Flow<IssueResponse> = callbackFlow {
-        val snapshotListener = dbRef.collection("properties/${propId}/issues").document(issueId).addSnapshotListener{ snapshot, e ->
-            val issueResponse = if (snapshot != null) {
-                val issue = snapshot.toObject(Issue::class.java)
-                Response.Success(issue)
-            } else {
-                Response.Failure(e)
-            }
-            trySend(issueResponse as IssueResponse)
-        }
-        awaitClose { snapshotListener.remove() }
-    }
-
-
-
     override fun getIssuesPerPropertyFromFirestore(
         propertyId: String
     ): Flow<IssuesResponse> = callbackFlow {
@@ -156,8 +139,20 @@ class IssuesRepositoryImpl @Inject constructor(
             }
         }
 
+    override fun getIssue(propertyId: String, issueId: String): Flow<IssueResponse> = callbackFlow {
+        dbRef.collection("properties/${propertyId}/issues").document(issueId).addSnapshotListener { snapshot, e ->
+            val issueResponse = if (snapshot != null) {
+                val issue:Issue = snapshot.toObject(Issue::class.java)!!
+                Response.Success(issue)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(issueResponse)
+        }
+    }
 
-        override suspend fun changeIssueStatusInFirestore(
+
+    override suspend fun changeIssueStatusInFirestore(
             issueId: String,
             status: Status,
             propertyId: String

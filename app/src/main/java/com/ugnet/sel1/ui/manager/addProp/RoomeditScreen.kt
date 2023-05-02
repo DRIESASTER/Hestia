@@ -47,7 +47,8 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
                                         } else {
                                             RoomOverview(
                                                 rooms = it.data,
-                                                onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it) })
+                                                onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it)
+                                                })
                                         }
                                     }
                                     else -> {
@@ -68,8 +69,6 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
                                                 rentlist.add(tenantmail)
                                                 viewmodel.addrenter(propid,tenantmail)
                                             }
-
-                                            viewmodel.getRoomsForProperty(propid)
                                         })
                                 }
                             }

@@ -5,6 +5,7 @@ import com.ugnet.sel1.domain.models.*
 import kotlinx.coroutines.flow.Flow
 
 typealias Issues = List<Issue>
+typealias IssueResponse = Response<Issue>
 typealias IssuesResponse = Response<Issues>
 typealias ChangeIssueStatusResponse = Response<Boolean>
 typealias AddIssueResponse = Response<String>
@@ -28,6 +29,8 @@ interface IssuesRepository {
     fun getIssuesForRenterFromFirestore(propertyId: String, userId: String): Flow<IssuesResponse>
     fun getIssuesPerPropertyFromFirestore(propertyId: String): Flow<IssuesResponse>
     suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
+
+    fun getIssue(propertyId: String, issueId: String): Flow<IssueResponse>
 //
 //    suspend fun changeIssueStatus(issueId: String, status: Status): ChangeIssueStatusResponse
 

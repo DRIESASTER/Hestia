@@ -8,6 +8,7 @@ import com.ugnet.sel1.domain.repository.AddUserResponse
 import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.repository.UsersRepository
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.lang.IllegalArgumentException
@@ -19,7 +20,7 @@ import kotlin.coroutines.suspendCoroutine
 class UsersRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore,
 ): UsersRepository {
-    override fun getUserFromFirestore(id: String) = callbackFlow {
+    override fun getUserFromFirestore(id: String) : Flow<UserResponse> = callbackFlow {
         val snapshotListener = dbRef.collection("users").document(id).addSnapshotListener{ snapshot, e ->
             val managerResponse = if (snapshot != null) {
                 val manager = snapshot.toObject(User::class.java)

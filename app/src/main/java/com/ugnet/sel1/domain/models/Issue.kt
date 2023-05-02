@@ -7,10 +7,10 @@ import java.util.*
 @IgnoreExtraProperties
 
 data class Issue(
-    var beschrijving: String? = null,
-    var titel: String? = null,
+    var beschrijving: String = "",
+    var titel: String = "",
     var datum: Timestamp? = null,
-    var status: Status? = null,
+    var status: Status = Status.notStarted,
     var roomId: String? = null,
     var issueId: String? = null,
     var issueType: IssueType? = null,

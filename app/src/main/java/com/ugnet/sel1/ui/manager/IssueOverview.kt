@@ -61,7 +61,10 @@ fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIs
                                     when (user){
                                         is Response.Success -> {
                                             val username = user.data!!.voornaam + " " + user.data.achternaam
-                                            val route = MyDestinations.ISSUE_ROUTE.replace("{${MyDestinations.IssueArgs.IssueId}}", issue.issueId!!)
+                                            val route = MyDestinations.ISSUE_ROUTE
+                                                .replace("{${MyDestinations.IssueArgs.IssueId}}", issue.issueId!!)
+                                                .replace("{${MyDestinations.IssueArgs.PropId}}", property.propertyId!!)
+
                                             Log.d("IssueOverview", "IssueOverview loading user: $username")
                                             IssueCard(
                                                 id = issue.issueId!!,

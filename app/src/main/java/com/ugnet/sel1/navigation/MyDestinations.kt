@@ -14,11 +14,12 @@ object MyDestinations {
     const val FORGOT_PASSWORD_ROUTE = "forgot_password"
     const val ROOM_EDIT_ROUTE = "room_edit/{propId}"
     const val ADD_ISSUE_ROUTE = "add_issue"
-    const val ISSUE_ROUTE = "issue/{issueId}"
+    const val ISSUE_ROUTE = "issue/{${IssueArgs.IssueId}}/{${IssueArgs.PropId}}"
 
 
     object IssueArgs {
         const val IssueId = "issueId"
+        const val PropId = "propId"
     }
     object RoomEditArgs {
         const val PropId = "propId"

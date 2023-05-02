@@ -70,8 +70,9 @@ fun LoginScreen(
                 onClick = { viewModel.onSignInClick(navigate) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen),
-                enabled = state.email.isNotEmpty() && state.password.isNotEmpty()
-            ) {
+                enabled = state.email.isNotEmpty() && state.password.isNotEmpty() && viewModel.signInResponse !is Response.Loading,
+
+                ) {
                 Text("Login", color = AccentLicht)
             }
 
@@ -80,16 +81,18 @@ fun LoginScreen(
             TextButton(
                 onClick = { navigate(MyDestinations.SIGN_UP_ROUTE) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.textButtonColors(contentColor = MainGroen)
-            ) {
+                colors = ButtonDefaults.textButtonColors(contentColor = MainGroen),
+                enabled = viewModel.signInResponse !is Response.Loading,
+                ) {
                 Text("Don't have an account? Sign Up")
             }
 
             TextButton(
                 onClick = { navigate(MyDestinations.FORGOT_PASSWORD_ROUTE) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.textButtonColors(contentColor = MainGroen)
-            ) {
+                colors = ButtonDefaults.textButtonColors(contentColor = MainGroen),
+                enabled = viewModel.signInResponse !is Response.Loading,
+                ) {
                 Text("Forgot password?")
             }
 

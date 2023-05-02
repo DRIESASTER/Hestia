@@ -22,12 +22,14 @@ import com.ugnet.sel1.ui.theme.MainGroen
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.ui.theme.AccentLicht
 import androidx.compose.runtime.collectAsState
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.IssueCard
 
 @Composable
 fun ResidentIssueOverview(
     viewModel: ResidentHomeVM,
     modifier: Modifier = Modifier,
+    navigate : (String) -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -98,7 +100,7 @@ fun ResidentIssueOverview(
                                 }
                             }
                         }
-                        addIssueButton { println("Add issue temp") }
+                        addIssueButton { navigate(MyDestinations.ADD_ISSUE_ROUTE) }
                     }
                 }
                 else -> {

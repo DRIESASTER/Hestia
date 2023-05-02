@@ -13,6 +13,13 @@ object MyDestinations {
     const val EMAIL_VER_ROUTE = "email_ver"
     const val FORGOT_PASSWORD_ROUTE = "forgot_password"
     const val ROOM_EDIT_ROUTE = "room_edit/{propId}"
+    const val ADD_ISSUE_ROUTE = "add_issue"
+    const val ISSUE_ROUTE = "issue/{issueId}"
+
+
+    object IssueArgs {
+        const val IssueId = "issueId"
+    }
     object RoomEditArgs {
         const val PropId = "propId"
     }

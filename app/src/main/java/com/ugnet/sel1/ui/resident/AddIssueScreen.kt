@@ -14,7 +14,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddIssueScreen(viewModel: ResidentHomeVM) {
+fun AddIssueScreen(viewModel: ResidentHomeVM, navigate : (String) -> Unit) {
     var propertyExpanded by remember { mutableStateOf(false) }
     var roomExpanded by remember { mutableStateOf(false) }
     var typeExpanded by remember { mutableStateOf(false) }

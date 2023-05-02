@@ -2,6 +2,7 @@ package com.ugnet.sel1.navigation.NavGraphBuilder
 
 import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -18,6 +19,8 @@ import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreen
+import com.ugnet.sel1.ui.manager.issues.IssueDetailScreen
+import com.ugnet.sel1.ui.resident.AddIssueScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
 @ExperimentalMaterialApi
@@ -57,12 +60,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.MANAGER_HOME_ROUTE) {
-        ManagerHomeScreen(openAndPopUp = { route, popUp ->
-            appState.navigateAndPopUp(
-                route,
-                popUp
-            )
-        })
+        ManagerHomeScreen(Data = hiltViewModel(), navigate = { route -> appState.navigate(route) })
     }
 
 
@@ -75,16 +73,30 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         RoomeditScreen(propid = propId, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
+    composable(
+        MyDestinations.ISSUE_ROUTE,
+        arguments = listOf(navArgument(MyDestinations.IssueArgs.IssueId) { type = NavType.StringType })
+    ) { backStackEntry ->
+        val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
+        Log.d("ROUTING Issue edit", "")
+        IssueDetailScreen(issueId = issueId, issueDetailVM = hiltViewModel())
+    }
+
+
+    composable(MyDestinations.ADD_ISSUE_ROUTE){
+        AddIssueScreen(navigate = { route -> appState.navigate(route) }, viewModel = hiltViewModel())
+    }
+
+    //composable(MyDestinations.)
+
 
     composable(MyDestinations.HIREE_HOME_ROUTE) {
-        ResidentHomeScreen()
+        ResidentHomeScreen(navigate =  { route -> appState.navigate(route) })
     }
 
     composable(MyDestinations.ADD_PROPERTY) {
         AddPropMainScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, navigate =  { route -> appState.navigate(route) }
         ) { propId: String -> appState.setPropid(propId) }
-
-
     }
 
 

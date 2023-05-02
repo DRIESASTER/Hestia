@@ -15,9 +15,26 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.authentication.components.HestiaTextField
 import com.ugnet.sel1.authentication.components.PasswordTextField
+import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
+/*@Composable
+fun SingUpRoute(
+    viewModel: SignUpViewModel = hiltViewModel(),
+    openAndPopUp: (String, String) -> Unit,
+    role: State<String?>,
+){
+    val state by viewModel.uiState
+    val context = LocalContext.current
+
+    val scrollState = rememberScrollState()
+    when(viewModel.signUpResponse) {
+        is Response.Loading -> CircularProgressIndicator()
+        is Response.Success -> SignUpScreen
+
+
+}*/
 
 @Composable
 fun SignUpScreen(
@@ -93,6 +110,7 @@ fun SignUpScreen(
                         openAndPopUp
                     )
                 },
+                enabled = viewModel.signUpResponse !is Response.Loading,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
             ) {
@@ -109,10 +127,16 @@ fun SignUpScreen(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = viewModel.signUpResponse !is Response.Loading,
                 colors = ButtonDefaults.textButtonColors(contentColor = MainGroen)
             ) {
                 Text("Already have an account? Login")
             }
+            if (viewModel.signUpResponse is Response.Loading) {
+                CircularProgressIndicator(
+                )
+            }
+
 
         }
     }

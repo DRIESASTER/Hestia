@@ -32,7 +32,7 @@ class AppState(
     }
 
 
-
+    var shouldRefreshData by mutableStateOf(false)
 
     val userState = FirebaseAuth.getInstance().currentUser != null
 

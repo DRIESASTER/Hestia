@@ -21,26 +21,6 @@ import com.ugnet.sel1.navigation.NavGraphBuilder.hestiaGraph
 import kotlinx.coroutines.CoroutineScope
 
 
-/*@Composable
-@ExperimentalMaterialApi
-fun HestiaApp(viewModel: AuthViewModel) {
-
-
-    Surface(color = MaterialTheme.colors.background) {
-        val appState = rememberAppState()
-        val startDestination = when (appState.userState) {
-            true -> MyDestinations.SPLASH_ROUTE
-            false -> MyDestinations.ROLE_SELECTION_ROUTE
-        }
-            NavHost(
-                navController = appState.navController,
-                startDestination = startDestination,
-            ) {
-                hestiaGraph(appState, viewModel)
-
-            }
-    }
-}*/
 
 @Composable
 @ExperimentalMaterialApi

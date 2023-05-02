@@ -2,27 +2,15 @@ package com.ugnet.sel1.data.repositories
 
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.UserSession
 import com.ugnet.sel1.authentication.selection.*
-import com.ugnet.sel1.domain.models.Manager
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.models.User
-import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.repository.UsersRepository
-import com.ugnet.sel1.domain.useCases.UseCases
-import com.ugnet.sel1.navigation.AppState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 import javax.inject.Inject
@@ -40,20 +28,6 @@ class AuthRepositoryImpl @Inject constructor(
     override val currentUserEmail: String
         get() = auth.currentUser?.email.orEmpty()
 
-
-/*    override val currentUser: Flow<User>
-        get() = callbackFlow {
-            val listener =
-                FirebaseAuth.AuthStateListener { auth ->
-                    this.trySend(auth.currentUser?.let { User(it.uid) } ?: User())
-                }
-            auth.addAuthStateListener(listener)
-            awaitClose { auth.removeAuthStateListener(listener) }
-        }*/
-
-
-    //private val _currentUser = MutableStateFlow<FirebaseUser?>(auth.currentUser)
-    //override val currentUser: StateFlow<FirebaseUser?> get() = _currentUser.asStateFlow()
 
     override suspend fun checkIfEmailExists(email: String): Boolean {
         return try {

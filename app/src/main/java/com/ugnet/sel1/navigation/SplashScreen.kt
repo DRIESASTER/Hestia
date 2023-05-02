@@ -29,7 +29,7 @@ fun SplashScreen(
                 } else if (user?.accountType == "Huurder") {
                     navigate(MyDestinations.HIREE_HOME_ROUTE)
                 } else {
-                    Log.d("user in splashscreen", user.toString())
+                    SnackbarManager.showMessage(AppText.generic_error)
                     navigate(MyDestinations.ROLE_SELECTION_ROUTE)
                 }
             }

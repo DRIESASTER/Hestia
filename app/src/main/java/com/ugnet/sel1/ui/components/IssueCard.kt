@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
+import androidx.compose.foundation.clickable
 
 @Composable
 fun IssueCard(id:String,
@@ -45,7 +46,9 @@ fun IssueCard(id:String,
         .padding(10.dp)
         .background(Color.Transparent)
         .clip(RoundedCornerShape(10.dp))
-        .wrapContentWidth(), contentColor = Color.Transparent) {
+        .wrapContentWidth()
+        .clickable(onClick = onClick), // Add the clickable modifier here
+        contentColor = Color.Transparent) {
             //everythingcontainer
             Row(modifier = Modifier
                 .background(MainGroen)

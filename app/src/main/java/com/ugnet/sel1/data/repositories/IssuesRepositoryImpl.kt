@@ -31,6 +31,39 @@ class IssuesRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getIssueMessages(issueId: String): Flow<Response<List<Message>>> = callbackFlow {
+        val snapshotListener =
+            dbRef.collection("properties/${issueId}/messages").orderBy("timestamp")
+                .addSnapshotListener { snapshot, e ->
+                    val messageResponse = if (snapshot != null) {
+                        val messages = snapshot.toObjects(Message::class.java)
+                        Response.Success(messages)
+                    } else {
+                        Response.Failure(e)
+                    }
+                    trySend(messageResponse)
+                }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+
+    override fun sendMessage(issueId: String, message: Message) {
+        val newMessage = hashMapOf(
+            "senderEmail" to message.senderEmail,
+            "messageText" to message.messageText,
+            "timestamp" to message.timestamp
+        )
+        dbRef.collection("properties").document(issueId).collection("messages").add(newMessage)
+    }
+
+
+
+
+
+
+
 
     override fun getIssue(propId:String, issueId:String): Flow<IssueResponse> = callbackFlow {
         val snapshotListener = dbRef.collection("properties/${propId}/issues").document(issueId).addSnapshotListener{ snapshot, e ->
@@ -89,6 +122,9 @@ class IssuesRepositoryImpl @Inject constructor(
             Response.Failure(e)
         }
     }
+
+
+
 
     override fun getIssuesForRenterFromFirestore(
         propertyId: String,

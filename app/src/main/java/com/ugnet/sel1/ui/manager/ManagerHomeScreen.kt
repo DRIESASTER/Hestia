@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 
 fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false,
-                      openAndPopUp: (String, String) -> Unit){
+                      navigate: (String) -> Unit){
     //data
     val drawerItems = listOf(
         MenuItem(
@@ -66,7 +66,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         topBarTitle = currentTitle
     )}, drawerContent = {
             DrawerHeader()
-            DrawerBody(items=drawerItems,onItemClick={item -> openAndPopUp(item.route, MyDestinations.MANAGER_HOME_ROUTE)})
+            DrawerBody(items=drawerItems,onItemClick={item -> navigate(item.route)})
         }, content={ padding ->
 
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,modifier = Modifier
@@ -90,7 +90,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                 .wrapContentWidth(Alignment.Start)) {
                 if (!Data.currentState) {
                     /*show issues overview*/
-                    IssuesOverview(viewModel = Data)
+                    IssuesOverview(viewModel = Data, navigate = navigate)
 //                    when (val allissues = Data.issuesForManagerResponse) {
 //                        is Response.Success -> {
 //                            if (allissues.data.isEmpty()) {
@@ -128,7 +128,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             }
             }
     },
-        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {openAndPopUp(MyDestinations.ADD_PROPERTY, MyDestinations.MANAGER_HOME_ROUTE)})}}
+        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {navigate(MyDestinations.ADD_PROPERTY)})}}
 
     )
 

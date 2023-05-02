@@ -70,6 +70,7 @@ object AppModule {
         getRentedProperties = GetRentedProperties(propertyRepo),
         getRentersList = GetRentersList(propertyRepo),
         addUserToProperty = AddUserToProperty(propertyRepo),
-        removeUserFromProperty = RemoveUserFromProperty(propertyRepo)
+        removeUserFromProperty = RemoveUserFromProperty(propertyRepo),
+        getIssue = GetIssue(issuesRepo),
     )
 }

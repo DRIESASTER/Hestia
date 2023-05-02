@@ -32,6 +32,18 @@ class IssuesRepositoryImpl @Inject constructor(
     }
 
 
+    override fun getIssue(propId:String, issueId:String): Flow<IssueResponse> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties/${propId}/issues").document(issueId).addSnapshotListener{ snapshot, e ->
+            val issueResponse = if (snapshot != null) {
+                val issue = snapshot.toObject(Issue::class.java)
+                Response.Success(issue)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(issueResponse as IssueResponse)
+        }
+        awaitClose { snapshotListener.remove() }
+    }
 
 
 
@@ -84,23 +96,6 @@ class IssuesRepositoryImpl @Inject constructor(
     ): Flow<IssuesResponse> {
         TODO("Not yet implemented")
     }
-//    ) = callbackFlow {
-//        val id = dbRef.collection("properties/${roomId}/issues").document().id
-//        val issue = hashMapOf(
-//            "titel" to titel,
-//            "beschrijving" to beschrijving,
-//            "roomId" to roomId,
-//            "issueType" to issueType.toString(),
-//            "status" to Status.notStarted.toString(),
-//            "datum" to serverTimestamp()
-//        )
-//        val issueRef =
-//            dbRef.document("properties/${roomId}/issues/${id}").set(issue).addOnSuccessListener {
-//                trySend(Response.Success(id))
-//            }.addOnFailureListener {
-//                trySend(Response.Failure(it))
-//            }
-//    }
 
 
         override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {
@@ -129,45 +124,3 @@ class IssuesRepositoryImpl @Inject constructor(
         }
 
     }
-
-
-//
-//    fun getIssuesByRoomFromFirestore(pandId : String, roomId : String) : IssuesResponse = callbackFlow {
-//        val snapshotListener = issuesRef.collection("panden/${pandId}/issues").whereEqualTo("roomId", roomId).addSnapshotListener { snapshot, e ->
-//            val issuesResponse = if (snapshot != null) {
-//                val issues = snapshot.toObjects(Issue::class.java)
-//                Response.Success(issues.filter{ issue -> ids.contains(issue.id)})
-//            } else {
-//                Response.Failure(e)
-//            }
-//            trySend(issuesResponse)
-//        }
-//        awaitClose {
-//            snapshotListener.remove()
-//        }
-//    }
-//    }
-
-
-
-//    override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {
-//        return try {
-//            dbRef.collection("issues").document(issueId).delete().await()
-//            Response.Success(true)
-//        } catch (e: Exception) {
-//            Response.Failure(e)
-//        }
-//    }
-
-//    override suspend fun changeIssueStatus(
-//        issueId: String,
-//        status: Status
-//    ): ChangeIssueStatusResponse {
-//        return try {
-//            dbRef.collection("issues").document(issueId).update("status", status.toString()).await()
-//            Response.Success(true)
-//        } catch (e: Exception) {
-//            Response.Failure(e)
-//        }
-//    }
-//}

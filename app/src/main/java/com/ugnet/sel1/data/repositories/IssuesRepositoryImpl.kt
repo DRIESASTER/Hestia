@@ -129,8 +129,21 @@ class IssuesRepositoryImpl @Inject constructor(
     override fun getIssuesForRenterFromFirestore(
         propertyId: String,
         userId: String
-    ): Flow<IssuesResponse> {
-        TODO("Not yet implemented")
+    ): Flow<IssuesResponse> = callbackFlow {
+        val snapshotListener =
+            dbRef.collection("properties/${propertyId}/issues").whereEqualTo("userId", userId)
+                .addSnapshotListener { snapshot, e ->
+                    val issuesResponse = if (snapshot != null) {
+                        val issues = snapshot.toObjects(Issue::class.java)
+                        Response.Success(issues)
+                    } else {
+                        Response.Failure(e)
+                    }
+                    trySend(issuesResponse)
+                }
+        awaitClose {
+            snapshotListener.remove()
+    }
     }
 
 

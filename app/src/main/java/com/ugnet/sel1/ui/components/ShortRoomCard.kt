@@ -34,7 +34,7 @@ fun ShortRoomCard(roomdata: Room, removeClick: (String) -> Unit) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = roomdata.naam!!, style = MaterialTheme.typography.h6, color = Color.White)
-                Text(text = roomdata.huurderId!!, style = MaterialTheme.typography.body1, color = Color.White)
+                Text(text = roomdata.huurderLijst[0], style = MaterialTheme.typography.body1, color = Color.White)
             }
             IconButton(onClick = { removeClick(roomdata.roomId!!) },Modifier.background(Color.Transparent)) {
                 Icon(
@@ -51,7 +51,7 @@ fun ShortRoomCard(roomdata: Room, removeClick: (String) -> Unit) {
 @Preview
 @Composable
 fun RoomCardPreview() {
-    ShortRoomCard(roomdata = Room("Room 1", "Tenant 1","tster")) {}
+    ShortRoomCard(roomdata = Room("Room 1", "Tenant 1", listOf("tster"))) {}
 }
 
 data class RoomData(val roomName:String,val tenantName:String)

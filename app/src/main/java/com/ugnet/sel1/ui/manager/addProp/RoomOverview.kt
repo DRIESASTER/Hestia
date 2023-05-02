@@ -24,8 +24,8 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
                         roomdata = room,
                         removeClick = { onDeleteClicked(room.roomId!!)
                         rooms.filter { it.roomId != room.roomId }
-                            if(room.huurderId !in rooms.map { it.huurderId }){
-                                viewmodel.deleterenter(propid,room.huurderId!!)
+                            if(room.huurderLijst[0] in  rooms.map { it.huurderLijst[0] }){
+                                viewmodel.deleterenter(propid,room.huurderLijst[0])
                             }
                         }
                     )
@@ -38,5 +38,5 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
 @Preview
 @Composable
 fun RoomOverviewPreview() {
-    RoomOverview(rooms = listOf(Room("Room 1", "Tenant 1","tester")), onDeleteClicked = {},propid = "test")
+    RoomOverview(rooms = listOf(Room("Room 1", "Tenant 1",listOf("tester"))), onDeleteClicked = {},propid = "test")
 }

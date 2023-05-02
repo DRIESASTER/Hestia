@@ -30,4 +30,6 @@ interface RoomsRepository {
 
     suspend fun deleteRoomFromPropertyInFirestore(pandId: String, roomId: String): DeleteRoomResponse
 
+    suspend fun addUserToRoom(propertyId:String, roomId: String, userId: String): AddRoomResponse
+
 }

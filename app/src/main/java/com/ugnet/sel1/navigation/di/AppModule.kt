@@ -72,5 +72,6 @@ object AppModule {
         addUserToProperty = AddUserToProperty(propertyRepo),
         removeUserFromProperty = RemoveUserFromProperty(propertyRepo),
         getIssue = GetIssue(issuesRepo),
+        addUserToRoom = AddUserToRoom(roomsRepo)
     )
 }

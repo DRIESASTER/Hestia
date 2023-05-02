@@ -12,7 +12,5 @@ class IssueDetailVM @Inject constructor(
     @IssueId private val issueId: String
 ): ViewModel() {
 
-
-
-
+    public val issueTest = issueId
 }

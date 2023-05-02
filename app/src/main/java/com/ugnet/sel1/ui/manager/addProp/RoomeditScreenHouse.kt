@@ -22,9 +22,13 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreenHouse(tenantMail: String,propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
+fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
-    viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
+
+    val propid = ""
+
+
+    viewModel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {
             is Response.Success -> {
                 var rentlist: MutableList<String> = renters.data.toMutableList().map { it.email!! }.toMutableList()
@@ -34,7 +38,7 @@ fun RoomeditScreenHouse(tenantMail: String,propid: String, viewmodel: RoomEditVM
                         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
                             Spacer(modifier = Modifier.height(10.dp))
                             Log.d("RoomeditScreen", "propid: $propid")
-                            viewmodel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{
+                            viewModel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{
                                 when (it) {
                                     is Response.Success -> {
                                         if (it.data.isEmpty()) {
@@ -45,8 +49,8 @@ fun RoomeditScreenHouse(tenantMail: String,propid: String, viewmodel: RoomEditVM
                                         } else {
                                             RoomOverview(
                                                 rooms = it.data,
-                                                onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it) },
-                                                viewmodel = viewmodel,
+                                                onDeleteClicked = { viewModel.deleteRoomFromProperty(propid,it) },
+                                                viewmodel = viewModel,
                                                 propid = propid)
                                         }
                                     }
@@ -61,12 +65,12 @@ fun RoomeditScreenHouse(tenantMail: String,propid: String, viewmodel: RoomEditVM
                                         propid = propid,
                                         onClose = { isPopupVisible = false },
                                         onAddRoom = { propid,roomname, tenantmail ->
-                                            viewmodel.addroom(propid,roomname, tenantmail)
+                                            viewModel.addroom(propid,roomname, tenantmail)
                                             isPopupVisible = false
                                             //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
                                             if( tenantmail !in rentlist && tenantmail != ""){
                                                 rentlist.add(tenantmail)
-                                                viewmodel.addrenter(propid,tenantmail)
+                                                viewModel.addrenter(propid,tenantmail)
                                             }
                                         })
                                 }

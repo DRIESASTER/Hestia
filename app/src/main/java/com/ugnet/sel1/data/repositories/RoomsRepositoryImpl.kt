@@ -1,7 +1,5 @@
 package com.ugnet.sel1.data.repositories
 
-import android.util.Log
-import androidx.compose.runtime.collectAsState
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.*
@@ -58,6 +56,19 @@ class RoomsRepositoryImpl @Inject constructor(
                 huurderLijst = huurderLijst
             )
             dbRef.document("properties/${pandId}/rooms/${id}").set(room).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun addUserToRoom(
+        propertyId: String,
+        roomId: String,
+        userId: String
+    ): Response<Boolean> {
+        return try {
+            dbRef.document("properties/${propertyId}/rooms/${roomId}").update("huurderLijst", FieldValue.arrayUnion(userId)).await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

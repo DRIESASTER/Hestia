@@ -19,6 +19,7 @@ import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenApp
+import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenHouse
 import com.ugnet.sel1.ui.manager.issues.IssueDetailScreen
 import com.ugnet.sel1.ui.resident.AddIssueScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
@@ -75,12 +76,22 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
     composable(
         MyDestinations.ISSUE_ROUTE,
-        arguments = listOf(navArgument(MyDestinations.IssueArgs.IssueId) { type = NavType.StringType })
     ) { backStackEntry ->
-        val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
+        //val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
         Log.d("ROUTING Issue edit", "")
-        IssueDetailScreen(issueId = issueId, issueDetailVM = hiltViewModel())
+        IssueDetailScreen(viewModel = hiltViewModel())
     }
+
+    composable(
+        MyDestinations.ROOM_EDIT_ROUTE_HOUSE,
+        arguments = listOf(navArgument(MyDestinations.HouseEditArgs.Email) { type = NavType.StringType })
+    ) { backStackEntry ->
+        //val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
+        Log.d("ROUTING Issue edit", "")
+        //RoomeditScreenHouse(viewModel = hiltViewModel(), )
+    }
+
+
 
 
     composable(MyDestinations.ADD_ISSUE_ROUTE){

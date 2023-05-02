@@ -2,7 +2,6 @@ package com.ugnet.sel1.ui.manager.addProp
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
@@ -24,7 +22,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
+fun RoomeditScreenHouse(tenantMail: String,propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
     viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {
@@ -59,14 +57,14 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
                                     onDismissRequest = { isPopupVisible = false },
                                     expanded = isPopupVisible,
                                 ) {
-                                    AddRoomPopup(
+                                    AddRoomHousePopup(
                                         propid = propid,
                                         onClose = { isPopupVisible = false },
                                         onAddRoom = { propid,roomname, tenantmail ->
                                             viewmodel.addroom(propid,roomname, tenantmail)
                                             isPopupVisible = false
                                             //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
-                                            if( tenantmail !in rentlist){
+                                            if( tenantmail !in rentlist && tenantmail != ""){
                                                 rentlist.add(tenantmail)
                                                 viewmodel.addrenter(propid,tenantmail)
                                             }
@@ -78,9 +76,9 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
                                 AddRoomButton(onClick = { isPopupVisible = true })
                             }
 
-                            } }, floatingActionButton = {
+                        } }, floatingActionButton = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE) },Modifier.background(
+                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE_HOUSE) },Modifier.background(
                                 AccentLicht, RoundedCornerShape(20.dp)
                             )) {
                                 Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
@@ -95,31 +93,15 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
     }
 
 
-    }
-
-
-
-@Composable
-fun AddRoomButton(modifier:Modifier = Modifier, onClick: () -> Unit = {}){
-    FloatingActionButton(onClick = onClick , backgroundColor = MainGroen, modifier =
-    Modifier
-        .border(
-            1.dp,
-            Color.DarkGray, RoundedCornerShape(40.dp)
-        )
-        .wrapContentSize()) {
-        Text(text ="Add Room" ,color = Color.White, modifier = Modifier.padding(start= 10.dp, end = 10.dp))
-    }
 }
 
 @Composable
-fun AddRoomPopup(
-    propid:String,
+fun AddRoomHousePopup(
+    propid:String,tenantMail: String = "",
     onClose: () -> Unit,
     onAddRoom: (propid:String,roomName: String, tenantMail: String) -> Unit
 ) {
     var roomName by remember { mutableStateOf("") }
-    var tenantMail by remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier
@@ -135,9 +117,7 @@ fun AddRoomPopup(
                 title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            InputWithTitle(
-                title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
-            )
+
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -151,7 +131,9 @@ fun AddRoomPopup(
                     Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
                 }
                 Button(
-                    onClick = { onAddRoom(propid,roomName, tenantMail) },
+                    onClick = {
+                        onAddRoom(propid,roomName, tenantMail)
+                    },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
                     Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
@@ -160,10 +142,3 @@ fun AddRoomPopup(
         }
     }
 }
-
-@Preview
-@Composable
-fun AddRoomPopupPreview() {
-    AddRoomPopup(propid = "",onClose = {}, onAddRoom = {_, _, _ -> })
-}
-

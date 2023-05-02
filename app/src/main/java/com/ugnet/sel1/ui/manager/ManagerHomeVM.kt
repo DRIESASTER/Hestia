@@ -61,7 +61,7 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
     init {
         Log.d("MANAGERVIEWMODEL INIT", "INTIALIZE")
-        getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
+        getOwnedProperties(Firebase.auth.currentUser?.email.toString())
 //        getIssuesForManager()
     }
 

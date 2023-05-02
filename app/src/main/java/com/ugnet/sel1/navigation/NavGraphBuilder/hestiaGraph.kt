@@ -71,7 +71,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     ) { backStackEntry ->
         val propId = backStackEntry.arguments?.getString(MyDestinations.RoomEditArgs.PropId)!!
         Log.d("ROUTING_TO_ROOM_edit", "")
-        RoomeditScreenApp(propid = propId, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        RoomeditScreenApp(propid = propId, navigate = { route -> appState.navigate(route) })
     }
 
     composable(
@@ -84,14 +84,11 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
     composable(
         MyDestinations.ROOM_EDIT_ROUTE_HOUSE,
-        arguments = listOf(navArgument(MyDestinations.HouseEditArgs.Email) { type = NavType.StringType })
     ) { backStackEntry ->
         //val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
         Log.d("ROUTING Issue edit", "")
-        //RoomeditScreenHouse(viewModel = hiltViewModel(), )
+        RoomeditScreenHouse(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) })
     }
-
-
 
 
     composable(MyDestinations.ADD_ISSUE_ROUTE){

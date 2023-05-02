@@ -24,13 +24,13 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
+fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate:(String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
     viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {
             is Response.Success -> {
                 var rentlist: MutableList<String> = renters.data.toMutableList().map { it.email!! }.toMutableList()
-                Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
+                Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", navigate = navigate)},
                     content = { padding ->
 
                         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
@@ -80,7 +80,7 @@ fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), m
 
                             } }, floatingActionButton = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE_APP) },Modifier.background(
+                            IconButton(onClick = { navigate(MyDestinations.MANAGER_HOME_ROUTE) },Modifier.background(
                                 AccentLicht, RoundedCornerShape(20.dp)
                             )) {
                                 Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)

@@ -33,6 +33,10 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
         useCases.addUserToProperty(tenant,propid)
     }
 
+    fun deleterenter(propid:String,tenant: String) = viewModelScope.launch {
+        useCases.removeUserFromProperty(tenant,propid)
+    }
+
     fun getRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getRoomsForProperty(propertyId)
 
     fun processRooms() : MutableList<RoomData> {

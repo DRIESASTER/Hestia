@@ -5,7 +5,6 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-
 data class Issue(
     var beschrijving: String = "",
     var titel: String = "",

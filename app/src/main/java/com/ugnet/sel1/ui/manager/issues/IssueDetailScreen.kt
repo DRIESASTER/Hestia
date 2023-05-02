@@ -30,7 +30,7 @@ fun IssueDetailScreen(
 
     when (viewModel.issueDataResponse) {
         is Response.Loading -> {
-            // No action required
+            //doe niks ff
         }
         is Response.Success -> {
             val issue = (viewModel.issueDataResponse as Response.Success).data

@@ -88,7 +88,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     ) { backStackEntry ->
         //val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
         Log.d("ROUTING Issue edit", "")
-        //RoomeditScreenHouse(tenantMail = , propid = , openAndPopUp = )
+        //RoomeditScreenHouse(viewModel = hiltViewModel(), )
     }
 
 

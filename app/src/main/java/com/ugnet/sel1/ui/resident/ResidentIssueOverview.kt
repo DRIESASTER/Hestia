@@ -24,6 +24,7 @@ import com.ugnet.sel1.ui.theme.AccentLicht
 import androidx.compose.runtime.collectAsState
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.IssueCard
+import com.ugnet.sel1.ui.manager.addButton
 
 @Composable
 fun ResidentIssueOverview(
@@ -108,74 +109,17 @@ fun ResidentIssueOverview(
                                         }
                                     }
                                 }
-
-                                //Get all issues for each room that user has access to in a given property
-//                                viewModel.getIssuesForRenter(property.propertyId!!).collectAsState(initial = Response.Loading).value.let {
-//                                    when(it) {
-//                                        is Response.Success -> {
-//                                            for (issue in it.data) {
-//                                                //Get the user for an issue(for display purposes)
-//                                                viewModel.getUser(issue.userId!!).collectAsState(initial = Response.Loading).value.let { user ->
-//                                                    when (user){
-//                                                        is Response.Success -> {
-//                                                            val username = user.data!!.voornaam + " " + user.data.achternaam
-//                                                            Log.d("IssueOverview", "IssueOverview loading user: $username")
-//                                                            ResidentIssueCard(
-//                                                                title = issue.titel!!,
-//                                                                tenant = username,
-//                                                                room = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
-//                                                                description = issue.beschrijving!!,
-//                                                                status = issue.status!!
-//                                                            )
-//                                                        }
-//                                                        else -> {
-//                                                            CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
-//                                                        }
-//                                                    }
-//
-//                                                }
-//                                            }
-//                                        }
-//                                        else -> {
-//                                            Spacer(modifier = Modifier.height(0.dp))
-//                                        }
-//                                    }
-//                                }
                             }
                         }
-                        addIssueButton { navigate(MyDestinations.ADD_ISSUE_ROUTE) }
+                        addButton(contentDescription = "addIssueButton") {
+                            navigate(MyDestinations.ADD_ISSUE_ROUTE)
+                        }
                     }
                 }
                 else -> {
                     CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun addIssueButton(onAddButtonClick:() -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth(1.0f)
-            .padding(8.dp),
-    ) {
-        OutlinedButton(
-            onClick = { onAddButtonClick },
-            modifier = Modifier
-                .size(50.dp)
-                .align(Alignment.BottomCenter),
-            shape = CircleShape,
-            border = BorderStroke(5.dp, MainGroen),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Add,
-                contentDescription = "add issue button",
-                tint = MainGroen
-            )
         }
     }
 }

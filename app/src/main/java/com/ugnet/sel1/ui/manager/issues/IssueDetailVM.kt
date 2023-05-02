@@ -6,15 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.IssueResponse
 import com.ugnet.sel1.domain.repository.IssuesRepository
-import com.ugnet.sel1.domain.repository.IssuesResponse
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -74,7 +74,7 @@ fun TrySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String
                     is Response.Success -> {
                         var route = ""
                         if(viewmodel.isHouse) {
-                            route = MyDestinations.HOUSE_EDIT_ROUTE_HOUSE.replace("{${MyDestinations.HouseEditArgs.PropId}}", response.data)
+                            route = MyDestinations.ROOM_EDIT_ROUTE_HOUSE.replace("{${MyDestinations.HouseEditArgs.PropId}}", response.data)
                         }else {
                             route = MyDestinations.ROOM_EDIT_ROUTE_APP.replace("{${MyDestinations.RoomEditArgs.PropId}}", response.data)
                         }

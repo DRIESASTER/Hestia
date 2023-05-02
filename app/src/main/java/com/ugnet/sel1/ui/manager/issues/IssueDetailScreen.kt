@@ -17,7 +17,6 @@ import com.ugnet.sel1.navigation.MyDestinations
 
 @Composable
 fun IssueDetailScreen(
-    issueId : String,
     viewModel: IssueDetailVM
 ){
     //Text(text = issueId)

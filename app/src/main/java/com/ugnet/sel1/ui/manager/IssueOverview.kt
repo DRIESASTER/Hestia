@@ -16,12 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import com.ugnet.sel1.domain.models.*
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.IssueCard
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
-fun IssuesOverview(viewModel:ManagerHomeVM) {
+fun IssuesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit) {
 //    ownedPropertiesResponseFormatted = Response.Loading
     when(val response = viewModel.ownedPropertiesResponse){
         is Response.Success -> {
@@ -30,7 +31,7 @@ fun IssuesOverview(viewModel:ManagerHomeVM) {
             } else {
                 IssueOverview(
                     properties = response.data,
-                    onIssueClicked = {/*route to details*/ },
+                    onIssueClicked = { route -> navigate(route) },
                     onStatusClicked = {status,issueid,propertyid -> viewModel.changeIssueStatus(issueid,status,propertyid)},
                     viewModel = viewModel)
             }
@@ -41,7 +42,7 @@ fun IssuesOverview(viewModel:ManagerHomeVM) {
     }
 }
 @Composable
-fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIssueClicked:(Issue)->Unit, onStatusClicked:(Status, String, String)->Unit, viewModel:ManagerHomeVM) {
+fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIssueClicked : (String) -> Unit, onStatusClicked:(Status, String, String)->Unit, viewModel:ManagerHomeVM) {
     Log.d("IssueOverview", "IssueOverview loading properties: $properties")
     Surface(modifier = modifier) {
         LazyColumn (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
@@ -60,6 +61,7 @@ fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIs
                                     when (user){
                                         is Response.Success -> {
                                             val username = user.data!!.voornaam + " " + user.data.achternaam
+                                            val route = MyDestinations.ISSUE_ROUTE.replace("{${MyDestinations.IssueArgs.IssueId}}", issue.issueId!!)
                                             Log.d("IssueOverview", "IssueOverview loading user: $username")
                                             IssueCard(
                                                 id = issue.issueId!!,
@@ -68,7 +70,7 @@ fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIs
                                                 room = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
                                                 description = issue.beschrijving!!,
                                                 status = issue.status!!,
-                                                onClick = { onIssueClicked(issue) },
+                                                onClick = { onIssueClicked(route) },
                                                 onStatusClicked = onStatusClicked,
                                                 propertyid = property.propertyId!!)
                                         }

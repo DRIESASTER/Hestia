@@ -25,11 +25,12 @@ class IssueDetailVM @Inject constructor(
 
 
     init {
-        getIssue(issueId, propId)
+        getIssue(propId, issueId)
     }
 
     fun getIssue(propId: String, issueId: String) = viewModelScope.launch {
         repo.getIssue(propId, issueId).collect{response ->
+            Log.d("getIssue", response.toString())
             issueDataResponse = response
         }
     }

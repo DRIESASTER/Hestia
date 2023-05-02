@@ -30,14 +30,14 @@ object ArgsModule {
     @ViewModelScoped
     fun provideIssueId(savedStateHandle: SavedStateHandle): String =
         savedStateHandle.get<String>("issueId")?.toString()
-            ?: throw IllegalArgumentException("You have to provide postId as parameter with type String when navigating to comments")
+            ?: throw IllegalArgumentException("You have to provide issueId as parameter with type String when navigating to comments")
 
     @Provides
     @PropId
     @ViewModelScoped
     fun providePropId(savedStateHandle: SavedStateHandle): String =
         savedStateHandle.get<String>("propId")?.toString()
-            ?: throw IllegalArgumentException("You have to provide postId as parameter with type String when navigating to comments")
+            ?: throw IllegalArgumentException("You have to provide propId as parameter with type String when navigating to comments")
 
 
     @Provides
@@ -45,6 +45,6 @@ object ArgsModule {
     @ViewModelScoped
     fun provideEmail(savedStateHandle: SavedStateHandle): String =
         savedStateHandle.get<String>("email")?.toString()
-            ?: throw IllegalArgumentException("You have to provide postId as parameter with type String when navigating to comments")
+            ?: throw IllegalArgumentException("You have to provide email as parameter with type String when navigating to comments")
 
 }

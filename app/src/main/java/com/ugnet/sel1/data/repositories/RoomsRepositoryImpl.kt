@@ -48,15 +48,14 @@ class RoomsRepositoryImpl @Inject constructor(
     override suspend fun addRoomToPropertyInFirestore(
         pandId: String,
         naam: String,
-        huurderId: String?
+        huurderLijst: List<String>
     ): AddRoomResponse {
         return try {
-            Log.d("HIERRRR", "${huurderId},+ ${pandId}")
             val id = dbRef.collection("properties/${pandId}/rooms").document().id
             val room = Room(
                 naam = naam,
                 roomId = id,
-                huurderId = huurderId
+                huurderLijst = huurderLijst
             )
             dbRef.document("properties/${pandId}/rooms/${id}").set(room).await()
             Response.Success(true)

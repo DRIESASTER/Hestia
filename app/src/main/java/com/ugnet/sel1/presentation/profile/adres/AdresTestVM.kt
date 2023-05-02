@@ -103,10 +103,10 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
             changeIssueStatusResponse = useCases.changeIssueStatus(issueId, status, propertyId)
       }
 
-      fun addRoomToProperty(propertyId: String, naam:String, huurder:String?) = viewModelScope.launch {
-            addRoomToPropertyResponse = Response.Loading
-            addRoomToPropertyResponse = useCases.addRoomToProperty(propertyId, naam, huurder)
-      }
+//      fun addRoomToProperty(propertyId: String, naam:String, huurder:String?) = viewModelScope.launch {
+//            addRoomToPropertyResponse = Response.Loading
+//            addRoomToPropertyResponse = useCases.addRoomToProperty(propertyId, naam, huurder)
+//      }
 
       fun deleteRoomFromProperty(propertyId: String, roomId: String) = viewModelScope.launch {
             deleteRoomFromPropertyResponse = Response.Loading

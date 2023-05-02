@@ -79,7 +79,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     ) { backStackEntry ->
         val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
         Log.d("ROUTING Issue edit", "")
-        IssueDetailScreen(issueId = issueId, issueDetailVM = hiltViewModel())
+        IssueDetailScreen(issueId = issueId, viewModel = hiltViewModel())
     }
 
 

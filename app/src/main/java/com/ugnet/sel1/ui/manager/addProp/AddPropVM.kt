@@ -29,7 +29,7 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
         private set
     var rooms : MutableList<RoomData> = mutableListOf()
     var isHouse : Boolean by mutableStateOf(false)
-
+    var editing : Boolean by mutableStateOf(false)
     var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Loading)
         private set
 
@@ -38,8 +38,11 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
 //        private set
 
     init{
+//        if(propid != null){
+//            editing = true
+//        }
         getUser(Firebase.auth.currentUser?.email.toString())
-//        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
+
     }
 
     fun getUser(id: String) = viewModelScope.launch {

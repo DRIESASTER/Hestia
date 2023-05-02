@@ -135,8 +135,8 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
 }
 
 @Composable
-fun addButton(contentDescription: String, onClick: () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize()) {
+fun addButton(contentDescription: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
         FloatingActionButton(
             backgroundColor = MainGroen,
             onClick = onClick,

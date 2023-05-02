@@ -79,7 +79,8 @@ class PropertiesRepositoryImpl @Inject constructor(
                 postcode = postcode,
                 stad = stad,
                 straat = straat,
-                propertyId = id
+                propertyId = id,
+                huurders = mutableListOf()
             )
             dbRef.collection("properties").document(id).set(property).await()
             Response.Success(id)
@@ -133,7 +134,7 @@ class PropertiesRepositoryImpl @Inject constructor(
 
     override suspend fun addUserToProperty(userId: String, propertyId: String): Response<Boolean> {
         return try{
-            dbRef.collection("properties").document(propertyId).update("huurders", userId).await()
+            dbRef.collection("properties").document(propertyId).update("huurders", (FieldValue.arrayUnion(userId))).await()
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

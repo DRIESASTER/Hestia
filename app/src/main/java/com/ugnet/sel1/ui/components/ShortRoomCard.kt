@@ -12,11 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ugnet.sel1.domain.models.Room
 import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun ShortRoomCard(roomdata:RoomData ,removeClick: (String) -> Unit) {
+fun ShortRoomCard(roomdata: Room, removeClick: (String) -> Unit) {
     Card(
         backgroundColor = MainGroen,
         modifier = Modifier
@@ -32,10 +33,10 @@ fun ShortRoomCard(roomdata:RoomData ,removeClick: (String) -> Unit) {
             verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = roomdata.roomName, style = MaterialTheme.typography.h6, color = Color.White)
-                Text(text = roomdata.tenantName, style = MaterialTheme.typography.body1, color = Color.White)
+                Text(text = roomdata.naam!!, style = MaterialTheme.typography.h6, color = Color.White)
+                Text(text = roomdata.huurderId!!, style = MaterialTheme.typography.body1, color = Color.White)
             }
-            IconButton(onClick = { removeClick(roomdata.roomName) },Modifier.background(Color.Transparent)) {
+            IconButton(onClick = { removeClick(roomdata.roomId!!) },Modifier.background(Color.Transparent)) {
                 Icon(
                     imageVector = Icons.Rounded.Delete,
                     contentDescription = "Remove",
@@ -50,7 +51,7 @@ fun ShortRoomCard(roomdata:RoomData ,removeClick: (String) -> Unit) {
 @Preview
 @Composable
 fun RoomCardPreview() {
-    ShortRoomCard(roomdata = RoomData("Room 1", "Tenant 1")) {}
+    ShortRoomCard(roomdata = Room("Room 1", "Tenant 1","tster")) {}
 }
 
 data class RoomData(val roomName:String,val tenantName:String)

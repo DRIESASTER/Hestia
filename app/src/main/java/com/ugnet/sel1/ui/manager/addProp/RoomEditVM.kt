@@ -24,13 +24,18 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
     var removeRoomsResponse by mutableStateOf<DeleteRoomResponse>(Response.Loading)
         private set
 
-    var renters by mutableStateOf<UsersResponse>(Response.Loading)
-        private set
-
     var roomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
     fun getUserbyMail(email:String): Flow<UsersResponse> = useCases.getUserByEmail(email)
+
+    fun addrenter(propid:String,tenant: String) = viewModelScope.launch {
+        useCases.addUserToProperty(tenant,propid)
+    }
+
+    fun deleterenter(propid:String,tenant: String) = viewModelScope.launch {
+        useCases.removeUserFromProperty(tenant,propid)
+    }
 
     fun getRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getRoomsForProperty(propertyId)
 
@@ -43,10 +48,7 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
         removeRoomsResponse = useCases.deleteRoomFromProperty(propid, roomId)
     }
 
-    fun getRentinglist (propid:String) = viewModelScope.launch {
-        renters = Response.Loading
-        //get list of renters from property usecase in progress
-    }
+    fun getRentinglist (propid:String): Flow<UsersResponse> = useCases.getRentersList(propid)
 
     fun addroom(propid:String,roomName: String, tenantName: String) = viewModelScope.launch {
         useCases.addRoomToProperty(propid, roomName, tenantName)

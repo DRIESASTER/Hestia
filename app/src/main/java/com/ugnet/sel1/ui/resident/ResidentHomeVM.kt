@@ -51,7 +51,7 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
         }
     }
 
-    fun getRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getAccesibleRoomsPerUser(Firebase.auth.currentUser?.uid.toString(), propertyId)
+    fun getAccesibleRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getAccesibleRoomsPerUser(Firebase.auth.currentUser?.uid.toString(), propertyId)
 
     fun getUser(userid: String): Flow<UserResponse> = useCases.getUser(userid)
 

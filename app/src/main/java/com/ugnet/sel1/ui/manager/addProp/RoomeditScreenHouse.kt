@@ -2,7 +2,6 @@ package com.ugnet.sel1.ui.manager.addProp
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
@@ -24,7 +22,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreenHouse(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
+fun RoomeditScreenHouse(tenantMail: String,propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
     viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {
@@ -59,7 +57,7 @@ fun RoomeditScreenHouse(propid: String, viewmodel: RoomEditVM = hiltViewModel(),
                                     onDismissRequest = { isPopupVisible = false },
                                     expanded = isPopupVisible,
                                 ) {
-                                    AddRoomPopup(
+                                    AddRoomHousePopup(
                                         propid = propid,
                                         onClose = { isPopupVisible = false },
                                         onAddRoom = { propid,roomname, tenantmail ->
@@ -80,7 +78,7 @@ fun RoomeditScreenHouse(propid: String, viewmodel: RoomEditVM = hiltViewModel(),
 
                         } }, floatingActionButton = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE_APP) },Modifier.background(
+                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE_HOUSE) },Modifier.background(
                                 AccentLicht, RoundedCornerShape(20.dp)
                             )) {
                                 Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
@@ -99,13 +97,11 @@ fun RoomeditScreenHouse(propid: String, viewmodel: RoomEditVM = hiltViewModel(),
 
 @Composable
 fun AddRoomHousePopup(
-    propid:String,
+    propid:String,tenantMail: String = "",
     onClose: () -> Unit,
     onAddRoom: (propid:String,roomName: String, tenantMail: String) -> Unit
 ) {
     var roomName by remember { mutableStateOf("") }
-    var tenantMail by remember { mutableStateOf("") }
-    var shared by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -121,14 +117,6 @@ fun AddRoomHousePopup(
                 title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            if (!shared){
-                InputWithTitle(
-                    title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-            Text(text = "Shared Room?")
-            Switch(checked =shared , onCheckedChange = {shared=!shared})
 
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -144,11 +132,7 @@ fun AddRoomHousePopup(
                 }
                 Button(
                     onClick = {
-                        return@Button if(shared) {
-                            onAddRoom(propid,roomName, "")
-                        } else{
-                            onAddRoom(propid,roomName, tenantMail)
-                        }
+                        onAddRoom(propid,roomName, tenantMail)
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {

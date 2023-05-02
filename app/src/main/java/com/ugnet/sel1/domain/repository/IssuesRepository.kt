@@ -5,7 +5,7 @@ import com.ugnet.sel1.domain.models.*
 import kotlinx.coroutines.flow.Flow
 
 typealias Issues = List<Issue>
-typealias IssueResponse = Response<Issue>
+typealias IssueResponse = Response<Issue?>
 typealias IssuesResponse = Response<Issues>
 typealias ChangeIssueStatusResponse = Response<Boolean>
 typealias AddIssueResponse = Response<String>

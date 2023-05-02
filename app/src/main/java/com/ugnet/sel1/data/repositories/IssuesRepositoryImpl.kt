@@ -140,9 +140,9 @@ class IssuesRepositoryImpl @Inject constructor(
         }
 
     override fun getIssue(propertyId: String, issueId: String): Flow<IssueResponse> = callbackFlow {
-        dbRef.collection("properties/${propertyId}/issues").document(issueId).addSnapshotListener { snapshot, e ->
+        dbRef.document("properties/${propertyId}/issues/${issueId}").addSnapshotListener { snapshot, e ->
             val issueResponse = if (snapshot != null) {
-                val issue:Issue = snapshot.toObject(Issue::class.java)!!
+                val issue= snapshot.toObject(Issue::class.java)
                 Response.Success(issue)
             } else {
                 Response.Failure(e)

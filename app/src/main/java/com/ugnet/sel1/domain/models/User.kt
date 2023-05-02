@@ -9,6 +9,5 @@ data class User(
     var uid : String? = null,
     var accountType : String? = null,
     var voornaam : String? = null,
-    var achternaam : String? = null,
-    var roomPermissions : List<String> = listOf()
+    var achternaam : String? = null
 )

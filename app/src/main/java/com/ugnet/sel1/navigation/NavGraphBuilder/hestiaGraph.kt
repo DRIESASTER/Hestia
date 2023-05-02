@@ -18,7 +18,7 @@ import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
-import com.ugnet.sel1.ui.manager.addProp.RoomeditScreen
+import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenApp
 import com.ugnet.sel1.ui.manager.issues.IssueDetailScreen
 import com.ugnet.sel1.ui.resident.AddIssueScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
@@ -65,12 +65,12 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
 
     composable(
-        MyDestinations.ROOM_EDIT_ROUTE,
+        MyDestinations.ROOM_EDIT_ROUTE_APP,
         arguments = listOf(navArgument(MyDestinations.RoomEditArgs.PropId) { type = NavType.StringType })
     ) { backStackEntry ->
         val propId = backStackEntry.arguments?.getString(MyDestinations.RoomEditArgs.PropId)!!
         Log.d("ROUTING_TO_ROOM_edit", "")
-        RoomeditScreen(propid = propId, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        RoomeditScreenApp(propid = propId, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
     composable(

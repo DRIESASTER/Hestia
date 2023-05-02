@@ -149,6 +149,7 @@ class IssuesRepositoryImpl @Inject constructor(
             }
             trySend(issueResponse)
         }
+        awaitClose()
     }
 
 

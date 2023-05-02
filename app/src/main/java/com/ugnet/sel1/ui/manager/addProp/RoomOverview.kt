@@ -13,11 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Room
-import com.ugnet.sel1.ui.components.RoomData
 import com.ugnet.sel1.ui.components.ShortRoomCard
 
 @Composable
-fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicked:(String)->Unit,viewmodel: RoomEditVM = hiltViewModel()) {
+fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicked:(String)->Unit,viewmodel: RoomEditVM = hiltViewModel(),propid:String) {
         Surface(modifier = modifier) {
             LazyColumn (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
                 itemsIndexed(rooms) { _, room ->
@@ -25,8 +24,8 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
                         roomdata = room,
                         removeClick = { onDeleteClicked(room.roomId!!)
                         rooms.filter { it.roomId != room.roomId }
-                            if(room.huurderId in rooms.map { it.huurderId }){
-                                viewmodel.deleterenter()
+                            if(room.huurderId !in rooms.map { it.huurderId }){
+                                viewmodel.deleterenter(propid,room.huurderId!!)
                             }
                         }
                     )
@@ -39,5 +38,5 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
 @Preview
 @Composable
 fun RoomOverviewPreview() {
-    RoomOverview(rooms = listOf(Room("Room 1", "Tenant 1","tester")), onDeleteClicked = {})
+    RoomOverview(rooms = listOf(Room("Room 1", "Tenant 1","tester")), onDeleteClicked = {},propid = "test")
 }

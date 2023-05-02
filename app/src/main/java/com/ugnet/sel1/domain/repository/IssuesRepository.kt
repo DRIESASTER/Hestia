@@ -1,9 +1,6 @@
 package com.ugnet.sel1.domain.repository
 
-import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.domain.models.IssueType
-import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.models.Status
+import com.ugnet.sel1.domain.models.*
 //import com.ugnet.sel1.domain.useCases.oudeShit.panden.Issues.ChangeIssueStatus
 import kotlinx.coroutines.flow.Flow
 
@@ -45,4 +42,7 @@ interface IssuesRepository {
         status: Status,
         issueId: String
     ): ChangeIssueStatusResponse
+
+    fun getIssueMessages(issueId: String): Flow<Response<List<Message>>>
+    fun sendMessage(issueId: String, message: Message)
 }

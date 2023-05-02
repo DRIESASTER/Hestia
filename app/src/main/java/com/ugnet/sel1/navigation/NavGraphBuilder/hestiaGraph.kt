@@ -2,6 +2,7 @@ package com.ugnet.sel1.navigation.NavGraphBuilder
 
 import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -57,7 +58,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.MANAGER_HOME_ROUTE) {
-        ManagerHomeScreen(openAndPopUp = { route, popUp ->
+        ManagerHomeScreen(Data = hiltViewModel(),openAndPopUp = { route, popUp ->
             appState.navigateAndPopUp(
                 route,
                 popUp
@@ -73,6 +74,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         val propId = backStackEntry.arguments?.getString(MyDestinations.RoomEditArgs.PropId)!!
         Log.d("ROUTING_TO_ROOM_edit", "")
         RoomeditScreen(propid = propId, openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    }
+
+    composable(MyDestinations.ADD_ISSUE_ROUTE){
+        //addIssueScreen()
     }
 
 

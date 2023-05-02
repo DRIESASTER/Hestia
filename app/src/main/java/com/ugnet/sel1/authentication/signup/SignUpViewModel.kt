@@ -32,7 +32,6 @@ class SignUpViewModel @Inject constructor(
     private val email
         get() = uiState.value.email
 
-
     private val name
         get() = uiState.value.name
 
@@ -59,7 +58,6 @@ class SignUpViewModel @Inject constructor(
 
     }
 
-
     var signUpResponse by mutableStateOf<SignUpResponse>(Response.Success(false))
         private
 
@@ -75,7 +73,6 @@ class SignUpViewModel @Inject constructor(
         role: String,
         openAndPopUp: (String, String) -> Unit
     ) = viewModelScope.launch {
-        signUpResponse = Response.Loading
         if (!email.isValidEmail()) {
             SnackbarManager.showMessage(AppText.email_error)
         } else if (password.isBlank()) {
@@ -89,12 +86,13 @@ class SignUpViewModel @Inject constructor(
         }*/
 
         } else {
+            signUpResponse = Response.Loading
             signUpResponse =
                 repo.firebaseSignUpWithEmailAndPassword(email, password, role, surname, name)
 
-
             when (signUpResponse) {
                 is Response.Success -> {
+                    SnackbarManager.showMessage(AppText.account_created)
                     openAndPopUp(MyDestinations.LOGIN_ROUTE, MyDestinations.SIGN_UP_ROUTE)
                 }
                 is Response.Failure -> {

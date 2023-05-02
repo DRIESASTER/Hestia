@@ -90,7 +90,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                 .wrapContentWidth(Alignment.Start)) {
                 if (!Data.currentState) {
                     /*show issues overview*/
-                    IssuesOverview(viewModel = Data)
+                    IssuesOverviewTest(viewModel = Data)
 //                    when (val allissues = Data.issuesForManagerResponse) {
 //                        is Response.Success -> {
 //                            if (allissues.data.isEmpty()) {

@@ -55,7 +55,7 @@ fun TrySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String
         is Response.Success -> {
             if (!viewmodel.saveClicked) {
                 IconButton(
-                    onClick = { viewmodel.saveProp(userresponse.data?.uid.toString())
+                    onClick = { viewmodel.saveProp(userresponse.data?.email.toString())
                         viewmodel.saveClicked = true },
                     Modifier
                         .background(

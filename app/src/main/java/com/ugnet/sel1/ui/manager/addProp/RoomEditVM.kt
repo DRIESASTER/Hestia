@@ -49,7 +49,7 @@ class RoomEditVM @Inject constructor(private val useCases: UseCases): ViewModel(
     }
 
     fun addroom(propid:String,roomName: String, tenantName: String) = viewModelScope.launch {
-        useCases.addRoomToProperty(propid,roomName, tenantName)
+        useCases.addRoomToProperty(propid, roomName, tenantName)
 
         Log.d("RoomEditVM", "addroom: $propid $roomName $tenantName")
     }

@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,9 @@ import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +29,9 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
         var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
         private set
 
+
+    private val _ownedProperties = MutableStateFlow<PropertiesResponse>(Response.Loading)
+    val ownedProperties: StateFlow<PropertiesResponse> = _ownedProperties.asStateFlow()
 
     var ownedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
         private set
@@ -51,7 +58,9 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 //    var formatPropertyResponse by mutableStateOf<Response<PropertyData>>(Response.Loading)
 //        private set
 
+
     init {
+        Log.d("MANAGERVIEWMODEL INIT", "INTIALIZE")
         getOwnedProperties(Firebase.auth.currentUser?.uid.toString())
 //        getIssuesForManager()
     }

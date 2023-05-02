@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.data.repositories.*
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.*
-import com.ugnet.sel1.domain.useCases.GetUser
+import com.ugnet.sel1.data.repositories.GetUserRepository
 import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
 import dagger.Module
 import dagger.Provides

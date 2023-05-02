@@ -24,7 +24,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
+fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
     viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {
@@ -66,7 +66,7 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
                                             viewmodel.addroom(propid,roomname, tenantmail)
                                             isPopupVisible = false
                                             //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
-                                            if( tenantmail !in rentlist){
+                                            if( tenantmail !in rentlist && tenantmail != ""){
                                                 rentlist.add(tenantmail)
                                                 viewmodel.addrenter(propid,tenantmail)
                                             }
@@ -80,7 +80,7 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
 
                             } }, floatingActionButton = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE) },Modifier.background(
+                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE_APP) },Modifier.background(
                                 AccentLicht, RoundedCornerShape(20.dp)
                             )) {
                                 Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
@@ -120,6 +120,7 @@ fun AddRoomPopup(
 ) {
     var roomName by remember { mutableStateOf("") }
     var tenantMail by remember { mutableStateOf("") }
+    var shared by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -135,9 +136,15 @@ fun AddRoomPopup(
                 title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            InputWithTitle(
-                title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
-            )
+            if (!shared){
+                InputWithTitle(
+                    title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            Text(text = "Shared Room?")
+            Switch(checked =shared , onCheckedChange = {shared=!shared})
+
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -151,7 +158,13 @@ fun AddRoomPopup(
                     Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
                 }
                 Button(
-                    onClick = { onAddRoom(propid,roomName, tenantMail) },
+                    onClick = {
+                        return@Button if(shared) {
+                            onAddRoom(propid,roomName, "")
+                        } else{
+                            onAddRoom(propid,roomName, tenantMail)
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
                     Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))

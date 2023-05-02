@@ -25,7 +25,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun AddPropMainScreen(
     viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,
     openAndPopUp: (String, String) -> Unit, navigate : (String) -> Unit, setPropId: (String) -> Unit) {
-    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", openAndPopup = openAndPopUp)},
+    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navigate = navigate)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             SwitchButton2(

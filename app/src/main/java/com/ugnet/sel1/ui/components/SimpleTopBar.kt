@@ -15,13 +15,13 @@ import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
-fun SimpleTopBar(name:String, openAndPopup: (String, String) -> Unit) {
+fun SimpleTopBar(name:String, navigate : (String) -> Unit) {
     TopAppBar(modifier = Modifier.background(MainGroen),
         title = { Text(text = name, color = Color.White) },
         contentColor = MainGroen,
         backgroundColor = MainGroen,
         navigationIcon = {
-            IconButton(onClick = { openAndPopup(MyDestinations.MANAGER_HOME_ROUTE, MyDestinations.ADD_PROPERTY) },Modifier.background(MainGroen)) {
+            IconButton(onClick = { navigate(MyDestinations.MANAGER_HOME_ROUTE) },Modifier.background(MainGroen)) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "back", tint = AccentLicht)
             }
         }

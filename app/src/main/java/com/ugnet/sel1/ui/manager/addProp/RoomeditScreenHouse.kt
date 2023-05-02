@@ -22,7 +22,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, openAndPopUp:(String, String)->Unit) {
+fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate : (String) -> Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
 
     val propid = ""
@@ -32,7 +32,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
         when (renters) {
             is Response.Success -> {
                 var rentlist: MutableList<String> = renters.data.toMutableList().map { it.email!! }.toMutableList()
-                Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
+                Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", navigate = navigate)},
                     content = { padding ->
 
                         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
@@ -82,7 +82,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
 
                         } }, floatingActionButton = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE_HOUSE) },Modifier.background(
+                            IconButton(onClick = { navigate(MyDestinations.MANAGER_HOME_ROUTE) },Modifier.background(
                                 AccentLicht, RoundedCornerShape(20.dp)
                             )) {
                                 Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)

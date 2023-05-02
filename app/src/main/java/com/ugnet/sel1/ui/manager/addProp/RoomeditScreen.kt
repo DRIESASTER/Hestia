@@ -5,74 +5,95 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.ugnet.sel1.ui.components.SimpleTopBar
-import com.ugnet.sel1.ui.theme.AccentLicht
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
+import com.ugnet.sel1.ui.components.SimpleTopBar
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
 fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier,openAndPopUp:(String,String)->Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
+    viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
+        when (renters) {
+            is Response.Success -> {
+                var rentlist: MutableList<String> = renters.data.toMutableList().map { it.email!! }.toMutableList()
+                Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
+                    content = { padding ->
 
-    Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Manage Rooms", openAndPopup = openAndPopUp)},
-        content = { padding ->
+                        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Log.d("RoomeditScreen", "propid: $propid")
+                            viewmodel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{
+                                when (it) {
+                                    is Response.Success -> {
+                                        if (it.data.isEmpty()) {
+                                            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                                                Spacer(modifier = Modifier.height(10.dp))
+                                                Text(text = "No rooms found")
+                                            }
+                                        } else {
+                                            RoomOverview(
+                                                rooms = it.data,
+                                                onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it) })
+                                        }
+                                    }
+                                    else -> {
+                                        CircularProgressIndicator()}
+                                }
+                                DropdownMenu(
+                                    onDismissRequest = { isPopupVisible = false },
+                                    expanded = isPopupVisible,
+                                ) {
+                                    AddRoomPopup(
+                                        propid = propid,
+                                        onClose = { isPopupVisible = false },
+                                        onAddRoom = { propid,roomname, tenantmail ->
+                                            viewmodel.addroom(propid,roomname, tenantmail)
+                                            isPopupVisible = false
+                                            //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
+                                            if( tenantmail !in rentlist){
+                                                rentlist.add(tenantmail)
+                                                viewmodel.addrenter(propid,tenantmail)
+                                            }
 
-            Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
-                Spacer(modifier = Modifier.height(10.dp))
-                Log.d("RoomeditScreen", "propid: ${propid.toString()}")
-            viewmodel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{
-            when (it) {
-                is Response.Success -> {
-                    if (it.data.isEmpty()) {
-                        Text(text = "No rooms found")
-                    } else {
-                        RoomOverview(
-                            rooms = viewmodel.processRooms(),
-                            onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it) })
-                    }
-                }
-                else -> {
-                    CircularProgressIndicator()}
-            }
-                DropdownMenu(
-                    onDismissRequest = { isPopupVisible = false },
-                    expanded = isPopupVisible,
-                ) {
-                    AddRoomPopup(
-                        propid = propid,
-                        onClose = { isPopupVisible = false },
-                        onAddRoom = { propid,roomname, tenantmail ->
-                            viewmodel.addroom(propid,roomname, tenantmail)
-                            isPopupVisible = false
-                        })
-                }
-            }
-                AddRoomButton(onClick = { isPopupVisible = true })
-            } }, floatingActionButton = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE) },Modifier.background(
-                    AccentLicht, RoundedCornerShape(20.dp)
-                )) {
-                    Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
-                }
-            }
+                                            viewmodel.getRoomsForProperty(propid)
+                                        })
+                                }
+                            }
+                            Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                AddRoomButton(onClick = { isPopupVisible = true })
+                            }
 
-        })
+                            } }, floatingActionButton = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            IconButton(onClick = { openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE,MyDestinations.ROOM_EDIT_ROUTE) },Modifier.background(
+                                AccentLicht, RoundedCornerShape(20.dp)
+                            )) {
+                                Icon(imageVector = Icons.Rounded.Save, contentDescription = "save", tint = MainGroen)
+                            }
+                        }
+
+                    })
+            }
+            else -> {
+                CircularProgressIndicator()}
+        }
+    }
+
 
     }
 
@@ -82,10 +103,9 @@ fun RoomeditScreen(propid: String,viewmodel: RoomEditVM = hiltViewModel(), modif
 fun AddRoomButton(modifier:Modifier = Modifier, onClick: () -> Unit = {}){
     FloatingActionButton(onClick = onClick , backgroundColor = MainGroen, modifier =
     Modifier
-        .background(Color.Transparent)
         .border(
             1.dp,
-            Color.DarkGray, RoundedCornerShape(30.dp)
+            Color.DarkGray, RoundedCornerShape(40.dp)
         )
         .wrapContentSize()) {
         Text(text ="Add Room" ,color = Color.White, modifier = Modifier.padding(start= 10.dp, end = 10.dp))

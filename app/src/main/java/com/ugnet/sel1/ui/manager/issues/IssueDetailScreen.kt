@@ -11,4 +11,5 @@ fun IssueDetailScreen(
 ){
     //Text(text = issueId)
     Text(text = issueDetailVM.issueTest)
+    Text(text = issueDetailVM.propTest)
 }

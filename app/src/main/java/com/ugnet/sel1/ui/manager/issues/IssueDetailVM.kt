@@ -9,8 +9,13 @@ import javax.inject.Inject
 @HiltViewModel
 class IssueDetailVM @Inject constructor(
     private val repo: IssuesRepository,
-    @IssueId private val issueId: String
+    @IssueId private val issueId: String,
+    @PropId private val propId: String
 ): ViewModel() {
 
     public val issueTest = issueId
+    public val propTest = propId
+
+
+
 }

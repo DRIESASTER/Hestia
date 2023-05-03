@@ -61,6 +61,21 @@ class PropertiesRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
+    override fun getProperty(
+        propertyId:String
+    ) : Flow<Response<Property?>> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties").document(propertyId).addSnapshotListener { snapshot, e ->
+            val propertyResponse = if (snapshot != null) {
+                val property = snapshot.toObject(Property::class.java)
+                Response.Success(property)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(propertyResponse)
+        }
+        awaitClose { snapshotListener.remove() }
+    }
+
     override suspend fun editProperty(
         propertyId: String,
         huisnummer: Int,

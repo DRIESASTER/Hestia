@@ -65,14 +65,11 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
                                     AddRoomHousePopup(
                                         propid = propid,
                                         onClose = { isPopupVisible = false },
-                                        onAddRoom = { propid,roomname, tenantmail ->
-                                            viewModel.addroom(propid,roomname, tenantmail)
+                                        onAddRoom = { propid,roomname ->
+                                            viewModel.addroom(propid, roomname, mutableListOf())
                                             isPopupVisible = false
                                             //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
-                                            if( tenantmail !in rentlist && tenantmail != ""){
-                                                rentlist.add(tenantmail)
-                                                viewModel.addrenter(propid,tenantmail)
-                                            }
+
                                         })
                                 }
                             }
@@ -104,7 +101,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
 fun AddRoomHousePopup(
     propid:String,tenantMail: String = "",
     onClose: () -> Unit,
-    onAddRoom: (propid:String,roomName: String, tenantMail: String) -> Unit
+    onAddRoom: (propid:String,roomName: String) -> Unit
 ) {
     var roomName by remember { mutableStateOf("") }
 
@@ -137,7 +134,7 @@ fun AddRoomHousePopup(
                 }
                 Button(
                     onClick = {
-                        onAddRoom(propid,roomName, tenantMail)
+                        onAddRoom(propid,roomName)
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {

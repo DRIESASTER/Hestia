@@ -60,10 +60,14 @@ class RoomEditVM @Inject constructor(
 
     fun getRentinglist (propid:String): Flow<UsersResponse> = useCases.getRentersList(propid)
 
-    fun addroom(propid:String,roomName: String, tenantName: String) = viewModelScope.launch {
-        useCases.addRoomToProperty(propid, roomName, listOf(tenantName))
+    fun addroom(propid:String,roomName: String,mails:MutableList<String>) = viewModelScope.launch {
+        useCases.addRoomToProperty(propid, roomName, mails)
 
-        Log.d("RoomEditVM", "addroom: $propid $roomName $tenantName")
+        Log.d("RoomEditVM", "addroom: $propid $roomName")
+    }
+
+    fun addUserToRoom(propid: String,roomId: String ,tenantmail: String) = viewModelScope.launch {
+        useCases.addUserToRoom(propid, roomId = roomId ,userId = tenantmail)
     }
 
 }

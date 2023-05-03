@@ -65,13 +65,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
 
-    composable(
-        MyDestinations.ROOM_EDIT_ROUTE_APP,
-        arguments = listOf(navArgument(MyDestinations.RoomEditArgs.PropId) { type = NavType.StringType })
-    ) { backStackEntry ->
-        val propId = backStackEntry.arguments?.getString(MyDestinations.RoomEditArgs.PropId)!!
-        Log.d("ROUTING_TO_ROOM_edit", "")
-        RoomeditScreenApp(propid = propId, navigate = { route -> appState.navigate(route) })
+    composable(MyDestinations.ROOM_EDIT_ROUTE_APP + "/{email}/{propId}") {
+        RoomeditScreenApp(navigate = { route -> appState.navigate(route) })
     }
 
     composable(

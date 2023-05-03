@@ -12,7 +12,7 @@ object MyDestinations {
     const val HIREE_HOME_ROUTE = "hiree_home"
     const val EMAIL_VER_ROUTE = "email_ver"
     const val FORGOT_PASSWORD_ROUTE = "forgot_password"
-    const val ROOM_EDIT_ROUTE_APP = "room_edit/{propId}"
+    const val ROOM_EDIT_ROUTE_APP = "room_edit"
     const val ADD_ISSUE_ROUTE = "add_issue"
     const val ISSUE_ROUTE = "issue/{${IssueArgs.IssueId}}/{${IssueArgs.PropId}}"
     const val ROOM_EDIT_ROUTE_HOUSE = "add_house"

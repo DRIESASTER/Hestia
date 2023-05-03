@@ -3,7 +3,9 @@ package com.ugnet.sel1.ui.components
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.AnimationConstants.DefaultDurationMillis
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.GreenProgress
 import com.ugnet.sel1.ui.theme.OrangeProgress
 import com.ugnet.sel1.ui.theme.RedProgress
@@ -42,7 +45,10 @@ fun ProgressSwitch(
             modifier = modifier
                 .width(180.dp)
                 .height(40.dp)
-                .clip(RoundedCornerShape(30.dp))
+                .clip(RoundedCornerShape(30.dp)).border(
+                    BorderStroke(1.dp, Color.LightGray),
+                    RoundedCornerShape(30.dp)
+                ).background(AccentLicht)
                 .clickable {
                     setCurrentState(
                         when (currentState) {

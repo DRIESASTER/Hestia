@@ -1,51 +1,99 @@
 package com.ugnet.sel1.ui.manager.issues
 
-import android.graphics.Bitmap
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.rounded.PinDrop
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.domain.models.Message
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.ui.chat.components.ChatMessage
+import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.chat.components.ChatWindowDialog
+import com.ugnet.sel1.ui.components.ProgressSwitch
+import com.ugnet.sel1.ui.components.SimpleTopBar
+import com.ugnet.sel1.ui.components.getStatus
+import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun IssueDetailsScreen(
     issue: Issue,
-    openChatWindow: () -> Unit
+    openChatWindow: () -> Unit,
+    viewModel: IssueDetailVM
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+
+            .background(MaterialTheme.colors.background)
     ) {
-        Text(
-            text = issue.titel ?: "",
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.Bold
-        )
+        SimpleTopBar(name = issue.titel ?: "", navigate = {})
+        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = issue.userId ?: "",
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.padding(8.dp)
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Rounded.PinDrop,
+                    contentDescription = "person",
+                    tint = MainGroen,
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .size(14.dp)
+                )
+                //viewModel.getRoom()
+                Text(
+                    text = issue.roomId ?: "",
+                    style = MaterialTheme.typography.body2,
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 14.sp
+                )
+            }
+
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+
+        ProgressSwitch(initialState = getStatus(issue.status!!), onStateChanged = {
+            issue.status = when (it) {
+                "Not Started" -> Status.notStarted
+                "In Progress" -> Status.inProgress
+                "Finished" -> Status.finished
+                else -> Status.notStarted
+            }
+            viewModel.changeIssueStatus(issue.issueId!!, issue.status!!)
+        }, modifier = Modifier.padding(8.dp))
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = issue.beschrijving ?: "",
-            style = MaterialTheme.typography.body1
+            text = "description", modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.body1, fontWeight = FontWeight.Bold
         )
+        Card(
+            border = BorderStroke(2.dp, MainGroen),
+            modifier = Modifier.padding(8.dp).fillMaxWidth().height(200.dp),
+            elevation = 8.dp
+        ) {
+            Text(
+                text = issue.beschrijving ?: "",
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -60,16 +108,11 @@ fun IssueDetailsScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = issue.status?.name ?: "",
-            style = MaterialTheme.typography.body2,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = openChatWindow) {
-            Text(text = "Open Chat")
+        IconButton(onClick = openChatWindow) {
+            Icon(imageVector = Icons.Default.Chat, contentDescription = "chat", tint = MainGroen,
+            modifier = Modifier
+                    .padding(2.dp)
+                    .size(40.dp))
         }
     }
 }
@@ -92,9 +135,8 @@ fun IssueRouteScreen(viewModel: IssueDetailVM) {
             is Response.Failure -> Text(text = "failed", Modifier.align(Alignment.Center))
             is Response.Success -> {
                 val issueData = (viewModel.issueDataResponse as Response.Success).data
-                IssueDetailsScreen(issueData!!) {
-                    isChatWindowOpen = true
-                }
+                IssueDetailsScreen(issueData!!,viewModel = viewModel,
+                    openChatWindow = { isChatWindowOpen = true})
                 if (isChatWindowOpen) {
                     ChatWindowDialog(
                         issue = issueData,
@@ -110,6 +152,22 @@ fun IssueRouteScreen(viewModel: IssueDetailVM) {
 
     }
 }
+
+
+//@Preview
+//@Composable
+//fun issueDetailsPreview() {
+//    IssueDetailsScreen(
+//        issue = Issue(
+//            titel = "Issue 1",
+//            beschrijving = "Issue 1 description",
+//            status = Status.notStarted,
+//            userId = "1",
+//            datum = Timestamp.now(),
+//        ),
+//        openChatWindow = {}
+//    )
+//}
 
 
 

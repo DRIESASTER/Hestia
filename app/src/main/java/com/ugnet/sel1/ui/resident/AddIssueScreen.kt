@@ -22,6 +22,16 @@ fun AddIssueScreen(
     viewModel: ResidentHomeVM,
     navigate : (String) -> Unit
 ) {
+    val txtFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+        focusedBorderColor = MainGroen,
+        unfocusedBorderColor = AccentLicht,
+        focusedLabelColor = MainGroen,
+        unfocusedLabelColor = AccentLicht,
+        cursorColor = MainGroen,
+        textColor = Color.Black,
+        backgroundColor = AccentLicht
+    )
+
     var propertyExpanded by remember { mutableStateOf(false) }
     var roomExpanded by remember { mutableStateOf(false) }
     var typeExpanded by remember { mutableStateOf(false) }
@@ -48,24 +58,19 @@ fun AddIssueScreen(
             OutlinedTextField(
                 value = "Select property",
                 onValueChange = {},
+                readOnly = true,
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = propertyExpanded)
                 },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MainGroen,
-                    unfocusedBorderColor = AccentLicht,
-                    focusedLabelColor = MainGroen,
-                    unfocusedLabelColor = AccentLicht,
-                    cursorColor = MainGroen,
-                    textColor = Color.Black,
-                    backgroundColor = AccentLicht
-                )
+                colors = txtFieldColors
             )
             
             ExposedDropdownMenu(expanded = propertyExpanded, onDismissRequest = { propertyExpanded = false }) {
-                
+                //TODO: loop over properties and display in dropdownMenuItems
             }
         }
+        //TODO: Make dropdown of rooms -> Make sure to disable dropdown if no property has been selected
+        //TODO: Make dropdown of issueTypes
     }
 }
 

@@ -106,28 +106,33 @@ class IssuesRepositoryImpl @Inject constructor(
         }
     }
 
-
-
-
     override fun getIssuesForRenterFromFirestore(
         propertyId: String,
         userId: String
-    ): Flow<IssuesResponse> = callbackFlow {
-        val snapshotListener =
-            dbRef.collection("properties/${propertyId}/issues").whereEqualTo("userId", userId)
-                .addSnapshotListener { snapshot, e ->
-                    val issuesResponse = if (snapshot != null) {
-                        val issues = snapshot.toObjects(Issue::class.java)
-                        Response.Success(issues)
-                    } else {
-                        Response.Failure(e)
-                    }
-                    trySend(issuesResponse)
-                }
-        awaitClose {
-            snapshotListener.remove()
+    ): Flow<IssuesResponse> {
+        TODO("Not yet implemented")
     }
-    }
+
+
+//    override fun getIssuesForRenterFromFirestore(
+//        propertyId: String,
+//        userId: String
+//    ): Flow<IssuesResponse> = callbackFlow {
+//        val snapshotListener =
+//            dbRef.collection("properties/${propertyId}/issues").whereEqualTo("userId", userId)
+//                .addSnapshotListener { snapshot, e ->
+//                    val issuesResponse = if (snapshot != null) {
+//                        val issues = snapshot.toObjects(Issue::class.java)
+//                        Response.Success(issues)
+//                    } else {
+//                        Response.Failure(e)
+//                    }
+//                    trySend(issuesResponse)
+//                }
+//        awaitClose {
+//            snapshotListener.remove()
+//    }
+//    }
 
 
         override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {
@@ -139,18 +144,25 @@ class IssuesRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getIssue(propertyId: String, issueId: String): Flow<IssueResponse> = callbackFlow {
-        Log.d("getIssue in repo", "propid:" + propertyId + "issueid:" + issueId)
-        dbRef.document("properties/${propertyId}/issues/${issueId}").addSnapshotListener { snapshot, e ->
-            val issueResponse = if (snapshot != null) {
-                val issue= snapshot.toObject(Issue::class.java)
-                Response.Success(issue)
-            } else {
-                Response.Failure(e)
-            }
-            trySend(issueResponse)
+    override fun getIssue(
+        propertyId: String,
+        issueId:String
+    ): Flow<IssueResponse> = callbackFlow {
+        val snapshotListener =
+            dbRef.collection("properties/${propertyId}/issues").document(issueId)
+                .addSnapshotListener { snapshot, e ->
+                    val issueResponse = if (snapshot!= null && snapshot.exists()) {
+                        Log.d("HEY WAT IS DIT", "HET BESTAAT")
+                        val issue = snapshot.toObject(Issue::class.java)
+                        Response.Success(issue)
+                    } else {
+                        Response.Failure(e)
+                    }
+                    trySend(issueResponse)
+                }
+        awaitClose {
+            snapshotListener.remove()
         }
-        awaitClose()
     }
 
 

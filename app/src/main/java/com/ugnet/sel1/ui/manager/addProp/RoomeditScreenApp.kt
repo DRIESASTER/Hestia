@@ -59,7 +59,7 @@ fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifie
                                         }
                                     }
                                     else -> {
-                                        CircularProgressIndicator()}
+                                        CircularProgressIndicator(color = MainGroen)}
                                 }
                                 DropdownMenu(
                                     onDismissRequest = { isPopupVisible = false },
@@ -103,7 +103,7 @@ fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifie
                     })
             }
             else -> {
-                CircularProgressIndicator()}
+                CircularProgressIndicator(color = MainGroen)}
         }
     }
 

@@ -133,8 +133,8 @@ fun SignUpScreen(
                 Text("Already have an account? Login")
             }
             if (viewModel.signUpResponse is Response.Loading) {
-                CircularProgressIndicator(
-                )
+                CircularProgressIndicator(color = MainGroen)
+
             }
 
 

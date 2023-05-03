@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.ugnet.sel1.AuthViewModel
 import com.ugnet.sel1.common.snackbar.SnackbarManager
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.ui.theme.MainGroen
 
 
 import com.ugnet.sel1.R.string as AppText
@@ -40,7 +41,7 @@ fun SplashScreen(
         }
     }
     if(viewModel.userResponse is Response.Loading){
-        CircularProgressIndicator()
+        CircularProgressIndicator(color = MainGroen)
     }
 }
 

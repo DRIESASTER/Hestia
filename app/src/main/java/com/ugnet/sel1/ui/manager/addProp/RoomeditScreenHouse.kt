@@ -56,7 +56,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
                                         }
                                     }
                                     else -> {
-                                        CircularProgressIndicator()}
+                                        CircularProgressIndicator(color = MainGroen)}
                                 }
                                 DropdownMenu(
                                     onDismissRequest = { isPopupVisible = false },
@@ -90,7 +90,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
                     })
             }
             else -> {
-                CircularProgressIndicator()}
+                CircularProgressIndicator(color = MainGroen)}
         }
     }
 

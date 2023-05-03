@@ -1,6 +1,7 @@
 package com.ugnet.sel1.authentication.profile
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
@@ -19,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.navigation.MyDestinations
+import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
@@ -46,7 +48,7 @@ fun UserProfileScreen(
         userViewModel.getUser(Firebase.auth.currentUser?.uid.toString())
         when (val response = userViewModel.userDataResponse) {
             is Response.Loading -> {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = MainGroen)
             }
             is Response.Success -> {
                 Log.d("resposne succes", response.data.toString())
@@ -63,9 +65,9 @@ fun UserProfileScreen(
                 Button(
                     onClick = { userViewModel.signOut()
                               clearAndNavigate(MyDestinations.ROLE_SELECTION_ROUTE)},
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().background(MainGroen)
                 ) {
-                    Text(text = "Sign Out", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "Sign Out", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
                 Button(
                     onClick = {
@@ -73,9 +75,9 @@ fun UserProfileScreen(
                             navigateToHomeScreen(user = user)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().background(MainGroen)
                 ) {
-                    Text(text = "Home Screen", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "Home Screen", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
             }
             is Response.Failure -> {

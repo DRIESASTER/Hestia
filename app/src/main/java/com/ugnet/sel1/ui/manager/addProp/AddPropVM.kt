@@ -18,7 +18,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel() {
+class AddPropVM @Inject constructor(
+    private val useCases: UseCases,
+    @PropId private val propId: String
+    ): ViewModel() {
+
+    init{
+        Log.d("AddPropVM", propId)
+    }
+
     var saveClicked : Boolean by mutableStateOf(false)
     var tenant : String by mutableStateOf("")
     var city : String by mutableStateOf("")

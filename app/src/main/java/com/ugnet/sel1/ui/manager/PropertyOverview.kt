@@ -15,13 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.PropertyCard
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
-fun PropertiesOverview(viewModel:ManagerHomeVM) {
+fun PropertiesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit) {
 //    ownedPropertiesResponseFormatted = Response.Loading
     when(val response = viewModel.ownedPropertiesResponse){
         is Response.Success -> {
@@ -32,7 +33,7 @@ fun PropertiesOverview(viewModel:ManagerHomeVM) {
                     properties = response.data,
                     onPropertyClicked = {/*route to details*/ },
                     viewModel = viewModel,
-                    onEditClicked = { /*route to edit*/ })
+                    onEditClicked = { id -> navigate(MyDestinations.EDIT_PROPERTY_ROUTE + "/" + id) })
             }
         }
         else -> {
@@ -43,7 +44,7 @@ fun PropertiesOverview(viewModel:ManagerHomeVM) {
 
 
 @Composable
-fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM, onEditClicked:(Property)->Unit) {
+fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM, onEditClicked:(String)->Unit) {
     Surface(modifier = modifier) {
         LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()){
             itemsIndexed(properties) { _, property ->
@@ -64,7 +65,7 @@ fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, o
                                 issueCount = issueCount,
                                 onClick = { onPropertyClicked(property) },
                                 onDelete = { viewModel.removeProperty(property.propertyId!!) },
-                                onEdit = { onEditClicked(property)}
+                                onEdit = { onEditClicked(property.propertyId!!)}
                             )
                         }
                         else -> {

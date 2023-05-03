@@ -24,7 +24,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 @Composable
 fun AddPropMainScreen(
     viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,
-    openAndPopUp: (String, String) -> Unit, navigate : (String) -> Unit, setPropId: (String) -> Unit) {
+    navigate : (String) -> Unit) {
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navigate = navigate)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -42,7 +42,7 @@ fun AddPropMainScreen(
         }
         }, floatingActionButton = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TrySave(viewmodel = viewmodel, navigate = navigate, setPropId = setPropId, openAndPopUp = openAndPopUp)
+                TrySave(viewmodel = viewmodel, navigate = navigate)
             }
 
         })
@@ -50,7 +50,7 @@ fun AddPropMainScreen(
 
 //TODO: fix input validation
 @Composable
-fun TrySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String) -> Unit, openAndPopUp: (String, String) -> Unit) {
+fun TrySave(viewmodel: AddPropVM, navigate: (String) -> Unit) {
     when (val userresponse = viewmodel.userResponse) {
         is Response.Success -> {
             if (!viewmodel.saveClicked) {
@@ -82,11 +82,10 @@ fun TrySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String
                         }
                         navigate(route)
                         Log.d("AddPropMainScreen", "navigate to room edit")
-                        setPropId(response.data)
                         viewmodel.saveClicked=false
                     }
                     is Response.Failure -> {
-                        openAndPopUp("Error", response.toString())
+                        //navigate("Error", response.toString())
                         viewmodel.saveClicked = false
                     }
                     else -> {

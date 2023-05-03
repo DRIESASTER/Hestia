@@ -109,7 +109,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
 
                 } else {
                     /*show properties overview*/
-                    PropertiesOverview(viewModel = Data)
+                    PropertiesOverview(viewModel = Data, navigate = navigate)
 //                    when (val allproperties = Data.ownedPropertiesResponseFormatted) {
 //                        is Response.Success -> {
 //                            if (allproperties.data.isEmpty()) {
@@ -128,7 +128,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             }
             }
     },
-        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {navigate(MyDestinations.ADD_PROPERTY)})}}
+        floatingActionButton = {if (Data.currentState) {addButton(contentDescription = "Add property", onClick = {navigate("${MyDestinations.ADD_PROPERTY}/newProperty")})}}
 
     )
 

@@ -59,7 +59,7 @@ fun ResidentIssueOverview(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
+                                //.weight(1f)
                         ) {
                             itemsIndexed(response.data) {_, property ->
                                 Log.d("propertyLog", "Looping over properties")
@@ -88,8 +88,9 @@ fun ResidentIssueOverview(
                                                                                         tenant = username,
                                                                                         room = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
                                                                                         description = issue.beschrijving!!,
-                                                                                        status = issue.status!!
+                                                                                        status = issue.status!!,
                                                                                     )
+                                                                                    Log.d("IssueOverview", "Attempted to display issue")
                                                                                 }
                                                                             }
                                                                             else -> {
@@ -125,10 +126,4 @@ fun ResidentIssueOverview(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ResidentIssueOverviewPreview() {
-    //ResidentIssueOverview(issues = createMockIssueDataList())
 }

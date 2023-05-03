@@ -25,6 +25,7 @@ class RoomEditVM @Inject constructor(
     ): ViewModel(){
 
 
+
     init{
         Log.d("roomeditVm", propId + email)
     }

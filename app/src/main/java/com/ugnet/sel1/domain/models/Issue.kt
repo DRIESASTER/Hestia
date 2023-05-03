@@ -1,8 +1,8 @@
 package com.ugnet.sel1.domain.models
 
+import android.graphics.Bitmap
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
-import java.util.*
 
 @IgnoreExtraProperties
 data class Issue(
@@ -13,7 +13,7 @@ data class Issue(
     var roomId: String? = null,
     var issueId: String? = null,
     var issueType: IssueType? = null,
-    var userId: String? = null,
+    var userId: String? = null
 )
 
 enum class Status {

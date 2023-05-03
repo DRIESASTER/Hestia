@@ -30,15 +30,15 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun IssueDetailsScreen(
     issue: Issue,
     openChatWindow: () -> Unit,
-    viewModel: IssueDetailVM
+    viewModel: IssueDetailVM,
+    navigateBack : () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-
             .background(MaterialTheme.colors.background)
     ) {
-        SimpleTopBar(name = issue.titel ?: "", navigate = {})
+        SimpleTopBar(name = issue.titel ?: "", navigate = {navigateBack()})
         Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = issue.userId ?: "",
@@ -110,7 +110,7 @@ fun IssueDetailsScreen(
 
         IconButton(onClick = openChatWindow) {
             Icon(imageVector = Icons.Default.Chat, contentDescription = "chat", tint = MainGroen,
-            modifier = Modifier
+                modifier = Modifier
                     .padding(2.dp)
                     .size(40.dp))
         }
@@ -118,7 +118,7 @@ fun IssueDetailsScreen(
 }
 
 @Composable
-fun IssueRouteScreen(viewModel: IssueDetailVM) {
+fun IssueRouteScreen(viewModel: IssueDetailVM, navigateBack: () -> Unit) {
 
     val messages by viewModel.messages.map {
         when (it) {
@@ -136,7 +136,7 @@ fun IssueRouteScreen(viewModel: IssueDetailVM) {
             is Response.Success -> {
                 val issueData = (viewModel.issueDataResponse as Response.Success).data
                 IssueDetailsScreen(issueData!!,viewModel = viewModel,
-                    openChatWindow = { isChatWindowOpen = true})
+                    openChatWindow = { isChatWindowOpen = true}, navigateBack = navigateBack)
                 if (isChatWindowOpen) {
                     ChatWindowDialog(
                         issue = issueData,
@@ -168,7 +168,6 @@ fun IssueRouteScreen(viewModel: IssueDetailVM) {
 //        openChatWindow = {}
 //    )
 //}
-
 
 
 

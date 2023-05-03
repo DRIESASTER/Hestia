@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.ugnet.sel1.AuthViewModel
 import com.ugnet.sel1.authentication.forgot_password.ForgotPasswordScreen
 import com.ugnet.sel1.navigation.SplashScreen
@@ -20,7 +18,7 @@ import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenApp
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenHouse
-import com.ugnet.sel1.ui.manager.issues.IssueDetailScreen
+import com.ugnet.sel1.ui.manager.issues.IssueRouteScreen
 import com.ugnet.sel1.ui.resident.AddIssueScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
@@ -65,13 +63,8 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
 
-    composable(
-        MyDestinations.ROOM_EDIT_ROUTE_APP,
-        arguments = listOf(navArgument(MyDestinations.RoomEditArgs.PropId) { type = NavType.StringType })
-    ) { backStackEntry ->
-        val propId = backStackEntry.arguments?.getString(MyDestinations.RoomEditArgs.PropId)!!
-        Log.d("ROUTING_TO_ROOM_edit", "")
-        RoomeditScreenApp(propid = propId, navigate = { route -> appState.navigate(route) })
+    composable(MyDestinations.ROOM_EDIT_ROUTE_APP + "/{email}/{propId}") {
+        RoomeditScreenApp { route -> appState.navigate(route) }
     }
 
     composable(
@@ -79,7 +72,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     ) { backStackEntry ->
         //val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
         Log.d("ROUTING Issue edit", "")
-        IssueDetailScreen(viewModel = hiltViewModel())
+        IssueRouteScreen(viewModel = hiltViewModel())
     }
 
     composable(MyDestinations.ROOM_EDIT_ROUTE_HOUSE +  "/{email}/{propId}") {

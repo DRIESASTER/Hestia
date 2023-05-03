@@ -59,7 +59,6 @@ class AddPropVM @Inject constructor(private val useCases: UseCases): ViewModel()
         rooms = rooms.filter{ it.roomName != naam }.toMutableList()
     }
 
-    //TODO: upload room to db
     fun saveProp(managerID:String) = viewModelScope.launch {
         Log.d("SAVE PROP manager email", managerID)
         addPropertyResponse = Response.Loading

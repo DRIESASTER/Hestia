@@ -31,12 +31,13 @@ class IssuesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getIssueMessages(issueId: String): Flow<Response<List<Message>>> = callbackFlow {
+    override fun getIssueMessages(propId : String, issueId: String): Flow<Response<List<Message>>> = callbackFlow {
         val snapshotListener =
-            dbRef.collection("properties/${issueId}/messages").orderBy("timestamp")
+            dbRef.collection("properties/${propId}/issues").document(issueId).collection("messages").orderBy("timestamp")
                 .addSnapshotListener { snapshot, e ->
                     val messageResponse = if (snapshot != null) {
                         val messages = snapshot.toObjects(Message::class.java)
+                        Log.d("getIssueMessage", messages.toString())
                         Response.Success(messages)
                     } else {
                         Response.Failure(e)
@@ -49,13 +50,14 @@ class IssuesRepositoryImpl @Inject constructor(
     }
 
 
-    override fun sendMessage(issueId: String, message: Message) {
+    override fun sendMessage(propId: String, issueId: String, message: Message) {
         val newMessage = hashMapOf(
             "senderEmail" to message.senderEmail,
             "messageText" to message.messageText,
             "timestamp" to message.timestamp
         )
-        dbRef.collection("properties").document(issueId).collection("messages").add(newMessage)
+        dbRef.collection("properties/${propId}/issues").document(issueId).collection("messages").add(newMessage)
+        //dbRef.collection("properties").document(issueId).collection("messages").add(newMessage)
     }
 
 

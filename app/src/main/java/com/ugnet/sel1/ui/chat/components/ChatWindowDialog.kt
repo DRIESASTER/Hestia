@@ -9,13 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.ugnet.sel1.domain.models.Issue
-import com.ugnet.sel1.ui.chat.ChatScreen
-import com.ugnet.sel1.ui.chat.ChatViewModel
+import com.ugnet.sel1.domain.models.Message
+
+
 
 @Composable
 fun ChatWindowDialog(
     issue: Issue,
-    onDismiss: () -> Unit
+    messages: List<Message>,
+    currentUserEmail: String,
+    onDismiss: () -> Unit,
+    onSendMessage: (String) -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -26,9 +30,11 @@ fun ChatWindowDialog(
                 .fillMaxHeight(0.8f)
         ) {
             ChatScreen(
-                currentUserEmail = "yourUserEmail@example.com",
+                currentUserEmail = currentUserEmail,
                 issue = issue,
-                onDismiss = onDismiss
+                messages = messages,
+                onDismiss = onDismiss,
+                onSendMessage = onSendMessage
             )
         }
     }

@@ -35,6 +35,7 @@ interface IssuesRepository {
         issueId: String
     ): ChangeIssueStatusResponse
 
-    fun getIssueMessages(issueId: String): Flow<Response<List<Message>>>
-    fun sendMessage(issueId: String, message: Message)
+
+    fun sendMessage(propid: String, issueId: String, message: Message)
+    fun getIssueMessages(propId: String, issueId: String): Flow<Response<List<Message>>>
 }

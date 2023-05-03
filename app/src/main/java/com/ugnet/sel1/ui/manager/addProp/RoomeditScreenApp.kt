@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,13 +21,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
+import com.ugnet.sel1.ui.components.ShortUserCard
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
+//TODO: make users of room a list, fix
 
 @Composable
-fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate:(String)->Unit) {
+fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate:(String)->Unit) {
+    var propid = viewmodel.propid
     var isPopupVisible by remember { mutableStateOf(false) }
     viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {
@@ -62,15 +68,19 @@ fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), m
                                     AddRoomPopup(
                                         propid = propid,
                                         onClose = { isPopupVisible = false },
-                                        onAddRoom = { propid,roomname, tenantmail ->
-                                            viewmodel.addroom(propid,roomname, tenantmail)
+                                        onAddRoom = { propid,roomname, tenantmails ->
+                                            viewmodel.addroom(propid,roomname,tenantmails)
                                             isPopupVisible = false
                                             //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
-                                            if( tenantmail !in rentlist && tenantmail != ""){
-                                                rentlist.add(tenantmail)
-                                                viewmodel.addrenter(propid,tenantmail)
+                                            for (tenantmail in tenantmails){
+                                                if( tenantmail !in rentlist && tenantmail != ""){
+                                                    rentlist.add(tenantmail)
+                                                    viewmodel.addrenter(propid,tenantmail)
+                                                }
                                             }
-                                        })
+                                        }
+                                    )
+
                                 }
                             }
                             Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
@@ -116,11 +126,12 @@ fun AddRoomButton(modifier:Modifier = Modifier, onClick: () -> Unit = {}){
 fun AddRoomPopup(
     propid:String,
     onClose: () -> Unit,
-    onAddRoom: (propid:String,roomName: String, tenantMail: String) -> Unit
+    onAddRoom: (propid:String,roomName: String, tenantMails: MutableList<String>) -> Unit,
 ) {
     var roomName by remember { mutableStateOf("") }
     var tenantMail by remember { mutableStateOf("") }
     var shared by remember { mutableStateOf(false) }
+    var tenantMails by remember { mutableStateOf(mutableListOf<String>()) }
 
     Card(
         modifier = Modifier
@@ -137,10 +148,24 @@ fun AddRoomPopup(
             )
             Spacer(modifier = Modifier.height(16.dp))
             if (!shared){
-                InputWithTitle(
-                    title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
-                )
+                Row {
+                    InputWithTitle(
+                        title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    IconButton(onClick = {
+                        tenantMails.plus(tenantMail)}){
+                        Icon(imageVector = Icons.Rounded.Add, contentDescription = "add")
+                    }
+                }
                 Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Tenants:")
+                LazyColumn(modifier = Modifier.fillMaxWidth()){
+                    itemsIndexed(items = tenantMails){index, item ->
+                        ShortUserCard(name = item, removeClick = {tenantMails.remove(item)})
+                    }
+                }
+                }
             }
             Text(text = "Shared Room?")
             Switch(checked =shared , onCheckedChange = {shared=!shared})
@@ -160,9 +185,9 @@ fun AddRoomPopup(
                 Button(
                     onClick = {
                         return@Button if(shared) {
-                            onAddRoom(propid,roomName, "")
+                            onAddRoom(propid,roomName, mutableListOf<String>())
                         } else{
-                            onAddRoom(propid,roomName, tenantMail)
+                            onAddRoom(propid,roomName, tenantMails)
                         }
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
@@ -172,7 +197,7 @@ fun AddRoomPopup(
             }
         }
     }
-}
+
 
 @Preview
 @Composable

@@ -78,7 +78,10 @@ fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifie
                                                     viewmodel.addrenter(propid,tenantmail)
                                                 }
                                             }
-                                        }
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .align(Alignment.CenterHorizontally)
                                     )
 
                                 }
@@ -127,51 +130,58 @@ fun AddRoomPopup(
     propid:String,
     onClose: () -> Unit,
     onAddRoom: (propid:String,roomName: String, tenantMails: MutableList<String>) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var roomName by remember { mutableStateOf("") }
     var tenantMail by remember { mutableStateOf("") }
     var shared by remember { mutableStateOf(false) }
-    var tenantMails by remember { mutableStateOf(mutableListOf<String>()) }
+    var tenantMails = remember { mutableStateListOf<String>() }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
 
-        ) {
+        Column(modifier = modifier.fillMaxWidth().fillMaxHeight()) {
+
         Column(
             modifier = Modifier
                 .padding(16.dp)
+                .height(300.dp),
         ) {
             InputWithTitle(
                 title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             if (!shared){
                 Row {
                     InputWithTitle(
-                        title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }
+                        title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }, modifier = Modifier.width(200.dp)
                     )
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     IconButton(onClick = {
-                        tenantMails.plus(tenantMail)}){
+                        Log.d("AddRoomPopup", "added tenantmail: $tenantMail")
+                        if (tenantMail != "") {
+                            tenantMails.add(tenantMail)
+                            tenantMail = ""
+                        } },modifier = Modifier.padding(top = 40.dp, bottom = 30.dp) ){
                         Icon(imageVector = Icons.Rounded.Add, contentDescription = "add")
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(text = "Tenants:")
-                LazyColumn(modifier = Modifier.fillMaxWidth()){
+                LazyColumn(modifier = Modifier
+                    .width(300.dp)
+                    .height(100.dp)){
                     itemsIndexed(items = tenantMails){index, item ->
                         ShortUserCard(name = item, removeClick = {tenantMails.remove(item)})
                     }
                 }
                 }
             }
+        Column (modifier = Modifier.fillMaxWidth().padding(10.dp)){
+            Spacer(modifier = Modifier.height(10.dp))
             Text(text = "Shared Room?")
             Switch(checked =shared , onCheckedChange = {shared=!shared})
 
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -195,6 +205,8 @@ fun AddRoomPopup(
                     Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
                 }
             }
+        }
+
         }
     }
 

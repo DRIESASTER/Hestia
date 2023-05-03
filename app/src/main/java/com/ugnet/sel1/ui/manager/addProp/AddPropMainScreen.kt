@@ -78,7 +78,7 @@ fun TrySave(setPropId: (String) -> Unit, viewmodel: AddPropVM, navigate: (String
                             Log.d("propid", response.data)
                             "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${viewmodel.tenant}/${response.data}"
                         }else {
-                            "${MyDestinations.ROOM_EDIT_ROUTE_APP}/${response.data}"
+                            "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${response.data}"
                         }
                         navigate(route)
                         Log.d("AddPropMainScreen", "navigate to room edit")

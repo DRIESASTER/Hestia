@@ -61,6 +61,30 @@ class PropertiesRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
+    override suspend fun editProperty(
+        propertyId: String,
+        huisnummer: Int,
+        type: String,
+        ownedBy: String,
+        postcode: Int,
+        stad: String,
+        straat: String,
+        huurdersLijst: List<String>
+    ): Response<Boolean> {
+        return try{
+            dbRef.collection("properties").document(propertyId).update("huisnummer", huisnummer).await()
+            dbRef.collection("properties").document(propertyId).update("type", type).await()
+            dbRef.collection("properties").document(propertyId).update("ownedBy", ownedBy).await()
+            dbRef.collection("properties").document(propertyId).update("postcode", postcode).await()
+            dbRef.collection("properties").document(propertyId).update("stad", stad).await()
+            dbRef.collection("properties").document(propertyId).update("straat", straat).await()
+            dbRef.collection("properties").document(propertyId).update("huurders", huurdersLijst).await()
+            Response.Success(true)
+        } catch(e:Exception) {
+            Response.Failure(e)
+        }
+}
+
 
     override suspend fun addPropertyToFirestore(
         huisnummer: Int,
@@ -90,38 +114,6 @@ class PropertiesRepositoryImpl @Inject constructor(
     }
 
 
-
-
-
-
-
-
-
-//    override suspend fun addPropertyToFirestore(
-//        huisnummer: Int,
-//        type: String,
-//        ownedBy: String,
-//        postcode: Int,
-//        stad: String,
-//        straat: String
-//    ) = callbackFlow {
-//        val id = dbRef.collection("properties").document().id
-//        val property = Property(
-//            huisnummer = huisnummer,
-//            type = type,
-//            ownedBy = ownedBy,
-//            postcode = postcode,
-//            stad = stad,
-//            straat = straat,
-//            propertyId = id
-//        )
-//        val propertyRef = dbRef.document("properties/${id}").set(property).addOnSuccessListener {
-//            trySend(Response.Success(id))
-//        }.addOnFailureListener {
-//            trySend(Response.Failure(it))
-//        }
-
-//    }
 
     override suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse {
         return try {

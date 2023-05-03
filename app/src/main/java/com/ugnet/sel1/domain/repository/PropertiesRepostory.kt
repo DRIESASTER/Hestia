@@ -36,6 +36,8 @@ interface PropertiesRepository {
     fun getRentersList(propertyId: String): Flow<Response<MutableList<User>>>
 
 
+    suspend fun editProperty(propertyId:String, huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String, huurdersLijst:List<String>): Response<Boolean>
+
 
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse

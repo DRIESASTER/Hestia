@@ -7,12 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.ugnet.sel1.domain.models.Issue
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.repository.IssuesResponse
-import com.ugnet.sel1.domain.repository.PropertiesResponse
-import com.ugnet.sel1.domain.repository.RoomsResponse
-import com.ugnet.sel1.domain.repository.UserResponse
+import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -21,28 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewModel(){
-    var currentState by mutableStateOf(true)
-
-    var userResponse by mutableStateOf<UserResponse>(Response.Loading)
-        private set
-
-    var allIssuesResponse by mutableStateOf<IssuesResponse>(Response.Loading)
-        private set
-
-    var rentedRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
-        private set
-
-    var allIssuesForRoom by mutableStateOf<IssuesResponse>(Response.Loading)
-        private set
-
-    var allRoomsResponse by mutableStateOf<RoomsResponse>(Response.Loading)
-        private set
 
     var allRentedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
 
     init{
         getRentedProperties()
-//        getUser("Fti1aAWM1USFFCJg2I7LFniWrlT2")
     }
 
 
@@ -60,21 +40,7 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
 
     fun getIssuesForRoom(property: String, room: String): Flow<IssuesResponse> = useCases.getIssuesForRoom(property, room)
 
-
-//    fun getRentedRoomsByUser(userId: String) = viewModelScope.launch {
-//        useCases.getAccesibleRoomsPerUser(userId).collect { response ->
-//            rentedRoomsResponse = response
-//        }
-//    }
-
-    fun getIssuesForRenter(propertyId: String): Flow<IssuesResponse> = useCases.getIssuesForRenter(propertyId, Firebase.auth.currentUser?.email.toString())
-
-//    fun getIssuesForRenterByPand(propertyId:String, userId: String) = viewModelScope.launch {
-//        useCases.getIssuesForRenter(userId).collect { response ->
-//            issuesForRenterResponse = response
-//        }
-//    }
-
-
-    
+    fun addIssue(description:String, title:String, property:String, room:String, type: IssueType) = viewModelScope.launch {
+        useCases.addIssue(description, title, property, room, type, Firebase.auth.currentUser?.email.toString())
+    }
 }

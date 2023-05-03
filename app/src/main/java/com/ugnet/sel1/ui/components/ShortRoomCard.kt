@@ -34,7 +34,7 @@ fun ShortRoomCard(roomdata: Room, removeClick: (String) -> Unit) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = roomdata.naam!!, style = MaterialTheme.typography.h6, color = Color.White)
-                Text(text = roomdata.huurderLijst[0], style = MaterialTheme.typography.body1, color = Color.White)
+                Text(text = if (roomdata.huurderLijst.size==1) roomdata.huurderLijst[0] else "shared", style = MaterialTheme.typography.body1, color = Color.White)
             }
             IconButton(onClick = { removeClick(roomdata.roomId!!) },Modifier.background(Color.Transparent)) {
                 Icon(

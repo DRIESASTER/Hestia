@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
@@ -20,11 +21,10 @@ fun ShortUserCard(name: String, removeClick: (String) -> Unit) {
     Card(
         backgroundColor = MainGroen,
         modifier = Modifier
-            .height(56.dp)
+            .height(50.dp)
             .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 4.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
-        elevation = 8.dp,
         border = BorderStroke(1.dp, Color.DarkGray)
     ) {
         Row(
@@ -32,7 +32,7 @@ fun ShortUserCard(name: String, removeClick: (String) -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = name, style = MaterialTheme.typography.h6, color = Color.White)
+                Text(text = name, style = MaterialTheme.typography.h6, color = Color.White, fontSize = 14.sp)
             }
             IconButton(onClick = { removeClick(name) }, Modifier.background(Color.Transparent)) {
                 Icon(

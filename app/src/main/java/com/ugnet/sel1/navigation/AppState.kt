@@ -59,6 +59,10 @@ class AppState(
         navController.navigate(route) { launchSingleTop = true }
     }
 
+    fun navigateBack(){
+        navController.popBackStack()
+    }
+
     fun navigateAndPopUp(route: String, popUp: String) {
         navController.navigate(route) {
             popUpTo(popUp) { inclusive = true }

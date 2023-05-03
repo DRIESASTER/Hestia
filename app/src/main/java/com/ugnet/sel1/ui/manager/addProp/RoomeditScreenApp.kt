@@ -29,7 +29,8 @@ import com.ugnet.sel1.ui.theme.MainGroen
 //TODO: make users of room a list, fix
 
 @Composable
-fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate:(String)->Unit) {
+fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate:(String)->Unit) {
+    var propid = viewmodel.propid
     var isPopupVisible by remember { mutableStateOf(false) }
     viewmodel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->
         when (renters) {

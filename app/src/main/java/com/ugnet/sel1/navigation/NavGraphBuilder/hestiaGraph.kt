@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.ugnet.sel1.AuthViewModel
 import com.ugnet.sel1.authentication.forgot_password.ForgotPasswordScreen
 import com.ugnet.sel1.navigation.SplashScreen
@@ -66,7 +64,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
 
     composable(MyDestinations.ROOM_EDIT_ROUTE_APP + "/{email}/{propId}") {
-        RoomeditScreenApp(navigate = { route -> appState.navigate(route) })
+        RoomeditScreenApp { route -> appState.navigate(route) }
     }
 
     composable(

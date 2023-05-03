@@ -27,7 +27,7 @@ import com.ugnet.sel1.ui.chat.components.ChatWindowDialog
 @Composable
 fun IssueDetailsScreen(
     issue: Issue,
-    openChatWindow: () -> Unit
+    openChatWindow: () -> Unit,
 ) {
     Column(
         modifier = Modifier

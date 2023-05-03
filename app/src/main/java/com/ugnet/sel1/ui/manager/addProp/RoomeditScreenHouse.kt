@@ -25,7 +25,8 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate : (String) -> Unit) {
     var isPopupVisible by remember { mutableStateOf(false) }
 
-    val propid = ""
+    val propid = viewModel.propid
+    viewModel.addrenter(propid, viewModel.tenantmail)
 
 
     viewModel.getRentinglist(propid).collectAsState(initial = Response.Loading).value.let{renters->

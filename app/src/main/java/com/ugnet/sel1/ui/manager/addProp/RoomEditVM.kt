@@ -23,7 +23,8 @@ class RoomEditVM @Inject constructor(
     @PropId private val propId: String,
     @Email private val email: String
     ): ViewModel(){
-
+    var propid : String by mutableStateOf(propId)
+    var tenantmail : String by mutableStateOf(email)
 
 
     init{

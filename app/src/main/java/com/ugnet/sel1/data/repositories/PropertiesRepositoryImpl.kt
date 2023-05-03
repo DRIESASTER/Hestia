@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import android.media.Image
 import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -75,6 +76,7 @@ class PropertiesRepositoryImpl @Inject constructor(
         }
         awaitClose { snapshotListener.remove() }
     }
+
 
     override suspend fun editProperty(
         propertyId: String,

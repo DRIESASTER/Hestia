@@ -22,6 +22,7 @@ import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
+//TODO: make users of room a list, fix
 
 @Composable
 fun RoomeditScreenApp(propid: String, viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifier = Modifier, navigate:(String)->Unit) {

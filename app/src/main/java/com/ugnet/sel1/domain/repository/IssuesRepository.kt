@@ -19,7 +19,8 @@ interface IssuesRepository {
         titel: String,
         propertyId: String,
         roomId: String,
-        issueType: IssueType
+        issueType: IssueType,
+        userId: String
     ): AddIssueResponse
 
     //

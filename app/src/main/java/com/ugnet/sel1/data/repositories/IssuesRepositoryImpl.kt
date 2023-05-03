@@ -89,7 +89,8 @@ class IssuesRepositoryImpl @Inject constructor(
         titel: String,
         propertyId: String,
         roomId: String,
-        issueType: IssueType) : AddIssueResponse {
+        issueType: IssueType,
+        userId:String) : AddIssueResponse {
         return try{
             val id = dbRef.collection("properties/${propertyId}/issues").document().id
             val issue = Issue(
@@ -99,7 +100,8 @@ class IssuesRepositoryImpl @Inject constructor(
                 issueType = issueType,
                 status = Status.notStarted,
                 datum = null,
-                issueId = id
+                issueId = id,
+                userId = userId,
             )
             dbRef.collection("properties/${propertyId}/issues").document(id).set(issue).await()
             Response.Success(id)

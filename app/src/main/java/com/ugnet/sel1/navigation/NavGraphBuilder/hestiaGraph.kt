@@ -80,6 +80,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         RoomeditScreenHouse(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) })
     }
 
+    composable(MyDestinations.EDIT_PROPERTY_ROUTE + "/{propId}"){
+        AddPropMainScreen(navigate = { route -> appState.navigate(route) })
+    }
+
 
     composable(MyDestinations.ADD_ISSUE_ROUTE){
         AddIssueScreen(navigate = { route -> appState.navigate(route) }, viewModel = hiltViewModel())
@@ -92,9 +96,9 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         ResidentHomeScreen(navigate =  { route -> appState.navigate(route) })
     }
 
-    composable(MyDestinations.ADD_PROPERTY) {
-        AddPropMainScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, navigate =  { route -> appState.navigate(route) }
-        ) { propId: String -> appState.setPropid(propId) }
+    composable(MyDestinations.ADD_PROPERTY + "/{propId}") {
+        AddPropMainScreen(navigate =  { route -> appState.navigate(route) }
+        )
     }
 
 

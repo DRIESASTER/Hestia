@@ -24,7 +24,8 @@ fun PropertyCard(propName: String,
                  tennants:Int,
                  issueCount:Int,
                  onClick: () -> Unit,
-                 modifier: Modifier = Modifier,onDelete: () -> Unit,onEdit: () -> Unit ) {
+                 modifier: Modifier = Modifier,onDelete: () -> Unit,
+                 onEdit: () -> Unit ) {
 
     Card(
         modifier = modifier

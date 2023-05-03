@@ -9,7 +9,7 @@ typealias Properties = List<Property>
 typealias PropertiesResponse = Response<Properties>
 typealias AddPropertyResponse = Response<String>
 typealias DeletePropertyResponse = Response<Boolean>
-
+typealias PropertyResponse = Response<Property?>
 //typealias AddBookResponse = Response<Boolean>
 //typealias DeleteBookResponse = Response<Boolean>
 
@@ -36,6 +36,9 @@ interface PropertiesRepository {
     fun getRentersList(propertyId: String): Flow<Response<MutableList<User>>>
 
 
+    suspend fun editProperty(propertyId:String, huisnummer:Int, type:String, ownedBy:String, postcode:Int, stad:String, straat:String, huurdersLijst:List<String>): Response<Boolean>
+
+    fun getProperty(propertyId: String): Flow<PropertyResponse>
 
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse

@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.chat.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,7 +24,6 @@ fun ChatScreen(
     onSendMessage: (String) -> Unit
 ) {
     var messageInput by remember { mutableStateOf("") }
-
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = "Chat") },

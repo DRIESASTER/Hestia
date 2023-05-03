@@ -31,7 +31,7 @@ class RoomsRepositoryImpl @Inject constructor(
         user: String,
         propertyId: String
     ): Flow<RoomsResponse>  = callbackFlow {
-        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").whereArrayContainsAny("huurderId", listOf("ALL", user)).addSnapshotListener{snapshot, e ->
+        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").whereArrayContainsAny("huurderLijst", listOf("ALL", user)).addSnapshotListener{snapshot, e ->
             val roomsResponse = if (snapshot != null) {
                 val rooms = snapshot.toObjects(Room::class.java)
                 Response.Success(rooms)

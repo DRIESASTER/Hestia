@@ -54,7 +54,7 @@ fun ResidentProfileScreen(viewModel: ResidentHomeVM) {
                                     } else {
                                         Text(text = "Accessible rooms", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = AccentLicht)
                                         for (room in rooms.data) {
-                                            Text(text = room.naam!!, fontSize = 16.sp)
+                                            Text(text = "   " + room.naam!!, fontSize = 16.sp)
                                         }
                                     }
                                 }

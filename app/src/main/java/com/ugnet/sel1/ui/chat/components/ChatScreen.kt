@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -37,10 +38,12 @@ fun ChatScreen(
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp),
-            reverseLayout = false
+                .padding(8.dp)
+                .fillMaxWidth(),
+            state = rememberLazyListState(),
+            reverseLayout = true
         ) {
-            items(messages) { message ->
+            items(messages.reversed()) { message ->
                 ChatMessage(
                     message = message,
                     isCurrentUser = message.senderEmail == currentUserEmail

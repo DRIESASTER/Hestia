@@ -119,10 +119,10 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
 //            }
 //      }
 
-      fun addIssue(beschrijving:String, titel:String, propertyId: String, roomId:String, issueType: IssueType) = viewModelScope.launch {
-            addIssueResponse = Response.Loading
-            addIssueResponse = useCases.addIssue(beschrijving, titel, propertyId, roomId, issueType)
-      }
+//      fun addIssue(beschrijving:String, titel:String, propertyId: String, roomId:String, issueType: IssueType) = viewModelScope.launch {
+//            addIssueResponse = Response.Loading
+//            addIssueResponse = useCases.addIssue(beschrijving, titel, propertyId, roomId, issueType)
+//      }
 
       fun deleteProperty(propertyId: String) = viewModelScope.launch {
             deletePropertyResponse = Response.Loading

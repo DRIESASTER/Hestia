@@ -1,4 +1,4 @@
-package com.ugnet.sel1.ui.resident
+package com.ugnet.sel1.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.domain.models.Status
-import com.ugnet.sel1.ui.components.ProgressionStatus
-import com.ugnet.sel1.ui.components.getStatus
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 

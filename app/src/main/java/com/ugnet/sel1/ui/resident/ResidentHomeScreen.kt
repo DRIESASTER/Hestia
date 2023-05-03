@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ResidentHomeScreen(
     viewModel: ResidentHomeVM = hiltViewModel(),
-    navigate : (String) -> Unit
+    navigate : (String) -> Unit,
+    cScreen: String = "Profile"
 ) {
     val drawerItems = listOf(
         MenuItem(
@@ -40,7 +41,7 @@ fun ResidentHomeScreen(
         ),
     )
 
-    var currentTitle by rememberSaveable { mutableStateOf(drawerItems[0].name) }
+    var currentTitle by rememberSaveable { mutableStateOf(cScreen) }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 

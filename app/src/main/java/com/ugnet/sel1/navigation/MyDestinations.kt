@@ -15,7 +15,7 @@ object MyDestinations {
     const val ROOM_EDIT_ROUTE_APP = "room_edit/{propId}"
     const val ADD_ISSUE_ROUTE = "add_issue"
     const val ISSUE_ROUTE = "issue/{${IssueArgs.IssueId}}/{${IssueArgs.PropId}}"
-    const val ROOM_EDIT_ROUTE_HOUSE = "add_house/${HouseEditArgs.Email}/${HouseEditArgs.PropId}"
+    const val ROOM_EDIT_ROUTE_HOUSE = "add_house"
     const val EDIT_PROPERTY_ROUTE = "edit_property/${IssueArgs.PropId}"
 
     object IssueArgs {

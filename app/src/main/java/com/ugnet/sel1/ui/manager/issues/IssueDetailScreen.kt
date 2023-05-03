@@ -35,7 +35,7 @@ fun IssueDetailScreen(
         is Response.Success -> {
             val issue = (viewModel.issueDataResponse as Response.Success).data
             Log.d("DETAIL RESPONSE", viewModel.issueDataResponse.toString())
-
+            Text(text = issue!!.beschrijving!!)
         }
         is Response.Failure -> {
             SnackbarManager.showMessage(R.string.generic_error);

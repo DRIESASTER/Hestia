@@ -82,10 +82,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         IssueDetailScreen(viewModel = hiltViewModel())
     }
 
-    composable(
-        MyDestinations.ROOM_EDIT_ROUTE_HOUSE,
-    ) { backStackEntry ->
-        //val issueId = backStackEntry.arguments?.getString(MyDestinations.IssueArgs.IssueId)!!
+    composable(MyDestinations.ROOM_EDIT_ROUTE_HOUSE +  "/{email}/{propId}") {
         Log.d("ROUTING Issue edit", "")
         RoomeditScreenHouse(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) })
     }

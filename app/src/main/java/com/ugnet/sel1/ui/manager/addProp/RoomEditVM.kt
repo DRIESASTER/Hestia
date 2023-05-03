@@ -12,8 +12,6 @@ import com.ugnet.sel1.domain.repository.RoomsResponse
 import com.ugnet.sel1.domain.repository.UsersResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.components.RoomData
-import com.ugnet.sel1.ui.manager.issues.Email
-import com.ugnet.sel1.ui.manager.issues.PropId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -26,6 +24,10 @@ class RoomEditVM @Inject constructor(
     @Email private val email: String
     ): ViewModel(){
 
+
+    init{
+        Log.d("roomeditVm", propId + email)
+    }
 
     var removeRoomsResponse by mutableStateOf<DeleteRoomResponse>(Response.Loading)
         private set

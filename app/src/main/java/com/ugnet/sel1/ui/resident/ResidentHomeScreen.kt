@@ -8,7 +8,6 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.DrawerBody
@@ -63,6 +62,9 @@ fun ResidentHomeScreen(
             DrawerBody(
                 items = drawerItems,
                 onItemClick = {
+                    if(it.name == "Logout") {
+                        //TODO: call log out function
+                    }
                     currentTitle = it.name
                     coroutineScope.launch {
                         scaffoldState.drawerState.close()
@@ -76,7 +78,6 @@ fun ResidentHomeScreen(
     )
 }
 
-//TODO: pass actual data and implement all screens
 @Composable
 fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM, navigate: (String) -> Unit) {
     when (title) {
@@ -84,10 +85,4 @@ fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM, navigate: (St
         "Issues" -> ResidentIssueOverview(viewModel = vm, navigate = navigate)
         "Logout" -> Text(text = "TODO: implement Logout")
     }
-}
-
-@Preview
-@Composable
-fun ResidentHomeScreenPreview() {
-    //ResidentHomeScreen()
 }

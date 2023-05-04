@@ -75,5 +75,6 @@ object AppModule {
         addUserToRoom = AddUserToRoom(roomsRepo),
         editProperty = EditProperty(propertyRepo),
         getProperty = GetProperty(propertyRepo),
+        getRoom = GetRoom(roomsRepo),
     )
 }

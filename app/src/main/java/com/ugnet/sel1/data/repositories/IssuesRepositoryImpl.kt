@@ -1,5 +1,6 @@
 package com.ugnet.sel1.data.repositories
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ugnet.sel1.domain.models.*
@@ -62,9 +63,6 @@ class IssuesRepositoryImpl @Inject constructor(
 
 
 
-
-
-
     override fun getIssuesPerPropertyFromFirestore(
         propertyId: String
     ): Flow<IssuesResponse> = callbackFlow {
@@ -90,9 +88,12 @@ class IssuesRepositoryImpl @Inject constructor(
         propertyId: String,
         roomId: String,
         issueType: IssueType,
-        userId:String) : AddIssueResponse {
+        userId:String,
+        imageUri: Uri?) : AddIssueResponse {
         return try{
+
             val id = dbRef.collection("properties/${propertyId}/issues").document().id
+
             val issue = Issue(
                 beschrijving = beschrijving,
                 titel = titel,
@@ -103,6 +104,10 @@ class IssuesRepositoryImpl @Inject constructor(
                 issueId = id,
                 userId = userId,
             )
+//            dbRef.document("properties/id/issues").set(mapOf(
+//                URL to downloadUrl,
+//                CREATED_AT to FieldValue.serverTimestamp()
+//            ))
             dbRef.collection("properties/${propertyId}/issues").document(id).set(issue).await()
             Response.Success(id)
         } catch (e: Exception) {

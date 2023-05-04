@@ -32,4 +32,6 @@ interface RoomsRepository {
 
     suspend fun addUserToRoom(propertyId:String, roomId: String, userId: String): AddRoomResponse
 
+    fun getRoom(propertyId: String, roomId: String): Flow<Response<Room?>>
+
 }

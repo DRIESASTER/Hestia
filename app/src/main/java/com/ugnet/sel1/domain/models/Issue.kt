@@ -13,7 +13,8 @@ data class Issue(
     var roomId: String? = null,
     var issueId: String? = null,
     var issueType: IssueType? = null,
-    var userId: String? = null
+    var userId: String? = null,
+    var imageUri: String? = null,
 )
 
 enum class Status {

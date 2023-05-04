@@ -92,81 +92,16 @@ class RoomsRepositoryImpl @Inject constructor(
         }
     }
 
-//    override fun getRentedRoomsByUserInFirestore(userId: String): Flow<RoomsResponse> = callbackFlow {
-////        var propRef = dbRef.collection("properties").whereArrayContains("huurders", userId).
-//        //dbRef.collection("properties").whereArrayContains("huurders", userId).addSnapshotListener()
-//        val snapshotListener = dbRef.collectionGroup("rooms").whereEqualTo("huurderId", "gq8qZljKY73A9X3SQzAb").addSnapshotListener() { snapshot, e ->
-//            val roomsResponse = if (snapshot != null) {
-//                val rooms = snapshot.toObjects(Room::class.java)
-//                Response.Success(rooms)
-//            } else {
-//                Log.d("TAG", "getRentedRoomsByUserInFirestore: ${e?.message}")
-//                Response.Failure(e)
-//            }
-//            trySend(roomsResponse)
-//        }
-//        awaitClose { snapshotListener.remove()
-//    }
-//    }
-
-
-//    override fun getKamersFromFirestore() = callbackFlow {
-//        val snapshotListener = kamersRef.collection("kamers").addSnapshotListener { snapshot, e ->
-//            val kamersResponse = if (snapshot != null) {
-//                val rooms = snapshot.toObjects(Room::class.java)
-//                Response.Success(rooms)
-//            } else {
-//                Response.Failure(e)
-//            }
-//            trySend(kamersResponse)
-//        }
-//        awaitClose {
-//            snapshotListener.remove()
-//        }
-//    }
-//
-//
-//    override suspend fun addKamerToFirestore(
-//        huurder: String,
-//        naam: String
-//    ) : AddKamerResponse {
-//        return try {
-//            val id = kamersRef.collection("kamers").document().id
-//            val room = Room(
-//                naam = naam,
-//                huurder = huurder,
-//                issues = emptyList()
-//            )
-//            kamersRef.document(id).set(room).await()
-//            Response.Success(true)
-//        } catch (e: Exception) {
-//            Response.Failure(e)
-//        }
-//    }
-//
-//    override suspend fun deleteKamerFromFirestore(id: String): DeleteKamerResponse {
-//        return try {
-//            kamersRef.document(id).delete().await()
-//            Response.Success(true)
-//        } catch (e: Exception) {
-//            Response.Failure(e)
-//        }
-//    }
-//
-//
-//    override suspend fun editKamerFromFirestore(
-//        id: String,
-//        huurder: String,
-//        naam: String,
-//        issues: List<String>
-//    ): EditKamerResponse {
-//        return try {
-//            kamersRef.collection("kamers").document(id).update("huurder", huurder).await()
-//            kamersRef.collection("kamers").document(id).update("naam", naam).await()
-//            kamersRef.collection("kamers").document().update("issues", issues).await()
-//            Response.Success(true)
-//        } catch (e: Exception) {
-//            Response.Failure(e)
-//        }
-
+    override fun getRoom(propertyId: String, roomId:String): Flow<Response<Room?>> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties/${propertyId}/rooms").document(roomId).addSnapshotListener { snapshot, e ->
+            val roomsResponse = if (snapshot != null) {
+                val rooms = snapshot.toObject(Room::class.java)
+                Response.Success(rooms)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(roomsResponse)
+        }
+        awaitClose { snapshotListener.remove() }
+    }
 }

@@ -16,8 +16,10 @@ import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.ChangeIssueStatusResponse
 import com.ugnet.sel1.domain.repository.IssueResponse
 import com.ugnet.sel1.domain.repository.IssuesRepository
+import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -73,4 +75,6 @@ class IssueDetailVM @Inject constructor(
     }
 
     //fun getRoom(roomid:String):Flow<RoomResponse> = useCases.getRoom(roomid)
+
+    fun getUser(userid:String): Flow<UserResponse> = useCases.getUser(userid)
 }

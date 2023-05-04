@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.*
@@ -17,7 +18,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewModel(){
+class ResidentHomeVM @Inject constructor(
+    private val useCases: UseCases,
+    private val authRepo : AuthRepository
+    ): ViewModel(){
 
     var allRentedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
 
@@ -31,6 +35,8 @@ class ResidentHomeVM @Inject constructor(private val useCases: UseCases): ViewMo
             allRentedPropertiesResponse = response
         }
     }
+
+    fun signOut() = authRepo.signOut();
 
     fun getAccesibleRoomsForProperty(propertyId: String): Flow<RoomsResponse> = useCases.getAccesibleRoomsPerUser(Firebase.auth.currentUser?.email.toString(), propertyId)
 

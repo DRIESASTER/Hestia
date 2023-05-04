@@ -1,6 +1,7 @@
 package com.ugnet.sel1.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -32,6 +33,7 @@ fun PropertyCard(propName: String,
             .padding(10.dp)
             .background(Color.Transparent)
             .clip(RoundedCornerShape(15.dp))
+            .clickable(onClick = onClick)
             .wrapContentWidth(), contentColor = Color.Transparent
     ) {
         //everythingcontainer

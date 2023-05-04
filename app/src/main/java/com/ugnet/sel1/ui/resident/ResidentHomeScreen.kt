@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.DrawerBody
 import com.ugnet.sel1.ui.components.DrawerHeader
 import com.ugnet.sel1.ui.components.MenuItem
@@ -36,7 +37,7 @@ fun ResidentHomeScreen(
         ),
         MenuItem(
             name = "Logout",
-            route = "logout",
+            route = MyDestinations.ROLE_SELECTION_ROUTE,
             icon = Icons.Rounded.Logout,
         ),
     )

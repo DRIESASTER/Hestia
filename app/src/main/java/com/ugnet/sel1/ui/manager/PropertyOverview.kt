@@ -31,7 +31,7 @@ fun PropertiesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit) {
             } else {
                 PropertyOverview(
                     properties = response.data,
-                    onPropertyClicked = {/*route to details*/ },
+                    onPropertyClicked = { id -> navigate(MyDestinations.PROPERTY_DETAILS_ROUTE + "/" + id) },
                     viewModel = viewModel,
                     onEditClicked = { id -> navigate(MyDestinations.EDIT_PROPERTY_ROUTE + "/" + id) })
             }
@@ -44,7 +44,7 @@ fun PropertiesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit) {
 
 
 @Composable
-fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(Property)->Unit, viewModel:ManagerHomeVM, onEditClicked:(String)->Unit) {
+fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, onPropertyClicked:(String)->Unit, viewModel:ManagerHomeVM, onEditClicked:(String)->Unit) {
     Surface(modifier = modifier) {
         LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()){
             itemsIndexed(properties) { _, property ->
@@ -63,7 +63,7 @@ fun PropertyOverview(modifier: Modifier = Modifier, properties:List<Property>, o
                                 propAddress = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
                                 tennants = property.huurders.size,
                                 issueCount = issueCount,
-                                onClick = { onPropertyClicked(property) },
+                                onClick = { onPropertyClicked(property.propertyId!!) },
                                 onDelete = { viewModel.removeProperty(property.propertyId!!) },
                                 onEdit = { onEditClicked(property.propertyId!!)}
                             )

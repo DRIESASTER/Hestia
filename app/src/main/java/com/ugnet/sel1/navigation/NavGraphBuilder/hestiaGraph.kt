@@ -19,6 +19,7 @@ import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenApp
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenHouse
 import com.ugnet.sel1.ui.manager.issues.IssueRouteScreen
+import com.ugnet.sel1.ui.manager.properties.PropertyDetailRoute
 import com.ugnet.sel1.ui.resident.AddIssueScreen
 import com.ugnet.sel1.ui.resident.ResidentHomeScreen
 
@@ -82,6 +83,10 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
     composable(MyDestinations.EDIT_PROPERTY_ROUTE + "/{propId}"){
         AddPropMainScreen(navigate = { route -> appState.navigate(route) })
+    }
+
+    composable(MyDestinations.PROPERTY_DETAILS_ROUTE +  "/{propId}"){
+        PropertyDetailRoute(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) }, navigateBack = { appState.navigateBack() })
     }
 
 

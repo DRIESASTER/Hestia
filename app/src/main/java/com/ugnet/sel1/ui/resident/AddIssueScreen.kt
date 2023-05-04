@@ -149,6 +149,7 @@ fun AddIssueScreen(
             }
         }
 
+        //Type of issue dropdown
         Text(text = "Select the type of issue",style= MaterialTheme.typography.h6)
         ExposedDropdownMenuBox(
             expanded = typeExpanded,
@@ -174,6 +175,8 @@ fun AddIssueScreen(
                 }
             }
         }
+        Text(text = "Add an image?",style= MaterialTheme.typography.h6)
+
         Row(modifier = Modifier.padding(20.dp)) {
             Button(
                 onClick = { navigate(MyDestinations.HIREE_HOME_ROUTE) },

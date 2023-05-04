@@ -22,6 +22,7 @@ import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.chat.components.ChatWindowDialog
 import com.ugnet.sel1.ui.components.ProgressSwitch
+import com.ugnet.sel1.ui.components.ProgressionStatus
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.components.getStatus
 import com.ugnet.sel1.ui.theme.MainGroen
@@ -66,16 +67,28 @@ fun IssueDetailsScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-
-        ProgressSwitch(initialState = getStatus(issue.status!!), onStateChanged = {
-            issue.status = when (it) {
-                "Not Started" -> Status.notStarted
-                "In Progress" -> Status.inProgress
-                "Finished" -> Status.finished
-                else -> Status.notStarted
+        viewModel.getUser("").collectAsState(initial = Response.Loading).value.let{
+            when(it){
+                is Response.Loading -> CircularProgressIndicator()
+                is Response.Failure -> Text(text = "failed")
+                is Response.Success -> {
+                    if(it.data?.accountType == "Manager") {
+                        ProgressSwitch(initialState = getStatus(issue.status!!), onStateChanged = {
+                            issue.status = when (it) {
+                                "Not Started" -> Status.notStarted
+                                "In Progress" -> Status.inProgress
+                                "Finished" -> Status.finished
+                                else -> Status.notStarted
+                            }
+                            viewModel.changeIssueStatus(issue.issueId!!, issue.status!!)
+                        }, modifier = Modifier.padding(8.dp))
+                    } else {
+                        ProgressionStatus(currentState = getStatus(issue.status!!), modifier = Modifier.padding(8.dp))
+                    }
+                }
             }
-            viewModel.changeIssueStatus(issue.issueId!!, issue.status!!)
-        }, modifier = Modifier.padding(8.dp))
+        }
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -85,7 +98,10 @@ fun IssueDetailsScreen(
         )
         Card(
             border = BorderStroke(2.dp, MainGroen),
-            modifier = Modifier.padding(8.dp).fillMaxWidth().height(200.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .height(200.dp),
             elevation = 8.dp
         ) {
             Text(

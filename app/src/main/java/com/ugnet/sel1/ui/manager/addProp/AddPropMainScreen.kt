@@ -25,14 +25,29 @@ import com.ugnet.sel1.ui.theme.MainGroen
 fun AddPropMainScreen(
     viewmodel: AddPropVM = hiltViewModel(), modifier: Modifier = Modifier,
     navigate : (String) -> Unit) {
+    if (viewmodel.propid != "newProperty"){
+        viewmodel.getProperty(viewmodel.propid).collectAsState(initial = Response.Loading).value.let {
+            if (it is Response.Success){
+                viewmodel.city = it.data?.stad!!
+                viewmodel.street = it.data.straat!!
+                viewmodel.number = it.data.huisnummer.toString()
+                viewmodel.postalCode = it.data.postcode.toString()
+                viewmodel.isHouse = it.data.type == "Huis"
+                viewmodel.tenant = if(viewmodel.isHouse) it.data.huurders[0] else ""
+                Log.d("AddPropVM", "editing")
+            }
+        }
+    }
     Scaffold(modifier = Modifier.fillMaxWidth(), topBar = { SimpleTopBar(name = "Add Property", navigate = navigate)},
         content = { padding ->
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-            SwitchButton2(
-                option1 = "House",
-                option2 = "Appartment",
-                initialState = viewmodel.isHouse,
-                onStateChanged = { viewmodel.changeState() })
+                if(viewmodel.propid == "newProperty") {
+                    SwitchButton2(
+                        option1 = "House",
+                        option2 = "Appartment",
+                        initialState = viewmodel.isHouse,
+                        onStateChanged = { viewmodel.changeState() })
+                }
             if (viewmodel.isHouse) {
                 AddHouse(viewmodel = viewmodel, modifier = Modifier.padding(padding))
             } else {
@@ -55,7 +70,8 @@ fun TrySave(viewmodel: AddPropVM, navigate: (String) -> Unit) {
         is Response.Success -> {
             if (!viewmodel.saveClicked) {
                 IconButton(
-                    onClick = { viewmodel.saveProp(userresponse.data?.email.toString())
+                    onClick = {
+                        if(viewmodel.propid=="newProperty") viewmodel.saveProp(userresponse.data?.email.toString()) else viewmodel.patchProp(userresponse.data?.email.toString())
                         viewmodel.saveClicked = true },
                     Modifier
                         .background(
@@ -70,15 +86,14 @@ fun TrySave(viewmodel: AddPropVM, navigate: (String) -> Unit) {
                     )
                 }
             } else {
-                when (val response = viewmodel.addPropertyResponse) {
+                when (val response = (if(viewmodel.propid=="newProperty") viewmodel.addPropertyResponse else viewmodel.updatePropertyResponse)) {
                     is Response.Success -> {
 
                         val route = if(viewmodel.isHouse) {
                             Log.d("viewmodel tenant", viewmodel.tenant)
-                            Log.d("propid", response.data)
-                            "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${viewmodel.tenant}/${response.data}"
+                            "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${viewmodel.tenant}/${if(viewmodel.propid=="newProperty") response.data else viewmodel.propid}"
                         }else {
-                            "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${response.data}"
+                            "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${if(viewmodel.propid=="newProperty") response.data else viewmodel.propid}"
                         }
                         navigate(route)
                         Log.d("AddPropMainScreen", "navigate to room edit")

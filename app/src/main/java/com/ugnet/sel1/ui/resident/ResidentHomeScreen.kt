@@ -63,7 +63,8 @@ fun ResidentHomeScreen(
                 items = drawerItems,
                 onItemClick = {
                     if(it.name == "Logout") {
-                        //TODO: call log out function
+                        viewModel.signOut()
+                        navigate(it.route)
                     }
                     currentTitle = it.name
                     coroutineScope.launch {

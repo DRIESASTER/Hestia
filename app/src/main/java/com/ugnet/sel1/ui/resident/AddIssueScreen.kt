@@ -1,6 +1,10 @@
 package com.ugnet.sel1.ui.resident
 
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.ugnet.sel1.R.string as AppText
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -8,9 +12,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.ugnet.sel1.common.snackbar.SnackbarManager
 import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
@@ -52,6 +58,12 @@ fun AddIssueScreen(
     var canSelectRoom by remember { mutableStateOf(false) }
 
     var issueType by remember { mutableStateOf(IssueType.water) }
+
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val singleImagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImageUri = uri }
+    )
 
     Column(
         modifier = Modifier.padding(20.dp),
@@ -175,8 +187,25 @@ fun AddIssueScreen(
                 }
             }
         }
+        
         Text(text = "Add an image?",style= MaterialTheme.typography.h6)
-
+        Button(
+            onClick = {
+                      singleImagePickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                      ) },
+            modifier = Modifier.padding(end = 8.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
+        ) {
+            Text("Select image", style = MaterialTheme.typography.button.copy(color = Color.White))
+        }
+        AsyncImage(
+            model = selectedImageUri,
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.Crop
+        )
+        
         Row(modifier = Modifier.padding(20.dp)) {
             Button(
                 onClick = { navigate(MyDestinations.HIREE_HOME_ROUTE) },

@@ -88,8 +88,7 @@ class IssuesRepositoryImpl @Inject constructor(
         propertyId: String,
         roomId: String,
         issueType: IssueType,
-        userId:String,
-        imageUri: Uri?) : AddIssueResponse {
+        userId:String) : AddIssueResponse {
         return try{
 
             val id = dbRef.collection("properties/${propertyId}/issues").document().id

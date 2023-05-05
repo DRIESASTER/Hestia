@@ -202,7 +202,7 @@ fun AddIssueScreen(
         AsyncImage(
             model = selectedImageUri,
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.height(150.dp).width(150.dp).padding(8.dp),
             contentScale = ContentScale.Crop
         )
         

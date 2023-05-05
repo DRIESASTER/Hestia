@@ -12,11 +12,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Message
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.Room
 import com.ugnet.sel1.domain.models.Status
-import com.ugnet.sel1.domain.repository.ChangeIssueStatusResponse
-import com.ugnet.sel1.domain.repository.IssueResponse
-import com.ugnet.sel1.domain.repository.IssuesRepository
-import com.ugnet.sel1.domain.repository.UserResponse
+import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -70,9 +68,7 @@ class IssueDetailVM @Inject constructor(
         IssueStatusResponse = useCases.changeIssueStatus(issueId, status, propId)
     }
 
-    fun getRoom() {
-        TODO("Not yet implemented")
-    }
+    fun getRoom(): Flow<Response<Room?>> = useCases.getRoom(propId,issueId)
 
     //fun getRoom(roomid:String):Flow<RoomResponse> = useCases.getRoom(roomid)
 

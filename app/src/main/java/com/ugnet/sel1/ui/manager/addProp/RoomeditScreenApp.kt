@@ -143,7 +143,7 @@ fun AddRoomPopup(
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .height(300.dp),
+                .height(350.dp),
         ) {
             InputWithTitle(
                 title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
@@ -166,12 +166,15 @@ fun AddRoomPopup(
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(text = "Tenants:")
+                Row(modifier= Modifier.fillMaxWidth().height(160.dp),horizontalArrangement = Arrangement.Center){
+
                 LazyColumn(modifier = Modifier
                     .width(300.dp)
-                    .height(100.dp)){
+                    .height(160.dp)){
                     itemsIndexed(items = tenantMails){index, item ->
                         ShortUserCard(name = item, removeClick = {tenantMails.remove(item)})
                     }
+                }
                 }
                 }
             }

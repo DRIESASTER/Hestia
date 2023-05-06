@@ -83,7 +83,7 @@ fun ResidentHomeScreen(
 fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM, navigate: (String) -> Unit) {
     when (title) {
         "Profile" -> ResidentProfileScreen(viewModel = vm)
-        "Issues" -> ResidentIssueOverview(viewModel = vm, navigate = navigate)
+        "Issues" -> ResidentIssueOverview(viewModel = vm, navigate = navigate, onIssueClicked = { route -> navigate(route) })
         "Logout" -> Text(text = "TODO: implement Logout")
     }
 }

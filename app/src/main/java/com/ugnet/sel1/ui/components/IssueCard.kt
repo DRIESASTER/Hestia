@@ -105,25 +105,25 @@ fun IssueCard(id:String,
                         }
                         Spacer(modifier =Modifier.width(5.dp))
                         //info
-                        Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-                            .clip(RoundedCornerShape(30.dp))
-                            .background(AccentLicht)) {
-                        Icon(
-                            imageVector = Icons.Rounded.Info,
-                            contentDescription = "person",
-                            tint = Color.Black,
-                            modifier = Modifier
-                                .padding(2.dp)
-                                .size(10.dp)
-                        )
-                        Text(
-                            text = description,
-                            color = Color.Black,
-                            style = MaterialTheme.typography.body1,
-                            fontSize = 10.sp,
-                            modifier = Modifier.padding(2.dp)
-                        )
-                    }
+//                        Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+//                            .clip(RoundedCornerShape(30.dp))
+//                            .background(AccentLicht)) {
+//                        Icon(
+//                            imageVector = Icons.Rounded.Info,
+//                            contentDescription = "person",
+//                            tint = Color.Black,
+//                            modifier = Modifier
+//                                .padding(2.dp)
+//                                .size(10.dp)
+//                        )
+//                        Text(
+//                            text = description,
+//                            color = Color.Black,
+//                            style = MaterialTheme.typography.body1,
+//                            fontSize = 10.sp,
+//                            modifier = Modifier.padding(2.dp)
+//                        )
+//                    }
                     }
                 }
                 Column(modifier = Modifier

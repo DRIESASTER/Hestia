@@ -39,7 +39,7 @@ fun IssueDetailsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
     ) {
-        SimpleTopBar(name = issue.titel ?: "", navigate = {navigateBack()})
+        SimpleTopBar(name = issue.titel ?: "", navigate={ navigateBack() })
         Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = issue.userId ?: "",

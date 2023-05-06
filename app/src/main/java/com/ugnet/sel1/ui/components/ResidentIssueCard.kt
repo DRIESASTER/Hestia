@@ -144,7 +144,7 @@ fun ResidentIssueCard(
                 .width(130.dp)
                 .align(Alignment.CenterVertically)) {
                 val statusText = when (status) {
-                    Status.notStarted -> "Not Started"
+                    Status.notStarted -> "Committed"
                     Status.inProgress -> "In Progress"
                     Status.finished -> "Finished"
                     else -> ""

@@ -67,7 +67,9 @@ fun PropertyDetailsScreen(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Location:", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            //TODO
             //mapview
+
             Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Rooms:", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)

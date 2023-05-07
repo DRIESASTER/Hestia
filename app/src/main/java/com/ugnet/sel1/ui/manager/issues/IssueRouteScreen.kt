@@ -6,18 +6,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.rounded.PinDrop
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Issue
+import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.chat.components.ChatWindowDialog
@@ -25,6 +25,7 @@ import com.ugnet.sel1.ui.components.ProgressSwitch
 import com.ugnet.sel1.ui.components.ProgressionStatus
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.components.getStatus
+import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
@@ -40,11 +41,12 @@ fun IssueDetailsScreen(
             .background(MaterialTheme.colors.background)
     ) {
         SimpleTopBar(name = issue.titel ?: "", navigate={ navigateBack() })
-        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
+        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(imageVector = Icons.Rounded.Person, contentDescription = "person", tint = MainGroen)
             Text(
                 text = issue.userId ?: "",
                 style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(4.dp)
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -55,13 +57,20 @@ fun IssueDetailsScreen(
                         .padding(2.dp)
                         .size(14.dp)
                 )
-                //viewModel.getRoom()
-                Text(
-                    text = issue.roomId ?: "",
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(8.dp),
-                    fontSize = 14.sp
-                )
+                viewModel.getRoom(issue.roomId!!).collectAsState(initial = Response.Loading).value.let {
+                    when (it) {
+                        is Response.Loading -> CircularProgressIndicator()
+                        is Response.Failure -> Text(text = "failed")
+                        is Response.Success -> {
+                            Text(
+                                text = it.data?.naam ?: "",
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    }
+
+            }
             }
 
         }
@@ -91,15 +100,18 @@ fun IssueDetailsScreen(
 
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "description", modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.body1, fontWeight = FontWeight.Bold
-        )
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 8.dp)) {
+            Icon(imageVector = TypeHashmap[issue.issueType]!!, contentDescription = "type", tint = MainGroen)
+            Text(
+                text = "description", modifier = Modifier.padding(8.dp),
+                style = MaterialTheme.typography.body1, fontWeight = FontWeight.Bold
+            )
+        }
+        
         Card(
-            border = BorderStroke(2.dp, MainGroen),
+            border = BorderStroke(2.dp, AccentLicht),
             modifier = Modifier
-                .padding(8.dp)
+                .padding(4.dp)
                 .fillMaxWidth()
                 .height(200.dp),
             elevation = 8.dp
@@ -187,7 +199,12 @@ fun IssueRouteScreen(viewModel: IssueDetailVM, navigateBack: () -> Unit) {
 
 
 
-
+val TypeHashmap = hashMapOf(
+    IssueType.gas to Icons.Rounded.GasMeter,
+    IssueType.water to Icons.Rounded.WaterDamage,
+    IssueType.electricity to Icons.Rounded.ElectricalServices,
+    IssueType.other to Icons.Rounded.Build
+)
 
 
 

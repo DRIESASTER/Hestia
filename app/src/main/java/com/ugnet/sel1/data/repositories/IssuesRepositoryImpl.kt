@@ -1,7 +1,10 @@
 package com.ugnet.sel1.data.repositories
 
+import android.R
 import android.net.Uri
 import android.util.Log
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -11,6 +14,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.io.File
 import javax.inject.Inject
 
 
@@ -98,15 +102,18 @@ class IssuesRepositoryImpl @Inject constructor(
 
             val id = dbRef.collection("properties/${propertyId}/issues").document().id
             var storageRef: StorageReference? = null
-            var testUri: Uri = Uri.parse("https://picsum.photos/200/300")
-            //image
-//            if (testUri == null) {
-//                val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                val date = java.util.Date();
-//                val filename = formatter.format(date)
-//                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
-//                storageRef.putFile(testUri).await()
-//            }
+            var file : File = File("/Users/drieshuybens/SEL1_groep9/testIMG.png")
+            var testUri : Uri? = file.toUri()
+            if (testUri != null) {
+                val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                val date = java.util.Date();
+                val filename = formatter.format(date)
+                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
+                Log.d("printTest", file.toString())
+                Log.d("TESTEST", testUri.toString())
+                storageRef.putFile(testUri).await()
+                Log.d("test", testUri.toString())
+            }
 
             val issue = Issue(
                 beschrijving = beschrijving,

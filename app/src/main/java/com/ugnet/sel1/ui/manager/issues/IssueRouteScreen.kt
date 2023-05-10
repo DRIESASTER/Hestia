@@ -21,10 +21,7 @@ import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.chat.components.ChatWindowDialog
-import com.ugnet.sel1.ui.components.ProgressSwitch
-import com.ugnet.sel1.ui.components.ProgressionStatus
-import com.ugnet.sel1.ui.components.SimpleTopBar
-import com.ugnet.sel1.ui.components.getStatus
+import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
@@ -92,7 +89,7 @@ fun IssueDetailsScreen(
                             viewModel.changeIssueStatus(issue.issueId!!, issue.status!!)
                         }, modifier = Modifier.padding(8.dp))
                     } else {
-                        ProgressionStatus(currentState = getStatus(issue.status!!), modifier = Modifier.padding(8.dp))
+                        ProgressionStatus(currentState = getStatusRenter(issue.status!!), modifier = Modifier.padding(8.dp))
                     }
                 }
             }

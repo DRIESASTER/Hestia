@@ -219,7 +219,7 @@ fun AddIssueScreen(
                     if(issuePropertyId == "" || issueRoomId == "" || issueTitle == "" || issueDescription == "") {
                         SnackbarManager.showMessage(AppText.add_issue_error)
                     } else {
-                        viewModel.addIssue(issueDescription, issueTitle, issuePropertyId, issueRoomId, issueType)
+                        viewModel.addIssue(issueDescription, issueTitle, issuePropertyId, issueRoomId, issueType, selectedImageUri)
                         navigate(MyDestinations.HIREE_HOME_ROUTE)
                     }
                 },

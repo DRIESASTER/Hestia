@@ -96,23 +96,19 @@ class IssuesRepositoryImpl @Inject constructor(
         propertyId: String,
         roomId: String,
         issueType: IssueType,
-        userId: String
+        userId: String,
+        imageUri:Uri?
     ): AddIssueResponse {
         return try {
 
             val id = dbRef.collection("properties/${propertyId}/issues").document().id
             var storageRef: StorageReference? = null
-            var file : File = File("/Users/drieshuybens/SEL1_groep9/testIMG.png")
-            var testUri : Uri? = file.toUri()
-            if (testUri != null) {
+            if (imageUri != null) {
                 val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 val date = java.util.Date();
                 val filename = formatter.format(date)
                 storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
-                Log.d("printTest", file.toString())
-                Log.d("TESTEST", testUri.toString())
-                storageRef.putFile(testUri).await()
-                Log.d("test", testUri.toString())
+                storageRef.putFile(imageUri).await()
             }
 
             val issue = Issue(
@@ -170,6 +166,16 @@ class IssuesRepositoryImpl @Inject constructor(
                 }
         awaitClose {
             snapshotListener.remove()
+        }
+    }
+
+    override fun getImage(url:String) = callbackFlow {
+        val size: Long = 1024 * 1024 * 20 //20MB
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/${url}")
+        storageRef.getBytes(size).addOnSuccessListener {
+            trySend(Response.Success(it))
+        }.addOnFailureListener {
+            trySend(Response.Failure(it))
         }
     }
 

@@ -3,6 +3,8 @@ package com.ugnet.sel1.data.repositories
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.*
 import kotlinx.coroutines.channels.awaitClose
@@ -32,23 +34,25 @@ class IssuesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getIssueMessages(propId : String, issueId: String): Flow<Response<List<Message>>> = callbackFlow {
-        val snapshotListener =
-            dbRef.collection("properties/${propId}/issues").document(issueId).collection("messages").orderBy("timestamp")
-                .addSnapshotListener { snapshot, e ->
-                    val messageResponse = if (snapshot != null) {
-                        val messages = snapshot.toObjects(Message::class.java)
-                        Log.d("getIssueMessage", messages.toString())
-                        Response.Success(messages)
-                    } else {
-                        Response.Failure(e)
+    override fun getIssueMessages(propId: String, issueId: String): Flow<Response<List<Message>>> =
+        callbackFlow {
+            val snapshotListener =
+                dbRef.collection("properties/${propId}/issues").document(issueId)
+                    .collection("messages").orderBy("timestamp")
+                    .addSnapshotListener { snapshot, e ->
+                        val messageResponse = if (snapshot != null) {
+                            val messages = snapshot.toObjects(Message::class.java)
+                            Log.d("getIssueMessage", messages.toString())
+                            Response.Success(messages)
+                        } else {
+                            Response.Failure(e)
+                        }
+                        trySend(messageResponse)
                     }
-                    trySend(messageResponse)
-                }
-        awaitClose {
-            snapshotListener.remove()
+            awaitClose {
+                snapshotListener.remove()
+            }
         }
-    }
 
 
     override fun sendMessage(propId: String, issueId: String, message: Message) {
@@ -57,10 +61,10 @@ class IssuesRepositoryImpl @Inject constructor(
             "messageText" to message.messageText,
             "timestamp" to message.timestamp
         )
-        dbRef.collection("properties/${propId}/issues").document(issueId).collection("messages").add(newMessage)
+        dbRef.collection("properties/${propId}/issues").document(issueId).collection("messages")
+            .add(newMessage)
         //dbRef.collection("properties").document(issueId).collection("messages").add(newMessage)
     }
-
 
 
     override fun getIssuesPerPropertyFromFirestore(
@@ -88,10 +92,21 @@ class IssuesRepositoryImpl @Inject constructor(
         propertyId: String,
         roomId: String,
         issueType: IssueType,
-        userId:String) : AddIssueResponse {
-        return try{
+        userId: String
+    ): AddIssueResponse {
+        return try {
 
             val id = dbRef.collection("properties/${propertyId}/issues").document().id
+            var storageRef: StorageReference? = null
+            var testUri: Uri = Uri.parse("https://picsum.photos/200/300")
+            //image
+//            if (testUri == null) {
+//                val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                val date = java.util.Date();
+//                val filename = formatter.format(date)
+//                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
+//                storageRef.putFile(testUri).await()
+//            }
 
             val issue = Issue(
                 beschrijving = beschrijving,
@@ -103,16 +118,14 @@ class IssuesRepositoryImpl @Inject constructor(
                 issueId = id,
                 userId = userId,
             )
-//            dbRef.document("properties/id/issues").set(mapOf(
-//                URL to downloadUrl,
-//                CREATED_AT to FieldValue.serverTimestamp()
-//            ))
             dbRef.collection("properties/${propertyId}/issues").document(id).set(issue).await()
             Response.Success(id)
+
         } catch (e: Exception) {
             Response.Failure(e)
         }
     }
+
 
     override fun getIssuesForRenterFromFirestore(
         propertyId: String,
@@ -121,26 +134,6 @@ class IssuesRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-
-//    override fun getIssuesForRenterFromFirestore(
-//        propertyId: String,
-//        userId: String
-//    ): Flow<IssuesResponse> = callbackFlow {
-//        val snapshotListener =
-//            dbRef.collection("properties/${propertyId}/issues").whereEqualTo("userId", userId)
-//                .addSnapshotListener { snapshot, e ->
-//                    val issuesResponse = if (snapshot != null) {
-//                        val issues = snapshot.toObjects(Issue::class.java)
-//                        Response.Success(issues)
-//                    } else {
-//                        Response.Failure(e)
-//                    }
-//                    trySend(issuesResponse)
-//                }
-//        awaitClose {
-//            snapshotListener.remove()
-//    }
-//    }
 
 
         override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {

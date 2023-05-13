@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @Composable
@@ -39,19 +38,19 @@ fun PropertyCard(propName: String,
     ) {
         //everythingcontainer
         Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .background(MainGroen)
                 .clip(RoundedCornerShape(10.dp))
-                .fillMaxWidth()
-                .height(120.dp)
+                .wrapContentSize()
         ) {
             Column(
                 modifier = Modifier
-                    .width(250.dp)
+                    .fillMaxWidth(0.8f)
                     .padding(10.dp)
             ) {
                 //name
-                Row() {
+                Row(modifier = Modifier.wrapContentWidth()) {
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(text = propName, color = AccentLicht, modifier = Modifier.padding(1.dp))
 
@@ -63,7 +62,7 @@ fun PropertyCard(propName: String,
                         .clip(RoundedCornerShape(30.dp))
                         .wrapContentSize()
                         .background(AccentLicht)
-                        .padding(horizontal = 5.dp)
+                        .padding(horizontal = 3.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.LocationOn,
@@ -85,6 +84,7 @@ fun PropertyCard(propName: String,
                 //tennants
                 Row(
                     verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                        .wrapContentSize()
                         .clip(RoundedCornerShape(30.dp))
                         .background(AccentLicht)
                 ) {
@@ -108,6 +108,7 @@ fun PropertyCard(propName: String,
                 //issuecount
                 Row(
                     verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                        .wrapContentSize()
                         .clip(RoundedCornerShape(30.dp))
                         .background(AccentLicht)
                 ) {
@@ -129,7 +130,7 @@ fun PropertyCard(propName: String,
                 }
 
             }
-            Column (horizontalAlignment = Alignment.End, modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)){
+            Column (horizontalAlignment = Alignment.End, modifier = Modifier.wrapContentWidth().padding(horizontal = 10.dp)){
                 Spacer(modifier = Modifier.height(10.dp))
                 IconButton(onClick = onEdit ) {
                     Icon (imageVector = Icons.Rounded.Edit,

@@ -1,6 +1,8 @@
 package com.ugnet.sel1.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -27,22 +29,30 @@ import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
-fun ResidentIssueCard(title: String,
-                      tenant:String,
-                      room:String,
-                      description:String,
-                      status: Status, modifier: Modifier = Modifier) {
+fun ResidentIssueCard(
+    title: String,
+    tenant:String,
+    room:String,
+    description:String,
+    status: Status,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
     val currentStatus = remember { mutableStateOf(status) }
 
     DisposableEffect(currentStatus.value) {
         println("Current status is: ${getStatus(currentStatus.value)}")
         onDispose { }
     }
-    Card(modifier = modifier
-        .padding(10.dp)
-        .background(Color.Transparent)
-        .clip(RoundedCornerShape(10.dp))
-        .wrapContentWidth(), contentColor = Color.Transparent) {
+    Card(
+        modifier = modifier
+            .padding(10.dp)
+            .background(Color.Transparent)
+            .clip(RoundedCornerShape(10.dp))
+            .clickable(onClick = onClick)
+            .wrapContentWidth(),
+        contentColor = Color.Transparent
+    ) {
         //everythingcontainer
         Row(modifier = Modifier
             .background(MainGroen)
@@ -61,7 +71,7 @@ fun ResidentIssueCard(title: String,
                     verticalAlignment = Alignment.CenterVertically
                     ,modifier = Modifier
                         .clip(RoundedCornerShape(30.dp))
-                        .background(AccentLicht)
+                        .background(AccentLicht).wrapContentSize()
                 ) {
                     Icon(imageVector = Icons.Rounded.Person, contentDescription = "person", tint = Color.Black, modifier = Modifier
                         .padding(2.dp)
@@ -77,12 +87,15 @@ fun ResidentIssueCard(title: String,
                 //lowest container
                 Row(modifier= Modifier
                     .padding(0.dp, 8.dp, 0.dp, 8.dp)
-                    .width(150.dp),horizontalArrangement = Arrangement.Start) {
+                    .width(150.dp),
+                    horizontalArrangement = Arrangement.Start)
+                {
                     //room
                     Row(
                         verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                             .clip(RoundedCornerShape(30.dp))
                             .background(AccentLicht)
+                            .wrapContentSize()
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.LocationOn,
@@ -102,9 +115,13 @@ fun ResidentIssueCard(title: String,
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     //info
-                    Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-                        .clip(RoundedCornerShape(30.dp))
-                        .background(AccentLicht)) {
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(30.dp))
+                            .background(AccentLicht)
+                            .wrapContentSize()
+                    ) {
                         Icon(
                             imageVector = Icons.Rounded.Info,
                             contentDescription = "person",
@@ -128,11 +145,12 @@ fun ResidentIssueCard(title: String,
                 .width(130.dp)
                 .align(Alignment.CenterVertically)) {
                 val statusText = when (status) {
-                    Status.notStarted -> "Not Started"
+                    Status.notStarted -> "Committed"
                     Status.inProgress -> "In Progress"
                     Status.finished -> "Finished"
                     else -> ""
                 }
+                Log.d("status", statusText)
                 ProgressionStatus(currentState = statusText)
             }
         }
@@ -142,5 +160,5 @@ fun ResidentIssueCard(title: String,
 @Preview
 @Composable
 fun ResidentIssueCardPreview() {
-    ResidentIssueCard(title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted)
+    ResidentIssueCard(title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted, onClick = {})
 }

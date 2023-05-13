@@ -10,10 +10,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.repository.AddPropertyResponse
+import com.ugnet.sel1.domain.repository.PropertyResponse
 import com.ugnet.sel1.domain.repository.UserResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.components.RoomData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,19 +38,19 @@ class AddPropVM @Inject constructor(
     var userResponse by mutableStateOf<UserResponse>(Response.Loading)
         private set
     var rooms : MutableList<RoomData> = mutableListOf()
+    var huurlijst : MutableList<String> = mutableListOf()
     var isHouse : Boolean by mutableStateOf(false)
-    var editing : Boolean by mutableStateOf(false)
     var addPropertyResponse by mutableStateOf<AddPropertyResponse>(Response.Loading)
         private set
-
-
+    var updatePropertyResponse by mutableStateOf<Response<Boolean>>(Response.Loading)
+        private set
+    var propid : String by mutableStateOf("")
 //    var deleteRoomFromPropertyResponse by mutableStateOf<DeleteRoomResponse>(Response.Success(false))
 //        private set
 
     init{
-//        if(propid != null){
-//            editing = true
-//        }
+        propid = propId
+        Log.d("AddPropVM", propid)
         getUser(Firebase.auth.currentUser?.email.toString())
 
     }
@@ -61,10 +63,6 @@ class AddPropVM @Inject constructor(
 
     fun changeState(){
         isHouse = !isHouse
-    }
-
-    fun removeRoom(naam:String)= viewModelScope.launch{
-        rooms = rooms.filter{ it.roomName != naam }.toMutableList()
     }
 
     fun saveProp(managerID:String) = viewModelScope.launch {
@@ -89,6 +87,15 @@ class AddPropVM @Inject constructor(
         rooms.add(RoomData(roomname,tenantname))
     }
 
+    fun patchProp(managerID: String) = viewModelScope.launch {
+        updatePropertyResponse = Response.Loading
+        updatePropertyResponse = useCases.editProperty(propid, huisnummer = number.toInt(),
+            type = if (isHouse) "Huis" else "Appartement",
+            postcode = postalCode.toInt(),
+            stad = city,
+            straat = street, ownedBy = managerID, huurdersLijst = if(isHouse) listOf(tenant) else huurlijst)
+    }
 
+    fun getProperty(propid: String): Flow<PropertyResponse> = useCases.getProperty(propid)
 
 }

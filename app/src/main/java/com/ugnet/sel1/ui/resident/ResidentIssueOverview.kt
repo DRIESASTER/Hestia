@@ -25,7 +25,8 @@ import com.ugnet.sel1.ui.manager.addButton
 fun ResidentIssueOverview(
     viewModel: ResidentHomeVM,
     modifier: Modifier = Modifier,
-    navigate : (String) -> Unit
+    navigate : (String) -> Unit,
+    onIssueClicked : (String) -> Unit,
 ) {
     Surface(
         modifier = modifier,
@@ -82,6 +83,9 @@ fun ResidentIssueOverview(
                                                                                     Log.d("userNull", "User you are getting is null")
                                                                                 } else {
                                                                                     val username = user.data!!.voornaam + " " + user.data.achternaam
+                                                                                    val route = MyDestinations.ISSUE_ROUTE
+                                                                                        .replace("{${MyDestinations.IssueArgs.IssueId}}", issue.issueId!!)
+                                                                                        .replace("{${MyDestinations.IssueArgs.PropId}}", property.propertyId!!)
                                                                                     Log.d("IssueOverview", "IssueOverview loading user: $username")
                                                                                     ResidentIssueCard(
                                                                                         title = issue.titel!!,
@@ -89,8 +93,8 @@ fun ResidentIssueOverview(
                                                                                         room = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
                                                                                         description = issue.beschrijving!!,
                                                                                         status = issue.status!!,
+                                                                                        onClick = { onIssueClicked(route) }
                                                                                     )
-                                                                                    Log.d("IssueOverview", "Attempted to display issue")
                                                                                 }
                                                                             }
                                                                             else -> {

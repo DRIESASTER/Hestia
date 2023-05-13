@@ -1,15 +1,14 @@
 package com.ugnet.sel1.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
-import androidx.compose.foundation.clickable
 
 @Composable
 fun IssueCard(id:String,
@@ -105,25 +103,25 @@ fun IssueCard(id:String,
                         }
                         Spacer(modifier =Modifier.width(5.dp))
                         //info
-                        Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-                            .clip(RoundedCornerShape(30.dp))
-                            .background(AccentLicht)) {
-                        Icon(
-                            imageVector = Icons.Rounded.Info,
-                            contentDescription = "person",
-                            tint = Color.Black,
-                            modifier = Modifier
-                                .padding(2.dp)
-                                .size(10.dp)
-                        )
-                        Text(
-                            text = description,
-                            color = Color.Black,
-                            style = MaterialTheme.typography.body1,
-                            fontSize = 10.sp,
-                            modifier = Modifier.padding(2.dp)
-                        )
-                    }
+//                        Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+//                            .clip(RoundedCornerShape(30.dp))
+//                            .background(AccentLicht)) {
+//                        Icon(
+//                            imageVector = Icons.Rounded.Info,
+//                            contentDescription = "person",
+//                            tint = Color.Black,
+//                            modifier = Modifier
+//                                .padding(2.dp)
+//                                .size(10.dp)
+//                        )
+//                        Text(
+//                            text = description,
+//                            color = Color.Black,
+//                            style = MaterialTheme.typography.body1,
+//                            fontSize = 10.sp,
+//                            modifier = Modifier.padding(2.dp)
+//                        )
+//                    }
                     }
                 }
                 Column(modifier = Modifier
@@ -149,6 +147,14 @@ fun IssueCard(id:String,
 fun getStatus(status: Status): String {
     return when (status) {
         Status.notStarted -> "Not Started"
+        Status.inProgress -> "In Progress"
+        Status.finished -> "Finished"
+    }
+}
+
+fun getStatusRenter(status: Status): String {
+    return when (status) {
+        Status.notStarted -> "Committed"
         Status.inProgress -> "In Progress"
         Status.finished -> "Finished"
     }

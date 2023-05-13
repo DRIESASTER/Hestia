@@ -41,7 +41,7 @@ fun ProgressionStatus(
     }
 }
 
-val statesColor: HashMap<String, Color> = hashMapOf("Not Started" to RedProgress, "In Progress" to OrangeProgress, "Finished" to GreenProgress)
+val statesColor: HashMap<String, Color> = hashMapOf("Committed" to RedProgress, "In Progress" to OrangeProgress, "Finished" to GreenProgress)
 
 @Composable
 fun CurrentStatus(

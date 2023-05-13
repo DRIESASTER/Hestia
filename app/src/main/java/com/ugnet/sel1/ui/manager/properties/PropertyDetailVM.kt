@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.repository.IssueResponse
-import com.ugnet.sel1.domain.repository.PropertyResponse
+import com.ugnet.sel1.domain.repository.IssuesResponse
+import com.ugnet.sel1.domain.repository.RoomsResponse
 import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.manager.issues.PropId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +28,13 @@ class PropertyDetailVM @Inject constructor(
         SharingStarted.Lazily,
         Response.Loading
     )
+
+    fun getIssues(roomId: String): Flow<IssuesResponse> {
+        return useCases.getIssuesForRoom(propId,roomId = roomId)
+    }
+
+    fun getRooms(): Flow<RoomsResponse> = useCases.getRoomsForProperty(propId)
+
 }
 
 

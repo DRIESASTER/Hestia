@@ -1,10 +1,13 @@
 package com.ugnet.sel1.ui.manager.properties
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BorderColor
+import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.ui.components.RoomDetailOverview
+import com.ugnet.sel1.ui.components.SimpleTopBar
+import com.ugnet.sel1.ui.theme.MainGroen
 
 
 @Composable
@@ -32,7 +38,8 @@ fun PropertyDetailRoute(
                 PropertyDetailsScreen(
                     propertyData,
                     viewModel = viewModel,
-                    navigateBack = navigateBack
+                    navigateBack = { navigateBack() },
+                    navigate = { navigate(propertyData.propertyId!!) }
                 )
             } else {
                 Text(text = "Property not found")
@@ -46,25 +53,40 @@ fun PropertyDetailRoute(
 fun PropertyDetailsScreen(
     property: Property,
     viewModel: PropertyDetailVM,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigate: (String) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(text = property.stad!!, style = MaterialTheme.typography.h4)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = property.straat!!, style = MaterialTheme.typography.subtitle1)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = property.huisnummer.toString(), style = MaterialTheme.typography.body1)
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = navigateBack,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+    Column() {
+        SimpleTopBar(
+            name = property.straat+" "+property.huisnummer+", "+property.postcode+" "+property.stad, navigate = { navigateBack() },
+            icon = Icons.Rounded.LocationCity)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Text("Go Back")
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Location:", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            //TODO
+            //mapview
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Rooms:", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                IconButton(onClick = {/*TODO*/ }) {
+                    Icon(imageVector = Icons.Rounded.BorderColor, contentDescription = "edit", tint = MainGroen)
+                }
+            }
+            viewModel.getRooms().collectAsState(initial = Response.Loading).value.let { rooms ->
+                when (rooms) {
+                    is Response.Success -> {
+                        RoomDetailOverview(rooms = rooms.data, viewmodel = viewModel)
+                    }
+                    else -> {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
         }
     }
 }

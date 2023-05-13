@@ -71,7 +71,7 @@ fun ToggleButton(
     Box(
         modifier = Modifier
             .height(55.dp)
-            .width(190   .dp) // set a fixed width for the box
+            .wrapContentWidth() // set a fixed width for the box
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Transparent)
             .padding(4.dp)

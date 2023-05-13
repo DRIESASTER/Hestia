@@ -42,17 +42,17 @@ fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifie
                         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(padding)) {
                             Spacer(modifier = Modifier.height(10.dp))
                             Log.d("RoomeditScreen", "propid: $propid")
-                            viewmodel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{
-                                when (it) {
+                            viewmodel.getRoomsForProperty(propid).collectAsState(initial = Response.Loading).value.let{ propRooms ->
+                                when (propRooms) {
                                     is Response.Success -> {
-                                        if (it.data.isEmpty()) {
+                                        if (propRooms.data.isEmpty()) {
                                             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                                                 Spacer(modifier = Modifier.height(10.dp))
                                                 Text(text = "No rooms found")
                                             }
                                         } else {
                                             RoomOverview(
-                                                rooms = it.data,
+                                                rooms = propRooms.data,
                                                 onDeleteClicked = { viewmodel.deleteRoomFromProperty(propid,it) },
                                                 viewmodel = viewmodel,
                                                 propid = propid)
@@ -61,29 +61,11 @@ fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifie
                                     else -> {
                                         CircularProgressIndicator(color = MainGroen)}
                                 }
-                                DropdownMenu(
-                                    onDismissRequest = { isPopupVisible = false },
-                                    expanded = isPopupVisible,
-                                ) {
-                                    AddRoomPopup(
-                                        propid = propid,
-                                        onClose = { isPopupVisible = false },
-                                        onAddRoom = { propid,roomname, tenantmails ->
-                                            viewmodel.addroom(propid,roomname,tenantmails)
-                                            isPopupVisible = false
-                                            //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
-                                            for (tenantmail in tenantmails){
-                                                if( tenantmail !in rentlist && tenantmail != ""){
-                                                    rentlist.add(tenantmail)
-                                                    viewmodel.addrenter(propid,tenantmail)
-                                                }
-                                            }
-                                        },
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
+                                if(isPopupVisible){
+                                    AddRoomPopup(propid = propid, onClose = { isPopupVisible = false }, onAddRoom = { propid, roomName, tenantMails ->
+                                        viewmodel.addroom(propid, roomName, tenantMails)
+                                        isPopupVisible = false
+                                    })
                                 }
                             }
                             Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
@@ -138,21 +120,30 @@ fun AddRoomPopup(
     var tenantMails = remember { mutableStateListOf<String>() }
 
 
-        Column(modifier = modifier.fillMaxWidth().fillMaxHeight()) {
-
+    AlertDialog(modifier = modifier
+        .fillMaxWidth()
+        .fillMaxHeight(), onDismissRequest = onClose,text={
+        Column() {
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .height(350.dp),
         ) {
             InputWithTitle(
-                title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
+                title = "Room Name", initValue = roomName, onValuechanged = { roomName = it },
+                modifier = Modifier
+                    .fillMaxWidth()
             )
+
+
+
             Spacer(modifier = Modifier.height(10.dp))
             if (!shared){
                 Row {
                     InputWithTitle(
-                        title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it }, modifier = Modifier.width(200.dp)
+                        title = "Tenant Email", initValue = tenantMail, onValuechanged = { tenantMail = it },
+                        modifier = Modifier
+                            .width(200.dp)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     IconButton(onClick = {
@@ -166,51 +157,55 @@ fun AddRoomPopup(
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(text = "Tenants:")
-                Row(modifier= Modifier.fillMaxWidth().height(160.dp),horizontalArrangement = Arrangement.Center){
+                Row(modifier= Modifier
+                    .fillMaxWidth()
+                    .height(160.dp),horizontalArrangement = Arrangement.Center){
 
                 LazyColumn(modifier = Modifier
                     .width(300.dp)
                     .height(160.dp)){
-                    itemsIndexed(items = tenantMails){index, item ->
+                    itemsIndexed(items = tenantMails){ _, item ->
                         ShortUserCard(name = item, removeClick = {tenantMails.remove(item)})
                     }
                 }
                 }
                 }
             }
-        Column (modifier = Modifier.fillMaxWidth().padding(10.dp)){
+        Column (modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)){
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "Shared Room?")
             Switch(checked =shared , onCheckedChange = {shared=!shared})
 
             Spacer(modifier = Modifier.height(10.dp))
-            Row(verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = onClose,
-                    modifier = Modifier.padding(end = 8.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
-                ) {
-                    Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
-                }
-                Button(
-                    onClick = {
-                        return@Button if(shared) {
-                            onAddRoom(propid,roomName, mutableListOf<String>())
-                        } else{
-                            onAddRoom(propid,roomName, tenantMails)
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
-                ) {
-                    Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
-                }
-            }
-        }
 
+        }}
+
+        }, buttons = {Row(verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Button(
+            onClick = onClose,
+            modifier = Modifier.padding(end = 8.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
+        ) {
+            Text("Cancel", style = MaterialTheme.typography.button.copy(color = Color.White))
         }
+        Button(
+            onClick = {
+                return@Button if(shared) {
+                    onAddRoom(propid,roomName, mutableListOf<String>())
+                } else{
+                    onAddRoom(propid,roomName, tenantMails)
+                }
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
+        ) {
+            Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
+        }
+    }})
     }
 
 

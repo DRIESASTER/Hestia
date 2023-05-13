@@ -9,8 +9,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
@@ -19,6 +23,7 @@ import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -97,6 +102,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
 
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddRoomHousePopup(
     propid:String,tenantMail: String = "",
@@ -104,6 +110,9 @@ fun AddRoomHousePopup(
     onAddRoom: (propid:String,roomName: String) -> Unit
 ) {
     var roomName by remember { mutableStateOf("") }
+    val showKeyboard = remember { mutableStateOf(true) }
+    val focusRequester = remember { FocusRequester() }
+    val keyboard = LocalSoftwareKeyboardController.current
 
     Card(
         modifier = Modifier
@@ -116,8 +125,19 @@ fun AddRoomHousePopup(
                 .padding(16.dp)
         ) {
             InputWithTitle(
-                title = "Room Name", initValue = roomName, onValuechanged = { roomName = it }
+                title = "Room Name", initValue = roomName, onValuechanged = { roomName = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
             )
+            // LaunchedEffect prevents endless focus request
+            LaunchedEffect(focusRequester) {
+                if (showKeyboard.value) {
+                    delay(100) // Make sure you have delay here
+                    focusRequester.requestFocus()
+
+                    keyboard?.show()
+                }}
             Spacer(modifier = Modifier.height(16.dp))
 
             Spacer(modifier = Modifier.height(16.dp))

@@ -1,8 +1,6 @@
 package com.ugnet.sel1.ui.resident
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -35,7 +33,7 @@ fun ResidentProfileScreen(viewModel: ResidentHomeVM) {
                 }
             }
         }
-
+        Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Rented properties", fontWeight = FontWeight.Bold, fontSize = 20.sp)
         when(val response = viewModel.allRentedPropertiesResponse) {
             is Response.Success -> {

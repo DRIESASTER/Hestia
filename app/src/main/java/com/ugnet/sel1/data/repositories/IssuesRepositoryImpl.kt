@@ -103,12 +103,14 @@ class IssuesRepositoryImpl @Inject constructor(
 
             val id = dbRef.collection("properties/${propertyId}/issues").document().id
             var storageRef: StorageReference? = null
+            var imageUrl :String? = null
             if (imageUri != null) {
                 val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 val date = java.util.Date();
                 val filename = formatter.format(date)
                 storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
                 storageRef.putFile(imageUri).await()
+                imageUrl = filename
             }
 
             val issue = Issue(
@@ -120,6 +122,7 @@ class IssuesRepositoryImpl @Inject constructor(
                 datum = null,
                 issueId = id,
                 userId = userId,
+                imageUrl = imageUrl
             )
             dbRef.collection("properties/${propertyId}/issues").document(id).set(issue).await()
             Response.Success(id)

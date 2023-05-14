@@ -14,7 +14,7 @@ data class Issue(
     var issueId: String? = null,
     var issueType: IssueType? = null,
     var userId: String? = null,
-    var imageUri: String? = null,
+    var imageUrl: String? = null,
 )
 
 enum class Status {

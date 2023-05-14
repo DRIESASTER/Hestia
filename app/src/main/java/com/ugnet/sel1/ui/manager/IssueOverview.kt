@@ -16,15 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import com.ugnet.sel1.domain.models.*
+import com.ugnet.sel1.domain.repository.PropertiesResponse
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.IssueCard
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
-fun IssuesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit) {
+fun IssuesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit, propertiesResponse: PropertiesResponse) {
 //    ownedPropertiesResponseFormatted = Response.Loading
-    when(val response = viewModel.ownedPropertiesResponse){
+    when(val response = propertiesResponse){
         is Response.Success -> {
             if (response.data.isEmpty()) {
                 Text(text = "No issues found")

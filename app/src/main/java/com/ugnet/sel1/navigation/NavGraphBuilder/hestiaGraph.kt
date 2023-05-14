@@ -14,6 +14,8 @@ import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
 import com.ugnet.sel1.authentication.signup.SignUpScreen
 import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
+import com.ugnet.sel1.ui.announcements.AnnouncementScreen
+import com.ugnet.sel1.ui.announcements.AnnouncementsAddScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
 import com.ugnet.sel1.ui.manager.addProp.AddPropMainScreen
 import com.ugnet.sel1.ui.manager.addProp.RoomeditScreenApp
@@ -87,6 +89,16 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
     composable(MyDestinations.PROPERTY_DETAILS_ROUTE +  "/{propId}"){
         PropertyDetailRoute(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) }, navigateBack = { appState.navigateBack() })
+    }
+
+    composable(MyDestinations.ANNOUNCEMENT_ROUTE){
+        AnnouncementScreen(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) })
+    }
+
+    composable(MyDestinations.ANNOUNCEMENT_ADD_ROUTE){
+        AnnouncementsAddScreen(viewModel = hiltViewModel()) {
+
+        }
     }
 
 

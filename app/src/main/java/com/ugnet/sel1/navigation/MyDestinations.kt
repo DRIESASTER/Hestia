@@ -1,5 +1,7 @@
 package com.ugnet.sel1.navigation
 
+import com.ugnet.sel1.domain.models.Announcement
+
 
 object MyDestinations {
     const val SPLASH_ROUTE = "splash"
@@ -18,7 +20,8 @@ object MyDestinations {
     const val ROOM_EDIT_ROUTE_HOUSE = "add_house"
     const val EDIT_PROPERTY_ROUTE = "edit_property"
     const val PROPERTY_DETAILS_ROUTE = "property_details"
-
+    const val ANNOUNCEMENT_ROUTE = "announcement"
+    const val ANNOUNCEMENT_ADD_ROUTE = "announcement_add"
 
     object IssueArgs {
         const val IssueId = "issueId"

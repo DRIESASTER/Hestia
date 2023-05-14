@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.*
 import com.ugnet.sel1.ui.theme.AccentLicht
@@ -47,7 +48,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         ),
         MenuItem(
             name = "Announcements",
-            route = "announcements",
+            route = MyDestinations.ANNOUNCEMENT_ROUTE,
             icon = Icons.Rounded.Campaign
         )
     )
@@ -55,6 +56,8 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     var currentTitle by rememberSaveable { mutableStateOf(drawerItems[0].name) }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope  = rememberCoroutineScope()
+
+    val propertiesResponse by Data.propertiesData.collectAsState(initial = Response.Loading)
 
     Log.d("ManagerHomeScreen","current switchState ${Data.currentState}")
     //ui
@@ -90,7 +93,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
                 .wrapContentWidth(Alignment.Start)) {
                 if (!Data.currentState) {
                     /*show issues overview*/
-                    IssuesOverview(viewModel = Data, navigate = navigate)
+                    IssuesOverview(viewModel = Data, navigate = navigate, propertiesResponse)
 //                    when (val allissues = Data.issuesForManagerResponse) {
 //                        is Response.Success -> {
 //                            if (allissues.data.isEmpty()) {
@@ -109,7 +112,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
 
                 } else {
                     /*show properties overview*/
-                    PropertiesOverview(viewModel = Data, navigate = navigate)
+                    PropertiesOverview(viewModel = Data, navigate = navigate, propertiesResponse)
 //                    when (val allproperties = Data.ownedPropertiesResponseFormatted) {
 //                        is Response.Success -> {
 //                            if (allproperties.data.isEmpty()) {

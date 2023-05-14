@@ -73,8 +73,8 @@ class AdresTestVM @Inject constructor(private val useCases : UseCases): ViewMode
 
 
 
-      fun getOwnedProperties(id: String) = viewModelScope.launch {
-            useCases.getOwnedProperties(id).collect { response ->
+      fun getOwnedProperties() = viewModelScope.launch {
+            useCases.getOwnedProperties().collect { response ->
                   ownedPropertiesResponse = response
             }
       }

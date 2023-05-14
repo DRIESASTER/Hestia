@@ -1,5 +1,6 @@
 package com.ugnet.sel1.domain.repository
 
+import com.ugnet.sel1.domain.models.Announcement
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.User
@@ -16,7 +17,7 @@ typealias PropertyResponse = Response<Property?>
 interface PropertiesRepository {
 
     //    fun getPandFromFirestore(id: String): Flow<PandResponse>
-    fun getOwnedPropertiesFromFirestore(userId: String): Flow<PropertiesResponse>
+    fun getOwnedPropertiesFromFirestore(): Flow<PropertiesResponse>
 
     fun getRentedPropertiesFromFirestore(userId: String): Flow<PropertiesResponse>
     suspend fun addPropertyToFirestore(
@@ -40,6 +41,8 @@ interface PropertiesRepository {
 
     fun getProperty(propertyId: String): Flow<PropertyResponse>
 
+    suspend fun addAnnouncement(propertyId: String, announcement: String) : Response<Boolean>
+    suspend fun getAnnouncementsPerProperty(propertyId: String): Flow<Response<List<Announcement>>>
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 

@@ -58,7 +58,6 @@ class IssuesRepositoryImpl @Inject constructor(
             "timestamp" to message.timestamp
         )
         dbRef.collection("properties/${propId}/issues").document(issueId).collection("messages").add(newMessage)
-        //dbRef.collection("properties").document(issueId).collection("messages").add(newMessage)
     }
 
 

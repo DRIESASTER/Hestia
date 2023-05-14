@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.*
@@ -26,8 +27,8 @@ import javax.inject.Inject
 class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewModel() {
     var currentState by mutableStateOf(true)
 
-        var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
-        private set
+    var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
+    private set
 
 
     private val _ownedProperties = MutableStateFlow<PropertiesResponse>(Response.Loading)
@@ -58,16 +59,11 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 //    var formatPropertyResponse by mutableStateOf<Response<PropertyData>>(Response.Loading)
 //        private set
 
-
-    init {
-        Log.d("MANAGERVIEWMODEL INIT", "INTIALIZE")
-        getOwnedProperties(Firebase.auth.currentUser?.email.toString())
-//        getIssuesForManager()
-    }
+    val propertiesData: Flow<PropertiesResponse> = useCases.getOwnedProperties()
 
 
-    fun getOwnedProperties(id: String) = viewModelScope.launch {
-        useCases.getOwnedProperties(id).collect() {response ->
+    fun getOwnedProperties() = viewModelScope.launch {
+        useCases.getOwnedProperties().collect() {response ->
             ownedPropertiesResponse = response
         }
     }

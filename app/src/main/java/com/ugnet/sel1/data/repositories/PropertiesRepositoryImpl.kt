@@ -1,28 +1,37 @@
 package com.ugnet.sel1.data.repositories
 
+import android.graphics.BitmapFactory
 import android.media.Image
 import android.util.Log
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.ugnet.sel1.domain.models.Property
-import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.domain.models.User
+import com.google.firebase.ktx.Firebase
+import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.AddPropertyResponse
 import com.ugnet.sel1.domain.repository.DeletePropertyResponse
 import com.ugnet.sel1.domain.repository.PropertiesRepository
 import com.ugnet.sel1.domain.useCases.AddProperty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.ZoneId
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class PropertiesRepositoryImpl @Inject constructor(
     private val dbRef: FirebaseFirestore
 ): PropertiesRepository {
 
-    override fun getOwnedPropertiesFromFirestore(id: String): Flow<Response<MutableList<Property>>> = callbackFlow {
-        val snapshotListener = dbRef.collection("properties").whereEqualTo("ownedBy", id)
+    override fun getOwnedPropertiesFromFirestore(): Flow<Response<MutableList<Property>>> = callbackFlow {
+        val snapshotListener = dbRef.collection("properties").whereEqualTo("ownedBy", Firebase.auth.currentUser!!.email)
             .addSnapshotListener { snapshot, e ->
                 val propertyResponse = if (snapshot != null) {
                     val panden = snapshot.toObjects(Property::class.java)
@@ -159,6 +168,41 @@ class PropertiesRepositoryImpl @Inject constructor(
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)
+        }
+    }
+
+
+    override suspend fun addAnnouncement(propertyId: String, announcement: String) : Response<Boolean> {
+        return try{
+            val data = hashMapOf(
+                "announcement" to announcement
+            )
+            dbRef.collection("properties").document(propertyId).collection("announcements").add(data);
+            Response.Success(true);
+        } catch (e: Exception){
+            Response.Failure(e);
+        }
+
+    }
+
+/*    override suspend fun getAllAnnouncementsFromProperties(List<Property> properties){
+
+    }
+    */
+    override suspend fun  getAnnouncementsPerProperty(propertyId: String) : Flow<Response<List<Announcement>>> = callbackFlow {
+        val snapshotListener =
+            dbRef.collection("properties/${propertyId}/announcements")
+                .addSnapshotListener { snapshot, e ->
+                    val announcementsResponse = if (snapshot != null) {
+                        val announcement = snapshot.toObjects(Announcement::class.java)
+                        Response.Success(announcement)
+                    } else {
+                        Response.Failure(e)
+                    }
+                    trySend(announcementsResponse)
+                }
+        awaitClose {
+            snapshotListener.remove()
         }
     }
 

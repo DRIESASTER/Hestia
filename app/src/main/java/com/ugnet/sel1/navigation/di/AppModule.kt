@@ -52,6 +52,7 @@ object AppModule {
         getUserRepo : GetUserRepository
     ) = UseCases(
         //getUser = GetUser(usersRepo),
+        addAnnouncementToProperty = AddAnnouncementToProperty(propertyRepo),
         getUser = GetUserTest(getUserRepo),
         getOwnedProperties = GetOwnedProperties(propertyRepo),
         getIssuesForRoom = GetIssuesForRoom(issuesRepo),

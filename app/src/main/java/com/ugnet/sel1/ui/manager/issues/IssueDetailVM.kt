@@ -76,4 +76,5 @@ class IssueDetailVM @Inject constructor(
     //fun getRoom(roomid:String):Flow<RoomResponse> = useCases.getRoom(roomid)
 
     fun getUser(userid:String): Flow<UserResponse> = useCases.getUser(userid)
+    fun getImage(imageUri: String): Flow<Response<ByteArray>> = useCases.getImage(imageUri)
 }

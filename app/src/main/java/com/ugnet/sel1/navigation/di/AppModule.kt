@@ -77,5 +77,6 @@ object AppModule {
         editProperty = EditProperty(propertyRepo),
         getProperty = GetProperty(propertyRepo),
         getRoom = GetRoom(roomsRepo),
+        getImage = GetImage(issuesRepo),
     )
 }

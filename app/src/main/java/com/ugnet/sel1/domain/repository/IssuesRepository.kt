@@ -1,5 +1,6 @@
 package com.ugnet.sel1.domain.repository
 
+import android.net.Uri
 import com.ugnet.sel1.domain.models.*
 //import com.ugnet.sel1.domain.useCases.oudeShit.panden.Issues.ChangeIssueStatus
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,8 @@ interface IssuesRepository {
         propertyId: String,
         roomId: String,
         issueType: IssueType,
-        userId: String
+        userId: String,
+        imageUri: Uri?
     ): AddIssueResponse
 
     //
@@ -39,4 +41,6 @@ interface IssuesRepository {
 
     fun sendMessage(propid: String, issueId: String, message: Message)
     fun getIssueMessages(propId: String, issueId: String): Flow<Response<List<Message>>>
+
+    fun getImage(imageUrl: String): Flow<Response<ByteArray>>
 }

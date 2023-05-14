@@ -30,4 +30,5 @@ data class UseCases constructor(
     val editProperty: EditProperty,
     val getProperty: GetProperty,
     val getRoom: GetRoom,
+    val getImage: GetImage
 )

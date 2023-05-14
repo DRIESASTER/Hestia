@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.resident
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -46,7 +47,14 @@ class ResidentHomeVM @Inject constructor(
 
     fun getIssuesForRoom(property: String, room: String): Flow<IssuesResponse> = useCases.getIssuesForRoom(property, room)
 
-    fun addIssue(description:String, title:String, property:String, room:String, type: IssueType) = viewModelScope.launch {
-        useCases.addIssue(description, title, property, room, type, Firebase.auth.currentUser?.email.toString())
+    fun addIssue(
+        description: String,
+        title: String,
+        property: String,
+        room: String,
+        type: IssueType,
+        imageUri: Uri?
+    ) = viewModelScope.launch {
+        useCases.addIssue(description, title, property, room, type, Firebase.auth.currentUser?.email.toString(), imageUri)
     }
 }

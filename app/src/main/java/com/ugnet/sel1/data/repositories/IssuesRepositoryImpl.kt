@@ -107,9 +107,9 @@ class IssuesRepositoryImpl @Inject constructor(
                 val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 val date = java.util.Date();
                 val filename = formatter.format(date)
-                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
+                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}.jpeg")
                 storageRef.putFile(imageUri).await()
-                imageUrl = filename
+                imageUrl = filename + ".jpeg"
             }
 
             val issue = Issue(
@@ -158,7 +158,6 @@ class IssuesRepositoryImpl @Inject constructor(
             dbRef.collection("properties/${propertyId}/issues").document(issueId)
                 .addSnapshotListener { snapshot, e ->
                     val issueResponse = if (snapshot!= null && snapshot.exists()) {
-                        Log.d("HEY WAT IS DIT", "HET BESTAAT")
                         val issue = snapshot.toObject(Issue::class.java)
                         Response.Success(issue)
                     } else {
@@ -172,13 +171,15 @@ class IssuesRepositoryImpl @Inject constructor(
     }
 
     override fun getImage(url:String) = callbackFlow {
-        val size: Long = 1024 * 1024 * 20 //20MB
+        val size: Long = 1024 * 1024 * 200 //20MB
         val storageRef = FirebaseStorage.getInstance().reference.child("images/${url}")
+        Log.d("TEST", storageRef.toString())
         storageRef.getBytes(size).addOnSuccessListener {
             trySend(Response.Success(it))
         }.addOnFailureListener {
             trySend(Response.Failure(it))
         }
+        awaitClose()
     }
 
 

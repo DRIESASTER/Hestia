@@ -36,11 +36,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         MenuItem(name= "Logout",
             route = "logout",
             icon = Icons.Rounded.ExitToApp),
-        MenuItem(
-            name = "Chat",
-            route = "chat",
-            icon = Icons.Rounded.Chat,
-        ),
+
         MenuItem(
             name = "Profile",
             route = MyDestinations.PROFILE_ROUTE,
@@ -49,7 +45,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         MenuItem(
             name = "Announcements",
             route = MyDestinations.ANNOUNCEMENT_ROUTE,
-            icon = Icons.Rounded.Campaign
+            icon = Icons.Rounded.Campaign,
         )
     )
 

@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,11 +69,12 @@ fun LoginScreen(
             Button(
                 onClick = { viewModel.onSignInClick(navigate) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = if (state.email.isNotEmpty() && state.password.isNotEmpty() && viewModel.signInResponse !is Response.Loading) MainGroen else AccentLicht),
                 enabled = state.email.isNotEmpty() && state.password.isNotEmpty() && viewModel.signInResponse !is Response.Loading,
 
                 ) {
-                Text("Login", color = AccentLicht)
+                Text("Login", color = if (state.email.isNotEmpty() && state.password.isNotEmpty() && viewModel.signInResponse !is Response.Loading) Color.White else MainGroen)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

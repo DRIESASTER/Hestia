@@ -5,12 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
@@ -37,6 +34,7 @@ fun ResidentIssueCard(
     status: Status,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    ondelete: () -> Unit,
 ) {
     val currentStatus = remember { mutableStateOf(status) }
 
@@ -50,7 +48,7 @@ fun ResidentIssueCard(
             .background(Color.Transparent)
             .clip(RoundedCornerShape(10.dp))
             .clickable(onClick = onClick)
-            .wrapContentWidth(),
+            ,
         contentColor = Color.Transparent
     ) {
         //everythingcontainer
@@ -71,7 +69,8 @@ fun ResidentIssueCard(
                     verticalAlignment = Alignment.CenterVertically
                     ,modifier = Modifier
                         .clip(RoundedCornerShape(30.dp))
-                        .background(AccentLicht).wrapContentSize()
+                        .background(AccentLicht)
+                        .wrapContentSize()
                 ) {
                     Icon(imageVector = Icons.Rounded.Person, contentDescription = "person", tint = Color.Black, modifier = Modifier
                         .padding(2.dp)
@@ -114,30 +113,7 @@ fun ResidentIssueCard(
                         )
                     }
                     Spacer(modifier = Modifier.width(5.dp))
-                    //info
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(30.dp))
-                            .background(AccentLicht)
-                            .wrapContentSize()
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Info,
-                            contentDescription = "person",
-                            tint = Color.Black,
-                            modifier = Modifier
-                                .padding(2.dp)
-                                .size(10.dp)
-                        )
-                        Text(
-                            text = description,
-                            color = Color.Black,
-                            style = MaterialTheme.typography.body1,
-                            fontSize = 10.sp,
-                            modifier = Modifier.padding(2.dp)
-                        )
-                    }
+
                 }
             }
             Column(modifier = Modifier
@@ -148,10 +124,19 @@ fun ResidentIssueCard(
                     Status.notStarted -> "Committed"
                     Status.inProgress -> "In Progress"
                     Status.finished -> "Finished"
-                    else -> ""
                 }
                 Log.d("status", statusText)
                 ProgressionStatus(currentState = statusText)
+            }
+            if(status == Status.finished){
+                Column() {
+                    IconButton(onClick = ondelete) {
+                        Icon(imageVector = Icons.Rounded.Delete, contentDescription = "person", tint = AccentLicht, modifier = Modifier
+                            .padding(2.dp)
+                            .size(30.dp))
+                    }
+                    }
+
             }
         }
     }
@@ -160,5 +145,5 @@ fun ResidentIssueCard(
 @Preview
 @Composable
 fun ResidentIssueCardPreview() {
-    ResidentIssueCard(title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.notStarted, onClick = {})
+    ResidentIssueCard(title = "leaky faucet", tenant = "Ben De Meurichy", room = "room 001", description = "gas", status = Status.finished, onClick = {}, ondelete = {})
 }

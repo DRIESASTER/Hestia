@@ -1,8 +1,5 @@
 package com.ugnet.sel1.ui.announcements
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ugnet.sel1.common.snackbar.SnackbarManager

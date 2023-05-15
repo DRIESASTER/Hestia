@@ -18,6 +18,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 @Composable
 fun AnnouncementsAddScreen(
     viewModel: AnnouncementsViewModel = hiltViewModel(),
+    onSave: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     var dialogVisible by remember { mutableStateOf(false) }
@@ -94,6 +95,7 @@ fun AnnouncementsAddScreen(
             ),
             onClick = {
                 viewModel.addAnnouncement(selectedProperty.propertyId!!, text)
+                onSave()
             },
             modifier = Modifier
                 .fillMaxWidth(0.6f)

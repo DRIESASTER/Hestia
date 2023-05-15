@@ -84,6 +84,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     androidTestImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
 
 
 

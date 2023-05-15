@@ -6,21 +6,18 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.components.ProgressSwitch
+import com.ugnet.sel1.ui.components.PropertyCard
 import com.ugnet.sel1.ui.components.SwitchButton2
-import com.ugnet.sel1.ui.manager.addProp.AddPropVM
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
 
 
 @RunWith(AndroidJUnit4::class)
 class ComponentTests {
     @get:Rule
     val composeTestRule = createComposeRule()
-
 
     @Test
     fun SwitchButton2Test() {
@@ -70,6 +67,9 @@ class ComponentTests {
     }
 
     @Test
-    fun
-
+    fun PropertyCardTest(){
+        composeTestRule.setContent {
+            PropertyCard("big test house", "test street"+9+" ,"+ 9000 +" "+ "test city",  4, 10, {}, onDelete = {}, onEdit = {})
+        }
+    }
 }

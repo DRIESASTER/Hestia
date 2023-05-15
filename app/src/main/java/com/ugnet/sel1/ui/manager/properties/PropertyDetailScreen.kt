@@ -80,14 +80,9 @@ fun PropertyDetailsScreen(
                         Log.d("viewmodel tenant", property.huurders[0])
                         "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${property.huurders[0]}/${property.propertyId}"
                     }else {
-                        val email = "test@gmail.com"
-                        val propId = property.propertyId
                         "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${property.propertyId}"
                     }
-                    Log.d("viewmodel tenant", route)
-                    navigate(route)
-                })
-                {
+                    navigate(route)}) {
                     Icon(imageVector = Icons.Rounded.BorderColor, contentDescription = "edit", tint = MainGroen)
                 }
             }

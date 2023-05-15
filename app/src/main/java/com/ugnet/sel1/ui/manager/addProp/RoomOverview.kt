@@ -23,7 +23,7 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
                 itemsIndexed(rooms) { _, room ->
                     ShortRoomCard(
                         roomdata = room,
-                        removeClick = { onDeleteClicked(room.roomId!!)
+                        removeClick = {
                         rooms.filter { it.roomId != room.roomId }
                             if(room.huurderLijst.isNotEmpty()){
                                 for(i in room.huurderLijst){
@@ -37,6 +37,7 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
                                 }
 
                             }
+                            onDeleteClicked(room.roomId!!)
                         }
                     )
                     Spacer(modifier = Modifier.height(0.dp))

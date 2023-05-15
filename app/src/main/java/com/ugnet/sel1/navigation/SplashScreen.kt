@@ -29,8 +29,10 @@ fun SplashScreen(
                 if (user?.accountType == "Manager") {
                     //openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
                     clearAndNavigate(MyDestinations.MANAGER_HOME_ROUTE)
+                    viewModel.userResponse = Response.Loading
                 } else if (user?.accountType == "Huurder") {
                     clearAndNavigate(MyDestinations.HIREE_HOME_ROUTE)
+                    viewModel.userResponse = Response.Loading
                     //openAndPopUp(MyDestinations.HIREE_HOME_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
                 } else {
                     SnackbarManager.showMessage(AppText.generic_error)

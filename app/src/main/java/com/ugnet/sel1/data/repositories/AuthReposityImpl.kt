@@ -100,7 +100,9 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun signOut() = auth.signOut()
+    override fun signOut() {
+        auth.signOut()
+    }
 
     override suspend fun revokeAccess(): RevokeAccessResponse {
         return try {

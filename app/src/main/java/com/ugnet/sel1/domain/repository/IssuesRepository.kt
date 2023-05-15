@@ -28,7 +28,7 @@ interface IssuesRepository {
     //
     fun getIssuesForRenterFromFirestore(propertyId: String, userId: String): Flow<IssuesResponse>
     fun getIssuesPerPropertyFromFirestore(propertyId: String): Flow<IssuesResponse>
-    suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse
+    suspend fun deleteIssueFromFirestore(propertyId:String, issueId: String): DeleteIssueResponse
 
     fun getIssue(propertyId: String, issueId: String): Flow<IssueResponse>
 

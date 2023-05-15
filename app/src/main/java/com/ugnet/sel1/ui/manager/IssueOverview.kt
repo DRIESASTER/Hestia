@@ -2,6 +2,7 @@ package com.ugnet.sel1.ui.manager
 
 import android.util.Log
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
-import com.ugnet.sel1.domain.models.*
+import com.ugnet.sel1.domain.models.IssueType
+import com.ugnet.sel1.domain.models.Property
+import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.PropertiesResponse
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.IssueCard
@@ -46,7 +50,7 @@ fun IssuesOverview(viewModel:ManagerHomeVM, navigate : (String) -> Unit, propert
 fun IssueOverview(modifier: Modifier = Modifier, properties:List<Property>, onIssueClicked : (String) -> Unit, onStatusClicked:(Status, String, String)->Unit, viewModel:ManagerHomeVM) {
     Log.d("IssueOverview", "IssueOverview loading properties: $properties")
     Surface(modifier = modifier) {
-        LazyColumn (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
+        LazyColumn (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.98f)){
             itemsIndexed(properties) { _, property ->
                 viewModel.getIssuesPerProperty(property.propertyId!!).collectAsState(initial = Response.Loading).value.let {
                     when (it) {

@@ -38,7 +38,7 @@ fun AnnouncementsAddScreen(
 
     Column(modifier = Modifier.fillMaxWidth().wrapContentHeight(), horizontalAlignment = Alignment.Start) {
         Text(text = "Announcement", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
-        OutlinedTextField(value = "", onValueChange = {content:String->text=content},
+        OutlinedTextField(value = text, onValueChange = {content:String->text=content},
         colors = txtFieldColors, modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.4f)

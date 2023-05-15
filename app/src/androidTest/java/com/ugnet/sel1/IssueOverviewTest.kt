@@ -3,15 +3,19 @@ package com.ugnet.sel1
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.domain.models.Property
+import com.ugnet.sel1.domain.useCases.UseCases
 import com.ugnet.sel1.ui.manager.IssueOverview
+import com.ugnet.sel1.ui.manager.ManagerHomeVM
 import junit.framework.TestCase.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -52,14 +56,23 @@ class IssueOverviewTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+    @Mock
+    lateinit var useCases: UseCases
+    lateinit var authrepo : AuthRepository
+    lateinit var viewModel: ManagerHomeVM
 
+    @Before
+    fun setUp() {
+        viewModel = ManagerHomeVM(useCases,authrepo)
+    }
     @Test
     fun issueOverviewDisplaysDataProperly() {
         val mockIssueDataList = createMockIssueDataList()
 
+
         // Set up your Composable under test
         composeTestRule.setContent {
-            IssueOverview(properties = mockIssueDataList, onIssueClicked = {/* Do nothing */}, onStatusClicked = { _, _, _ -> /* Do nothing */}, viewModel = viewModel())
+            IssueOverview(properties = mockIssueDataList, onIssueClicked = {/* Do nothing */}, onStatusClicked = { _, _, _ -> /* Do nothing */}, viewModel = viewModel)
         }
 
         // Check if each property is displayed properly

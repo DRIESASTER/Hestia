@@ -36,16 +36,16 @@ fun AnnouncementsAddScreen(
         backgroundColor = AccentLicht
     )
 
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.Start) {
+    Column(modifier = Modifier.fillMaxWidth().wrapContentHeight(), horizontalAlignment = Alignment.Start) {
         Text(text = "Announcement", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
         OutlinedTextField(value = "", onValueChange = {content:String->text=content},
         colors = txtFieldColors, modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.4f)
-                .padding(horizontal = 20.dp, vertical = 10.dp))
+                .padding(vertical = 10.dp))
 
         Text(text = "Property", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
+        Column(modifier = Modifier.fillMaxWidth().wrapContentHeight(), horizontalAlignment = Alignment.CenterHorizontally){
             ExposedDropdownMenuBox(
                 expanded = propertyExpanded,
                 onExpandedChange = { propertyExpanded = it }
@@ -87,13 +87,13 @@ fun AnnouncementsAddScreen(
 
 
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.padding(10.dp))
 
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen, contentColor = Color.White),
             onClick = { viewModel.addAnnouncement(selectedProperty.propertyId!!, text) },
             modifier = Modifier
-                .fillMaxWidth(0.3f)
+                .fillMaxWidth(0.6f)
                 .padding(16.dp)
         ) {
             Text("Save")

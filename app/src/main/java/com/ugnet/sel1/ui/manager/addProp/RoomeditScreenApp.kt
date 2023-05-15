@@ -201,8 +201,9 @@ fun AddRoomPopup(
                 } else{
                     onAddRoom(propid,roomName, tenantMails)
                     for(el in tenantMails){
-                        if(el !in tenantList)
-                        viewmodel.addrenter(propid,el)
+                        if(el !in tenantList) {
+                            viewmodel.addrenter(propid, el)
+                        }
                     }
                 }
 

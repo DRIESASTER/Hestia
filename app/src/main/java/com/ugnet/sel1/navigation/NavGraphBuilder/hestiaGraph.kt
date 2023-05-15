@@ -96,9 +96,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.ANNOUNCEMENT_ADD_ROUTE){
-        AnnouncementsAddScreen(viewModel = hiltViewModel()) {
-
-        }
+        AnnouncementsAddScreen(viewModel = hiltViewModel())
     }
 
 

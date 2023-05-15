@@ -1,15 +1,11 @@
 package com.ugnet.sel1.ui.manager
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.authentication.selection.AuthRepository
-import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
 import com.ugnet.sel1.domain.repository.*

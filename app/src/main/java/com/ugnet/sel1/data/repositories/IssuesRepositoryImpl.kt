@@ -107,9 +107,9 @@ class IssuesRepositoryImpl @Inject constructor(
                 val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 val date = java.util.Date();
                 val filename = formatter.format(date)
-                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}")
+                storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}.jpeg")
                 storageRef.putFile(imageUri).await()
-                imageUrl = filename
+                imageUrl = filename + ".jpeg"
             }
 
             val issue = Issue(

@@ -67,6 +67,7 @@ fun AnnouncementsAddScreen(
                         val properties = uiState.ownedProperties
                         if (properties.isNotEmpty()) {
                             issuePropertyAddress = properties[0].straat!! + " " + properties[0].huisnummer!! + ", " + properties[0].postcode!! + " " + properties[0].stad!!
+                            selectedProperty = properties[0]
                         }
                         ExposedDropdownMenu(expanded = propertyExpanded, onDismissRequest = { propertyExpanded = false }) {
                             for (property in properties) {
@@ -84,55 +85,24 @@ fun AnnouncementsAddScreen(
                 }
             }
 
-
-
-
         Spacer(modifier = Modifier.padding(10.dp))
-
+            
         Button(
-            colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen, contentColor = Color.White),
-            onClick = { viewModel.addAnnouncement(selectedProperty.propertyId!!, text) },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MainGroen,
+                contentColor = Color.White
+            ),
+            onClick = {
+                viewModel.addAnnouncement(selectedProperty.propertyId!!, text)
+            },
             modifier = Modifier
                 .fillMaxWidth(0.6f)
-                .padding(16.dp)
+                .padding(16.dp),
+            enabled = selectedProperty.propertyId != null
         ) {
             Text("Save")
         }
         }
     }
-
-
-/* if (dialogVisible) {
-        Dialog(onDismissRequest = { dialogVisible = false }) {  // Hide the dialog when dismissed
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(200.dp)
-                    .background(Color.White)
-            ) {
-                when (val uiState = viewModel.uiState.collectAsState().value) {
-                    AnnouncementUiState.Loading -> {
-                        // Show loading state UI
-                        CircularProgressIndicator(color= MainGroen)
-                    }
-                    is AnnouncementUiState.Success -> {
-                        val properties = uiState.ownedProperties
-                        if (properties.isEmpty()) {
-                            Text(text = "No properties found")
-                        } else {
-                            PropertyList(
-                                properties = properties,
-                                onPropertyClicked = { property ->
-                                    selectedProperty = property
-                                    dialogVisible = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
 }
 

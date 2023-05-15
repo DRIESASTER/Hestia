@@ -41,7 +41,7 @@ fun PropertyDetailRoute(
                     propertyData,
                     viewModel = viewModel,
                     navigateBack = { navigateBack() },
-                    navigate = { navigate(propertyData.propertyId!!) }
+                    navigate = { route -> navigate(route) }
                 )
             } else {
                 Text(text = "Property not found")
@@ -80,9 +80,14 @@ fun PropertyDetailsScreen(
                         Log.d("viewmodel tenant", property.huurders[0])
                         "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${property.huurders[0]}/${property.propertyId}"
                     }else {
+                        val email = "test@gmail.com"
+                        val propId = property.propertyId
                         "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${property.propertyId}"
                     }
-                    navigate(route)}) {
+                    Log.d("viewmodel tenant", route)
+                    navigate(route)
+                })
+                {
                     Icon(imageVector = Icons.Rounded.BorderColor, contentDescription = "edit", tint = MainGroen)
                 }
             }

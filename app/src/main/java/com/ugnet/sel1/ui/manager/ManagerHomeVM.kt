@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
 import com.ugnet.sel1.domain.models.Status
@@ -24,7 +25,10 @@ import javax.inject.Inject
 
 //add issues later
 @HiltViewModel
-class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewModel() {
+class ManagerHomeVM @Inject constructor(
+    private val useCases:UseCases,
+    private val authRepo : AuthRepository
+) : ViewModel() {
     var currentState by mutableStateOf(true)
 
     var roomsForPropertyResponse by mutableStateOf<RoomsResponse>(Response.Loading)
@@ -70,6 +74,8 @@ class ManagerHomeVM @Inject constructor(private val useCases:UseCases) : ViewMod
 
     fun getRoomsPerProperty(propertyId: String): Flow<RoomsResponse> = useCases.getRoomsForProperty(propertyId)
 
+
+    fun signOut() = authRepo.signOut()
 
     fun getIssuesPerProperty(propertyId: String): Flow<IssuesResponse> = useCases.getIssuesPerProperty(propertyId)
 

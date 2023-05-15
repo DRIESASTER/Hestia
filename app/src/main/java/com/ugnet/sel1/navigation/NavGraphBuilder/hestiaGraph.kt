@@ -62,7 +62,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.MANAGER_HOME_ROUTE) {
-        ManagerHomeScreen(Data = hiltViewModel(), navigate = { route -> appState.navigate(route) })
+        ManagerHomeScreen(Data = hiltViewModel(), navigate = { route -> appState.navigate(route) }, navigateClear = { route -> appState.clearAndNavigate(route) })
     }
 
 
@@ -108,7 +108,7 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
 
     composable(MyDestinations.HIREE_HOME_ROUTE) {
-        ResidentHomeScreen(navigate =  { route -> appState.navigate(route) })
+        ResidentHomeScreen(navigate =  { route -> appState.navigate(route) }, clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 
     composable(MyDestinations.ADD_PROPERTY + "/{propId}") {

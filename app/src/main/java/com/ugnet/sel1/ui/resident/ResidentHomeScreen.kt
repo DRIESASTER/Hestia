@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 fun ResidentHomeScreen(
     viewModel: ResidentHomeVM = hiltViewModel(),
     navigate : (String) -> Unit,
+    clearAndNavigate: (String) -> Unit,
     cScreen: String = "Profile"
 ) {
     val drawerItems = listOf(
@@ -70,7 +71,7 @@ fun ResidentHomeScreen(
                 onItemClick = {
                     if(it.name == "Logout") {
                         viewModel.signOut()
-                        navigate(it.route)
+                        clearAndNavigate(it.route)
                     }
                     if(it.name == "Announcements"){
                         navigate(it.route)

@@ -16,28 +16,33 @@ import com.ugnet.sel1.R.string as AppText
 @HiltViewModel
 class AnnouncementsViewModel @Inject constructor(private val useCases: UseCases) : ViewModel() {
 
+    private val currentUser: Flow<User> = useCases.getUserNoResponse()
+
     private val propertiesData: Flow<List<Property>> = useCases.getOwnedPropertiesNoResponse()
 
-    private  val currentUser : Flow<User> = useCases.getUserNoResponse()
+    private val announcements: MutableStateFlow<List<Announcement>> = MutableStateFlow(emptyList())
 
-    private val announcements: Flow<List<Announcement>> = currentUser.flatMapLatest { user ->
-        when (user.accountType) {
-            "Manager" -> useCases.getAnnouncementsForManager()
-            "Huurder"-> useCases.getAnnouncementsForHiree()
-            else -> throw IllegalStateException("Unknown role: ${user.accountType}")
+    init {
+        viewModelScope.launch {
+            currentUser.flatMapLatest { user ->
+                when (user.accountType) {
+                    "Manager" -> useCases.getAnnouncementsForManager()
+                    "Huurder"-> useCases.getAnnouncementsForHiree()
+                    else -> throw IllegalStateException("Unknown role: ${user.accountType}")
+                }
+            }.collect { ann ->
+                announcements.value = ann
+            }
         }
     }
 
-
-    var uiState: StateFlow<AnnouncementUiState> = combine(
+    val uiState: StateFlow<AnnouncementUiState> = combine(
         currentUser,
         announcements,
         propertiesData
     ) { user, ann, properties ->
         AnnouncementUiState.Success(user, ann, properties)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, AnnouncementUiState.Loading)
-
-
 
     fun addAnnouncement(propertyId: String, announcement: String) = viewModelScope.launch {
         if(!useCases.propertyExist(propertyId)){
@@ -46,6 +51,17 @@ class AnnouncementsViewModel @Inject constructor(private val useCases: UseCases)
             SnackbarManager.showMessage(AppText.announcement_error)
         } else {
             useCases.addAnnouncementToProperty(propertyId, announcement = announcement)
+            refreshAnnouncements()
         }
+    }
+
+    private suspend fun refreshAnnouncements() {
+        announcements.value = currentUser.flatMapLatest { user ->
+            when (user.accountType) {
+                "Manager" -> useCases.getAnnouncementsForManager()
+                "Huurder"-> useCases.getAnnouncementsForHiree()
+                else -> throw IllegalStateException("Unknown role: ${user.accountType}")
+            }
+        }.first()
     }
 }

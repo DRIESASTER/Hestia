@@ -14,7 +14,8 @@ import com.ugnet.sel1.R.string as AppText
 
 @Composable
 fun SplashScreen(
-    navigate: (String) -> Unit,
+    //openAndPopUp : (String, String) -> Unit,
+    clearAndNavigate : (String) -> Unit,
     viewModel: AuthViewModel,
     ) {
     Log.d("userReponse", viewModel.userResponse.toString())
@@ -26,17 +27,19 @@ fun SplashScreen(
             is Response.Success -> {
                 val user = (viewModel.userResponse as Response.Success).data
                 if (user?.accountType == "Manager") {
-                    navigate(MyDestinations.MANAGER_HOME_ROUTE)
+                    //openAndPopUp(MyDestinations.MANAGER_HOME_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
+                    clearAndNavigate(MyDestinations.MANAGER_HOME_ROUTE)
                 } else if (user?.accountType == "Huurder") {
-                    navigate(MyDestinations.HIREE_HOME_ROUTE)
+                    clearAndNavigate(MyDestinations.HIREE_HOME_ROUTE)
+                    //openAndPopUp(MyDestinations.HIREE_HOME_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
                 } else {
                     SnackbarManager.showMessage(AppText.generic_error)
-                    navigate(MyDestinations.ROLE_SELECTION_ROUTE)
+                    //openAndPopUp(MyDestinations.ROLE_SELECTION_ROUTE, MyDestinations.ROLE_SELECTION_ROUTE)
                 }
             }
             is Response.Failure -> {
                 SnackbarManager.showMessage(AppText.generic_error);
-                navigate(MyDestinations.ROLE_SELECTION_ROUTE)
+                //openAndPopUp(MyDestinations.ROLE_SELECTION_ROUTE, MyDestinations.SPLASH_ROUTE)
             }
         }
     }

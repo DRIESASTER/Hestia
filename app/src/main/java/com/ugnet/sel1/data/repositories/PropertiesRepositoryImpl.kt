@@ -237,37 +237,39 @@ class PropertiesRepositoryImpl @Inject constructor(
         val announcementListeners = mutableListOf<ListenerRegistration>()
         val allAnnouncements = mutableListOf<Announcement>()
 
-        try {
-            val propertiesSnapshotListener = dbRef.collection("properties")
-                .whereEqualTo("ownedBy", Firebase.auth.currentUser!!.email)
-                .addSnapshotListener { snapshot, e ->
-                    if (e != null) {
-                        close(e) // Send the exception to the coroutine that is collecting from this Flow
-                    } else if (snapshot != null) {
-                        val properties = snapshot.toObjects(Property::class.java)
-                        properties.forEach { property ->
-                            val announcementListener =
-                                dbRef.collection("properties/${property.propertyId}/announcements")
-                                    .addSnapshotListener { snapshot, e ->
-                                        if (e != null) {
-                                            close(e)
-                                        } else if (snapshot != null) {
-                                            val announcements =
-                                                snapshot.toObjects(Announcement::class.java)
-                                            allAnnouncements.addAll(announcements)
-                                            trySend(allAnnouncements)
-                                        }
+        val propertiesSnapshotListener = dbRef.collection("properties")
+            .whereEqualTo("ownedBy", Firebase.auth.currentUser!!.email)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    close(e) // Send the exception to the coroutine that is collecting from this Flow
+                } else if (snapshot != null) {
+                    // Clear the existing announcements and listeners
+                    allAnnouncements.clear()
+                    announcementListeners.forEach { it.remove() }
+                    announcementListeners.clear()
+
+                    val properties = snapshot.toObjects(Property::class.java)
+                    properties.forEach { property ->
+                        val announcementListener =
+                            dbRef.collection("properties/${property.propertyId}/announcements")
+                                .addSnapshotListener { snapshot, e ->
+                                    if (e != null) {
+                                        close(e)
+                                    } else if (snapshot != null) {
+                                        val announcements =
+                                            snapshot.toObjects(Announcement::class.java)
+                                        allAnnouncements.addAll(announcements)
+                                        trySend(allAnnouncements)
                                     }
-                            announcementListeners.add(announcementListener)
-                        }
+                                }
+                        announcementListeners.add(announcementListener)
                     }
                 }
-            awaitClose {
-                propertiesSnapshotListener.remove()
-                announcementListeners.forEach { it.remove() }
             }
-        } catch (e: Exception) {
-            close(e)
+
+        awaitClose {
+            propertiesSnapshotListener.remove()
+            announcementListeners.forEach { it.remove() }
         }
     }
 

@@ -67,6 +67,7 @@ fun AnnouncementsAddScreen(
                         val properties = uiState.ownedProperties
                         if (properties.isNotEmpty()) {
                             issuePropertyAddress = properties[0].straat!! + " " + properties[0].huisnummer!! + ", " + properties[0].postcode!! + " " + properties[0].stad!!
+                            selectedProperty = properties[0]
                         }
                         ExposedDropdownMenu(expanded = propertyExpanded, onDismissRequest = { propertyExpanded = false }) {
                             for (property in properties) {
@@ -84,17 +85,20 @@ fun AnnouncementsAddScreen(
                 }
             }
 
-
-
-
         Spacer(modifier = Modifier.padding(10.dp))
-
+            
         Button(
-            colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen, contentColor = Color.White),
-            onClick = { viewModel.addAnnouncement(selectedProperty.propertyId!!, text) },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MainGroen,
+                contentColor = Color.White
+            ),
+            onClick = {
+                viewModel.addAnnouncement(selectedProperty.propertyId!!, text)
+            },
             modifier = Modifier
                 .fillMaxWidth(0.6f)
-                .padding(16.dp)
+                .padding(16.dp),
+            enabled = selectedProperty.propertyId != null
         ) {
             Text("Save")
         }

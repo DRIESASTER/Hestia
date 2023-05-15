@@ -272,74 +272,44 @@ class PropertiesRepositoryImpl @Inject constructor(
     }
 
 
-        override fun getAllAnnouncementsFromRentedProperties(userId: String): Flow<List<Announcement>> = callbackFlow {
+
+    override fun getAllAnnouncementsFromRentedProperties(): Flow<List<Announcement>> = callbackFlow {
         val announcementListeners = mutableListOf<ListenerRegistration>()
         val allAnnouncements = mutableListOf<Announcement>()
 
         try {
-            val propertiesSnapshotListener = dbRef.collection("properties").whereArrayContains("huurders", userId)
-                .addSnapshotListener { snapshot, e ->
-                    if (e != null) {
-                        close(e) // Send the exception to the coroutine that is collecting from this Flow
-                    } else if (snapshot != null) {
-                        val properties = snapshot.toObjects(Property::class.java)
-                        properties.forEach { property ->
-                            val announcementListener = dbRef.collection("properties/${property.propertyId}/announcements")
-                                .addSnapshotListener { snapshot, e ->
-                                    if (e != null) {
-                                        close(e)
-                                    } else if (snapshot != null) {
-                                        val announcements = snapshot.toObjects(Announcement::class.java)
-                                        allAnnouncements.addAll(announcements)
-                                        trySend(allAnnouncements.toList())
-                                    }
+            val propertiesSnapshotListener =
+                Firebase.auth.currentUser?.email?.let {
+                    dbRef.collection("properties").whereArrayContains("huurders", it)
+                        .addSnapshotListener { snapshot, e ->
+                            if (e != null) {
+                                close(e) // Send the exception to the coroutine that is collecting from this Flow
+                            } else if (snapshot != null) {
+                                val properties = snapshot.toObjects(Property::class.java)
+                                properties.forEach { property ->
+                                    val announcementListener = dbRef.collection("properties/${property.propertyId}/announcements")
+                                        .addSnapshotListener { snapshot, e ->
+                                            if (e != null) {
+                                                close(e)
+                                            } else if (snapshot != null) {
+                                                val announcements = snapshot.toObjects(Announcement::class.java)
+                                                allAnnouncements.addAll(announcements)
+                                                trySend(allAnnouncements.toList())
+                                            }
+                                        }
+                                    announcementListeners.add(announcementListener)
                                 }
-                            announcementListeners.add(announcementListener)
+                            }
                         }
-                    }
                 }
             awaitClose {
-                propertiesSnapshotListener.remove()
+                if (propertiesSnapshotListener != null) {
+                    propertiesSnapshotListener.remove()
+                }
                 announcementListeners.forEach { it.remove() }
             }
         } catch (e: Exception) {
             close(e)
         }
     }
-
-
-/*    override fun getRentedPropertiesFromFirestore(id: String): Flow<Response<MutableList<Property>>> = callbackFlow {
-        val snapshotListener = dbRef.collection("properties").whereArrayContains("huurders", id)
-            .addSnapshotListener { snapshot, e ->
-                val propertyResponse = if (snapshot != null) {
-                    val panden = snapshot.toObjects(Property::class.java)
-                    Response.Success(panden)
-                } else {
-                    Response.Failure(e)
-                }
-                trySend(propertyResponse)
-            }
-        awaitClose { snapshotListener.remove() }
-    }*/
-
-
-
-    fun  getAnnouncementsPerProperty(propertyId: String) : Flow<Response<List<Announcement>>> = callbackFlow {
-        val snapshotListener =
-            dbRef.collection("properties/${propertyId}/announcements")
-                .addSnapshotListener { snapshot, e ->
-                    val announcementsResponse = if (snapshot != null) {
-                        val announcement = snapshot.toObjects(Announcement::class.java)
-                        Response.Success(announcement)
-                    } else {
-                        Response.Failure(e)
-                    }
-                    trySend(announcementsResponse)
-                }
-        awaitClose {
-            snapshotListener.remove()
-        }
-    }
-
-
 }

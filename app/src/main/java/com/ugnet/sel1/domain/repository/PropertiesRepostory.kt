@@ -44,9 +44,10 @@ interface PropertiesRepository {
     suspend fun addAnnouncement(propertyId: String, announcement: String) : Response<Boolean>
     //fun getAnnouncementsPerProperty(propertyId: String): Flow<Response<List<Announcement>>>
     fun getAllAnnouncementsFromProperties(): Flow<List<Announcement>>
-    fun getAllAnnouncementsFromRentedProperties(userId: String): Flow<List<Announcement>>
+
     fun getOwnedPropertiesNoResponse(): Flow<MutableList<Property>>
     suspend fun propertyExists(propertyId: String): Boolean
+    fun getAllAnnouncementsFromRentedProperties(): Flow<List<Announcement>>
 }
 //    suspend fun deletePandFromFirestore(id: String): DeletePandResponse
 

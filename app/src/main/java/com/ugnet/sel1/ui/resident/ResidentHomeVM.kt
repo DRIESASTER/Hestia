@@ -11,7 +11,9 @@ import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.domain.models.Announcement
 import com.ugnet.sel1.domain.models.IssueType
+import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
+
 
 import com.ugnet.sel1.domain.repository.IssuesResponse
 import com.ugnet.sel1.domain.repository.PropertiesResponse
@@ -32,7 +34,6 @@ class ResidentHomeVM @Inject constructor(
 
     var allRentedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
 
-    //var announcement by mutableStateOf<Response<Announcement>
 
     init{
         getRentedProperties()

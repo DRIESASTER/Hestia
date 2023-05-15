@@ -11,3 +11,9 @@ data class User(
     var voornaam : String? = null,
     var achternaam : String? = null
 )
+
+
+enum class Role {
+    Manager,
+    Huurder
+}

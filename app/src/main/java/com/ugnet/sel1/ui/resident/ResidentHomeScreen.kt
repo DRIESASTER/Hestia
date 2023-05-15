@@ -40,6 +40,11 @@ fun ResidentHomeScreen(
             route = MyDestinations.ROLE_SELECTION_ROUTE,
             icon = Icons.Rounded.Logout,
         ),
+        MenuItem(
+            name = "Announcements",
+            route = MyDestinations.ANNOUNCEMENT_ROUTE,
+            icon = Icons.Rounded.Announcement,
+        ),
     )
 
     var currentTitle by rememberSaveable { mutableStateOf(cScreen) }
@@ -67,6 +72,9 @@ fun ResidentHomeScreen(
                         viewModel.signOut()
                         navigate(it.route)
                     }
+                    if(it.name == "Announcements"){
+                        navigate(it.route)
+                    }
                     currentTitle = it.name
                     coroutineScope.launch {
                         scaffoldState.drawerState.close()
@@ -86,6 +94,7 @@ fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM, navigate: (St
         "Profile" -> ResidentProfileScreen(viewModel = vm)
         "Issues" -> ResidentIssueOverview(viewModel = vm, navigate = navigate, onIssueClicked = { route -> navigate(route) })
         "Logout" -> Text(text = "TODO: implement Logout")
+
         //"Announcement" -> AnnouncementScreen(viewModel = hi, navigate = )
     }
 }

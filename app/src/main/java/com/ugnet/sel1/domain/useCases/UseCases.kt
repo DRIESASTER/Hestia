@@ -8,6 +8,7 @@ data class UseCases constructor(
     val propertyExist : PropertyExists,
     val getOwnedPropertiesNoResponse: GetOwnedPropertiesNoResponse,
     val getAnnouncementsForManager: GetAnnouncementsForManager,
+    val getAnnouncementsForHiree: GetAnnouncementsForHiree,
     val addAnnouncementToProperty : AddAnnouncementToProperty,
     val getUser : GetUserTest,
     val getUserNoResponse: GetUserNoReponse,

@@ -82,7 +82,7 @@ fun IssueDetailsScreen(
 
         viewModel.getUser("").collectAsState(initial = Response.Loading).value.let{
             when(it){
-                is Response.Loading -> CircularProgressIndicator()
+                is Response.Loading -> CircularProgressIndicator(color=MainGroen)
                 is Response.Failure -> Text(text = "failed")
                 is Response.Success -> {
                     if(it.data?.accountType == "Manager") {

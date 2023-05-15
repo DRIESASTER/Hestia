@@ -56,7 +56,7 @@ fun ResidentIssueCard(
             .background(MainGroen)
             .clip(RoundedCornerShape(10.dp))
             .wrapContentWidth()
-            .height(90.dp)) {
+            .height(90.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             Column(modifier = Modifier
                 .width(150.dp)
                 .padding(5.dp)
@@ -129,7 +129,7 @@ fun ResidentIssueCard(
                 ProgressionStatus(currentState = statusText)
             }
             if(status == Status.finished){
-                Column() {
+                Column(horizontalAlignment = Alignment.End) {
                     IconButton(onClick = ondelete) {
                         Icon(imageVector = Icons.Rounded.Delete, contentDescription = "person", tint = AccentLicht, modifier = Modifier
                             .padding(2.dp)

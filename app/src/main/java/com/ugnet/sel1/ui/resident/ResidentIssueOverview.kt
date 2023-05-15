@@ -60,7 +60,7 @@ fun ResidentIssueOverview(
                         LazyColumn(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
-                                .fillMaxWidth().fillMaxHeight(0.85f)
+                                .fillMaxWidth().fillMaxHeight(0.9f)
                                 //.weight(1f)
                         ) {
                             itemsIndexed(response.data) {_, property ->

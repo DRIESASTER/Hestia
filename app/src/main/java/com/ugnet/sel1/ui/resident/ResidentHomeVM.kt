@@ -9,12 +9,15 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ugnet.sel1.authentication.selection.AuthRepository
+import com.ugnet.sel1.domain.models.Announcement
 import com.ugnet.sel1.domain.models.IssueType
 import com.ugnet.sel1.domain.models.Response
+
 import com.ugnet.sel1.domain.repository.IssuesResponse
 import com.ugnet.sel1.domain.repository.PropertiesResponse
 import com.ugnet.sel1.domain.repository.RoomsResponse
 import com.ugnet.sel1.domain.repository.UserResponse
+
 import com.ugnet.sel1.domain.useCases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -29,9 +32,12 @@ class ResidentHomeVM @Inject constructor(
 
     var allRentedPropertiesResponse by mutableStateOf<PropertiesResponse>(Response.Loading)
 
+    //var announcement by mutableStateOf<Response<Announcement>
+
     init{
         getRentedProperties()
     }
+
 
 
     fun getRentedProperties() = viewModelScope.launch {

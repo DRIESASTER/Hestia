@@ -5,8 +5,12 @@ import com.ugnet.sel1.domain.useCases.nieuwUsecases.GetOwnedProperties
 
 data class UseCases constructor(
     //val getUser : GetUser,
+    val propertyExist : PropertyExists,
+    val getOwnedPropertiesNoResponse: GetOwnedPropertiesNoResponse,
+    val getAnnouncementsForManager: GetAnnouncementsForManager,
     val addAnnouncementToProperty : AddAnnouncementToProperty,
     val getUser : GetUserTest,
+    val getUserNoResponse: GetUserNoReponse,
     val getIssuesForRoom: GetIssuesForRoom,
     val getRoomsForProperty: GetRoomsForProperty,
     val getOwnedProperties: GetOwnedProperties,

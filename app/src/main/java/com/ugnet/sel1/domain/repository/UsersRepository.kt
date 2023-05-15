@@ -25,5 +25,6 @@ interface UsersRepository {
         role: String
     ) : AddUserResponse
 
-    suspend fun getUser(personId: String): UserResponse?
+    suspend fun getUser(personId: String): User?
+    suspend fun getUserResponse(userId: String): UserResponse?
 }

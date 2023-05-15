@@ -1,6 +1,7 @@
 package com.ugnet.sel1.data.repositories
 
 import android.util.Log
+import com.ugnet.sel1.domain.models.User
 import com.ugnet.sel1.domain.repository.UserResponse
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ class GetUserRepository @Inject constructor(
             try {
 
                 val id = authRepo.currentUserEmail
-                val user = userReposity.getUser(id)
+                val user = userReposity.getUserResponse(id)
                 if (user != null) {
                     trySend(user)
                 }
@@ -29,5 +30,18 @@ class GetUserRepository @Inject constructor(
             }
         }
 
+    val currentUser : Flow<User> =
+        callbackFlow {
+            try {
+                val id = authRepo.currentUserEmail
+                val user = userReposity.getUser(id)
+                if (user != null) {
+                    trySend(user)
+                }
+                awaitClose { }
+            } catch (e: Exception) {
+                close(e)
+            }
+        }
 
 }

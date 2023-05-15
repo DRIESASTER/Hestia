@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 
 fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=false,
-                      navigate: (String) -> Unit){
+                      navigate: (String) -> Unit, navigateClear: (String) -> Unit){
     //data
     val drawerItems = listOf(
         MenuItem(
@@ -34,7 +34,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
             icon = Icons.Rounded.Home,
         ),
         MenuItem(name= "Logout",
-            route = "logout",
+            route = MyDestinations.ROLE_SELECTION_ROUTE,
             icon = Icons.Rounded.ExitToApp),
 
         MenuItem(
@@ -65,7 +65,14 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
         topBarTitle = currentTitle
     )}, drawerContent = {
             DrawerHeader()
-            DrawerBody(items=drawerItems,onItemClick={item -> navigate(item.route)})
+            DrawerBody(items=drawerItems,onItemClick={ item ->
+                if(item.name == "Logout"){
+                    Data.signOut()
+                    navigateClear(item.route)
+                } else{
+                    navigate(item.route)
+                }
+            })
         }, content={ padding ->
 
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,modifier = Modifier

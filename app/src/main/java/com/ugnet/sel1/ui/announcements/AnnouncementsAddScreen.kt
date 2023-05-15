@@ -100,39 +100,5 @@ fun AnnouncementsAddScreen(
         }
         }
     }
-
-
-/* if (dialogVisible) {
-        Dialog(onDismissRequest = { dialogVisible = false }) {  // Hide the dialog when dismissed
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(200.dp)
-                    .background(Color.White)
-            ) {
-                when (val uiState = viewModel.uiState.collectAsState().value) {
-                    AnnouncementUiState.Loading -> {
-                        // Show loading state UI
-                        CircularProgressIndicator(color= MainGroen)
-                    }
-                    is AnnouncementUiState.Success -> {
-                        val properties = uiState.ownedProperties
-                        if (properties.isEmpty()) {
-                            Text(text = "No properties found")
-                        } else {
-                            PropertyList(
-                                properties = properties,
-                                onPropertyClicked = { property ->
-                                    selectedProperty = property
-                                    dialogVisible = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
 }
 

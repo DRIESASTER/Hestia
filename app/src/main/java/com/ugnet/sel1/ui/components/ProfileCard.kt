@@ -23,7 +23,7 @@ fun ProfileCard(name: String, email: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding(horizontal = 2.dp, vertical = 10.dp),
         elevation = 8.dp,
         shape = RoundedCornerShape(8.dp),
         backgroundColor = MainGroen

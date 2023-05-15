@@ -2,7 +2,6 @@ package com.ugnet.sel1.ui.announcements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement.Absolute.Center
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -13,10 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.PropertyList
-import com.ugnet.sel1.ui.manager.PropertiesOverview
-import com.ugnet.sel1.ui.manager.PropertyOverview
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
 
@@ -94,3 +90,5 @@ fun AnnouncementsAddScreen(
         }
     }
 }
+
+

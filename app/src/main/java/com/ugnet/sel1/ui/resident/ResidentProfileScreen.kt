@@ -20,7 +20,7 @@ import com.ugnet.sel1.ui.theme.MainGroen
 @Composable
 fun ResidentProfileScreen(viewModel: ResidentHomeVM) {
     Column (
-        modifier = Modifier.padding(all= 10.dp)
+        modifier = Modifier.padding(all= 5.dp)
     ) {
         viewModel.getCurrentUser().collectAsState(initial = Response.Loading).value.let { user ->
             when(user) {

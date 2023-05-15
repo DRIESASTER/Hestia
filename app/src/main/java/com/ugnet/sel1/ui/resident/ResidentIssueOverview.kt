@@ -4,22 +4,23 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ugnet.sel1.ui.theme.MainGroen
 import com.ugnet.sel1.domain.models.Response
-import com.ugnet.sel1.ui.theme.AccentLicht
-import androidx.compose.runtime.collectAsState
 import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.ResidentIssueCard
 import com.ugnet.sel1.ui.manager.addButton
+import com.ugnet.sel1.ui.theme.AccentLicht
+import com.ugnet.sel1.ui.theme.MainGroen
 
 @Composable
 fun ResidentIssueOverview(
@@ -59,7 +60,7 @@ fun ResidentIssueOverview(
                         LazyColumn(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxWidth().fillMaxHeight(0.85f)
                                 //.weight(1f)
                         ) {
                             itemsIndexed(response.data) {_, property ->
@@ -93,7 +94,9 @@ fun ResidentIssueOverview(
                                                                                         room = property.straat!!+" "+property.huisnummer!!+", "+property.postcode!!+" "+property.stad!!,
                                                                                         description = issue.beschrijving!!,
                                                                                         status = issue.status!!,
-                                                                                        onClick = { onIssueClicked(route) }
+                                                                                        onClick = { onIssueClicked(route) },
+                                                                                        ondelete = {viewModel.deleteIssue(issue.issueId!!)},
+                                                                                        modifier = Modifier.fillMaxWidth()
                                                                                     )
                                                                                 }
                                                                             }

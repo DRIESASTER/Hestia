@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import com.ugnet.sel1.R.string as AppText
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -24,6 +23,7 @@ import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.InputWithTitle
 import com.ugnet.sel1.ui.theme.AccentLicht
 import com.ugnet.sel1.ui.theme.MainGroen
+import com.ugnet.sel1.R.string as AppText
 
 val displayIssueType: HashMap<IssueType, String> = hashMapOf(IssueType.water to "Water", IssueType.electricity to "Electricity", IssueType.gas to "Gas", IssueType.other to "other")
 
@@ -91,9 +91,16 @@ fun AddIssueScreen(
                 },
                 colors = txtFieldColors
             )
-            ExposedDropdownMenu(expanded = propertyExpanded, onDismissRequest = { propertyExpanded = false }) {
-                when(val response = viewModel.allRentedPropertiesResponse) {
-                    is Response.Success -> {
+            when(val response = viewModel.allRentedPropertiesResponse) {
+                is Response.Success -> {
+                    if (response.data.isNotEmpty()) {
+                        issuePropertyAddress =
+                            response.data[0].straat!! + " " + response.data[0].huisnummer!! + ", " + response.data[0].postcode!! + " " + response.data[0].stad!!
+                        issuePropertyId = response.data[0].propertyId!!
+                        canSelectRoom = true
+                    }
+                        ExposedDropdownMenu(expanded = propertyExpanded, onDismissRequest = { propertyExpanded = false }) {
+
                         for (residence in response.data) {
                             val resAddress = residence.straat!!+" "+residence.huisnummer!!+", "+residence.postcode!!+" "+residence.stad!!
                             DropdownMenuItem(onClick = {
@@ -105,13 +112,12 @@ fun AddIssueScreen(
                                 Text(text = resAddress)
                             }
                         }
-                    }
+                    }}
                     else -> {
                         CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
                     }
                 }
             }
-        }
 
         //Room dropdown menu
         Text(text = "Select room",style= MaterialTheme.typography.h6)

@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -132,17 +134,17 @@ fun IssueDetailsScreen(
         } else{
         viewModel.getImage(issue.imageUrl!!).collectAsState(initial =Response.Loading).value.let {
             when(it){
-                is Response.Loading -> CircularProgressIndicator()
+                is Response.Loading -> CircularProgressIndicator(color=MainGroen)
                 is Response.Failure -> Text(text = "failed")
                 is Response.Success -> {
                     val bitmap: Bitmap = BitmapFactory.decodeByteArray(it.data, 0, it.data.size)
                     Image(
                         bitmap = bitmap.asImageBitmap(),
                         contentDescription = null,
-                        modifier = Modifier
+                        modifier = Modifier.clip(RoundedCornerShape(20.dp)).padding(10.dp)
                             .fillMaxWidth()
-                            .height(200.dp),
-                        contentScale = ContentScale.Crop
+                            .height(250.dp),
+                        contentScale = ContentScale.Inside,
                     )
                 }
             }
@@ -175,7 +177,7 @@ fun IssueRouteScreen(viewModel: IssueDetailVM, navigateBack: () -> Unit) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         when (viewModel.issueDataResponse) {
-            is Response.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+            is Response.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center), color = MainGroen)
             is Response.Failure -> Text(text = "failed", Modifier.align(Alignment.Center))
             is Response.Success -> {
                 val issueData = (viewModel.issueDataResponse as Response.Success).data

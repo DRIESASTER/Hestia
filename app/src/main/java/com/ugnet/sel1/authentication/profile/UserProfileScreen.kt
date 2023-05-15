@@ -1,9 +1,9 @@
 package com.ugnet.sel1.authentication.profile
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -65,7 +65,9 @@ fun UserProfileScreen(
                 Button(
                     onClick = { userViewModel.signOut()
                               clearAndNavigate(MyDestinations.ROLE_SELECTION_ROUTE)},
-                    modifier = Modifier.fillMaxWidth().background(MainGroen)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        , colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
                     Text(text = "Sign Out", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
@@ -75,7 +77,7 @@ fun UserProfileScreen(
                             navigateToHomeScreen(user = user)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth().background(MainGroen)
+                    modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
                 ) {
                     Text(text = "Home Screen", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }

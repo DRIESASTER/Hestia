@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.domain.models.Response
@@ -65,7 +64,7 @@ fun RoomeditScreenApp(viewmodel: RoomEditVM = hiltViewModel(), modifier: Modifie
                                     AddRoomPopup(propid = propid, onClose = { isPopupVisible = false }, onAddRoom = { propid, roomName, tenantMails ->
                                         viewmodel.addroom(propid, roomName, tenantMails)
                                         isPopupVisible = false
-                                    })
+                                    },viewmodel=viewmodel, tenantList = rentlist)
                                 }
                             }
                             Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
@@ -112,7 +111,9 @@ fun AddRoomPopup(
     propid:String,
     onClose: () -> Unit,
     onAddRoom: (propid:String,roomName: String, tenantMails: MutableList<String>) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewmodel: RoomEditVM,
+    tenantList:MutableList<String>
 ) {
     var roomName by remember { mutableStateOf("") }
     var tenantMail by remember { mutableStateOf("") }
@@ -122,7 +123,7 @@ fun AddRoomPopup(
 
     AlertDialog(modifier = modifier
         .fillMaxWidth()
-        .fillMaxHeight(), onDismissRequest = onClose,text={
+        .fillMaxHeight(0.8f), onDismissRequest = onClose,text={
         Column() {
         Column(
             modifier = Modifier
@@ -199,8 +200,13 @@ fun AddRoomPopup(
                     onAddRoom(propid,roomName, mutableListOf<String>())
                 } else{
                     onAddRoom(propid,roomName, tenantMails)
+                    for(el in tenantMails){
+                        if(el !in tenantList)
+                        viewmodel.addrenter(propid,el)
+                    }
                 }
-            },
+
+                      },
             colors = ButtonDefaults.buttonColors(backgroundColor = MainGroen)
         ) {
             Text("Save", style = MaterialTheme.typography.button.copy(color = Color.White))
@@ -209,9 +215,9 @@ fun AddRoomPopup(
     }
 
 
-@Preview
-@Composable
-fun AddRoomPopupPreview() {
-    AddRoomPopup(propid = "",onClose = {}, onAddRoom = {_, _, _ -> })
-}
+//@Preview
+//@Composable
+//fun AddRoomPopupPreview() {
+//    AddRoomPopup(propid = "",onClose = {}, onAddRoom = {_, _, _ -> })
+//}
 

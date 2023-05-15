@@ -1,5 +1,6 @@
 package com.ugnet.sel1.ui.manager.properties
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ugnet.sel1.domain.models.Property
 import com.ugnet.sel1.domain.models.Response
+import com.ugnet.sel1.navigation.MyDestinations
 import com.ugnet.sel1.ui.components.RoomDetailOverview
 import com.ugnet.sel1.ui.components.SimpleTopBar
 import com.ugnet.sel1.ui.theme.MainGroen
@@ -73,7 +75,14 @@ fun PropertyDetailsScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Rooms:", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
-                IconButton(onClick = {/*TODO*/ }) {
+                IconButton(onClick ={
+                    val route = if(property.type == "house") {
+                        Log.d("viewmodel tenant", property.huurders[0])
+                        "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${property.huurders[0]}/${property.propertyId}"
+                    }else {
+                        "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${property.propertyId}"
+                    }
+                    navigate(route)}) {
                     Icon(imageVector = Icons.Rounded.BorderColor, contentDescription = "edit", tint = MainGroen)
                 }
             }

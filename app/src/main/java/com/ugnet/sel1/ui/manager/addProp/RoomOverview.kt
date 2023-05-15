@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +27,9 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
                         rooms.filter { it.roomId != room.roomId }
                             if(room.huurderLijst.isNotEmpty()){
                                 for(i in room.huurderLijst){
-
+                                    Log.d("renterDeletionCheck",
+                                        rooms.flatMap { it.huurderLijst }.toString()
+                                    )
                                     if ((rooms.flatMap { it.huurderLijst }).indexOf(i) == -1) {
                                         Log.d("RoomOverview", "removing: $i, from renterlist ${rooms.flatMap { it.huurderLijst }} }}")
                                         viewmodel.deleterenter(propid, i)
@@ -41,7 +42,7 @@ fun RoomOverview(rooms:List<Room>, modifier: Modifier = Modifier, onDeleteClicke
                     Spacer(modifier = Modifier.height(0.dp))
                 }
             }
-            Text(text = "renter amount ${rooms.flatMap { it.huurderLijst }.size}")
+
         }
     }
 

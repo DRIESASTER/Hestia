@@ -30,7 +30,7 @@ fun ManagerHomeScreen(Data:ManagerHomeVM=hiltViewModel(), initialScreen:Boolean=
     val drawerItems = listOf(
         MenuItem(
             name = "Home",
-            route = "managerhome",
+            route = MyDestinations.MANAGER_HOME_ROUTE,
             icon = Icons.Rounded.Home,
         ),
         MenuItem(name= "Logout",

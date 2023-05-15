@@ -21,7 +21,7 @@ fun ShortRoomCard(roomdata: Room, removeClick: (String) -> Unit) {
     Card(
         backgroundColor = MainGroen,
         modifier = Modifier
-            .height(56.dp)
+            .wrapContentHeight()
             .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 4.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),

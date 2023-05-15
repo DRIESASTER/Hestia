@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ugnet.sel1.ui.components.ProgressSwitch
+import com.ugnet.sel1.ui.components.PropertyCard
 import com.ugnet.sel1.ui.components.SwitchButton2
 import org.junit.Rule
 import org.junit.Test
@@ -63,5 +64,12 @@ class ComponentTests {
         composeTestRule.onNodeWithText("not started").performClick()
         assert(state == "not started") { "State should be not started" }
 
+    }
+
+    @Test
+    fun PropertyCardTest(){
+        composeTestRule.setContent {
+            PropertyCard("big test house", "test street"+9+" ,"+ 9000 +" "+ "test city",  4, 10, {}, onDelete = {}, onEdit = {})
+        }
     }
 }

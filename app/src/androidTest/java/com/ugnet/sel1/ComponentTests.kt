@@ -1,6 +1,7 @@
 package com.ugnet.sel1
 
 import android.util.Log
+import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -71,5 +72,12 @@ class ComponentTests {
         composeTestRule.setContent {
             PropertyCard("big test house", "test street"+9+" ,"+ 9000 +" "+ "test city",  4, 10, {}, onDelete = {}, onEdit = {})
         }
+
+        composeTestRule.onNodeWithText("big test house").assertIsDisplayed()
+        composeTestRule.onNodeWithText("test street9 ,9000 test city").assertIsDisplayed()
+        composeTestRule.onNodeWithText("tenants: 4").assertIsDisplayed()
+        composeTestRule.onNodeWithText("issues: 10").assertIsDisplayed()
+        (composeTestRule.onNodeWithText("big test house")).assertHasClickAction()
     }
+
 }

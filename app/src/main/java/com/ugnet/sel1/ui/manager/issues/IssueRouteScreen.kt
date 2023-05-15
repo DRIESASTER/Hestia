@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -45,38 +46,39 @@ fun IssueDetailsScreen(
             .background(MaterialTheme.colors.background)
     ) {
         SimpleTopBar(name = issue.titel ?: "", navigate={ navigateBack() })
-        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Icon(imageVector = Icons.Rounded.Person, contentDescription = "person", tint = MainGroen)
             Text(
                 text = issue.userId ?: "",
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(4.dp)
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Rounded.PinDrop,
-                    contentDescription = "person",
-                    tint = MainGroen,
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .size(14.dp)
-                )
-                viewModel.getRoom(issue.roomId!!).collectAsState(initial = Response.Loading).value.let {
-                    when (it) {
-                        is Response.Loading -> CircularProgressIndicator()
-                        is Response.Failure -> Text(text = "failed")
-                        is Response.Success -> {
-                            Text(
-                                text = it.data?.naam ?: "",
-                                style = MaterialTheme.typography.h6,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
+
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Rounded.PinDrop,
+                contentDescription = "person",
+                tint = MainGroen,
+                modifier = Modifier
+                    .padding(2.dp)
+                    .size(14.dp)
+            )
+            viewModel.getRoom(issue.roomId!!).collectAsState(initial = Response.Loading).value.let {
+                when (it) {
+                    is Response.Loading -> CircularProgressIndicator()
+                    is Response.Failure -> Text(text = "failed")
+                    is Response.Success -> {
+                        Text(
+                            text = it.data?.naam ?: "",
+                            fontSize= 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
+                }
 
             }
-            }
-
         }
         Spacer(modifier = Modifier.height(8.dp))
 

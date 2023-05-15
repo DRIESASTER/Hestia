@@ -95,7 +95,7 @@ fun ResidentIssueOverview(
                                                                                         description = issue.beschrijving!!,
                                                                                         status = issue.status!!,
                                                                                         onClick = { onIssueClicked(route) },
-                                                                                        ondelete = {viewModel.deleteIssue(issue.issueId!!)},
+                                                                                        ondelete = {viewModel.deleteIssue(property.propertyId!!, issue.issueId!!)},
                                                                                         modifier = Modifier.fillMaxWidth()
                                                                                     )
                                                                                 }

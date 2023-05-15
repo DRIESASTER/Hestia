@@ -81,10 +81,11 @@ class RoomsRepositoryImpl @Inject constructor(
         roomId: String
     ): DeleteRoomResponse {
         return try {
+            var issuesRepo = IssuesRepositoryImpl(dbRef)
             dbRef.document("properties/${pandId}/rooms/${roomId}").delete().await()
             dbRef.collection("properties/${pandId}/issues").whereEqualTo("roomId", roomId).get()
                 .await().documents.forEach { issue ->
-                issue.reference.delete().await()
+                issuesRepo.deleteIssueFromFirestore(pandId, issue.id)
             }
             Response.Success(true)
         } catch (e: Exception) {

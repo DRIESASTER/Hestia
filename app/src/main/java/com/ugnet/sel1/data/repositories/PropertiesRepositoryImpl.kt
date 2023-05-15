@@ -143,6 +143,18 @@ class PropertiesRepositoryImpl @Inject constructor(
 
     override suspend fun deletePropertyFromFirestore(propertyId: String): DeletePropertyResponse {
         return try {
+            //deleting rooms
+            dbRef.collection("properties/${propertyId}/rooms").get().addOnSuccessListener() { querySnapshot ->
+                for (document in querySnapshot) {
+                    dbRef.collection("properties/${propertyId}/rooms").document(document.id).delete()
+                }
+            }.await()
+            //deleting issues
+            var issuesRepo = IssuesRepositoryImpl(dbRef)
+            dbRef.collection("properties/${propertyId}/issues").get()
+                .await().documents.forEach { issue ->
+                    issuesRepo.deleteIssueFromFirestore(propertyId, issue.id)
+                }
             dbRef.collection("properties").document(propertyId).delete().await()
             Response.Success(true)
         } catch (e: Exception) {

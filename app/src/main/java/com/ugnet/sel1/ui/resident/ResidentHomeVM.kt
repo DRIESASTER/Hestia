@@ -61,7 +61,7 @@ class ResidentHomeVM @Inject constructor(
         useCases.addIssue(description, title, property, room, type, Firebase.auth.currentUser?.email.toString(), imageUri)
     }
 
-    fun deleteIssue(issueId: String) = viewModelScope.launch {
-        useCases.deleteIssue(issueId)
+    fun deleteIssue(propertyId:String, issueId: String) = viewModelScope.launch {
+        useCases.deleteIssue(propertyId, issueId)
     }
 }

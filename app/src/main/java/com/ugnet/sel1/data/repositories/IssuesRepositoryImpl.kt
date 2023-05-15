@@ -106,7 +106,7 @@ class IssuesRepositoryImpl @Inject constructor(
             if (imageUri != null) {
                 val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 val date = java.util.Date();
-                val filename = formatter.format(date)
+                val filename = propertyId + "_" + id
                 storageRef = FirebaseStorage.getInstance().reference.child("images/${filename}.jpeg")
                 storageRef.putFile(imageUri).await()
                 imageUrl = filename + ".jpeg"
@@ -140,15 +140,18 @@ class IssuesRepositoryImpl @Inject constructor(
     }
 
 
-
-        override suspend fun deleteIssueFromFirestore(issueId: String): DeleteIssueResponse {
-            return try {
-                dbRef.document("properties/issues/${issueId}").delete().await()
-                Response.Success(true)
-            } catch (e: Exception) {
-                Response.Failure(e)
-            }
+    override suspend fun deleteIssueFromFirestore(
+        propertyId: String,
+        issueId: String
+    ): DeleteIssueResponse {
+        return try {
+            dbRef.collection("properties/${propertyId}/issues").document(issueId).delete().await()
+            FirebaseStorage.getInstance().reference.child("images/${propertyId}_${issueId}.jpeg").delete().await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
         }
+    }
 
     override fun getIssue(
         propertyId: String,

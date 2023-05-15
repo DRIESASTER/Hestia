@@ -33,7 +33,7 @@ class UsersRepositoryImpl @Inject constructor(
         awaitClose { snapshotListener.remove() }
     }
 
-    override suspend fun getUser(userId: String): UserResponse? = suspendCoroutine { continuation ->
+    override suspend fun getUserResponse(userId: String): UserResponse? = suspendCoroutine { continuation ->
 
         if (userId.isEmpty()) {
             continuation.resume(null)
@@ -44,6 +44,25 @@ class UsersRepositoryImpl @Inject constructor(
                 try {
                     val user = result.toObject(User::class.java)
                     continuation.resume(Response.Success(user))
+                } catch (e: IllegalArgumentException) {
+                    continuation.resume(null)
+                }
+            }.addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
+    }
+
+    override suspend fun getUser(userId: String): User? = suspendCoroutine { continuation ->
+
+        if (userId.isEmpty()) {
+            continuation.resume(null)
+            return@suspendCoroutine
+        }
+        dbRef.collection("users").document(userId).get()
+            .addOnSuccessListener { result ->
+                try {
+                    val user = result.toObject(User::class.java)
+                    continuation.resume(user)
                 } catch (e: IllegalArgumentException) {
                     continuation.resume(null)
                 }

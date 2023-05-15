@@ -52,6 +52,10 @@ object AppModule {
         getUserRepo : GetUserRepository
     ) = UseCases(
         //getUser = GetUser(usersRepo),
+        propertyExist = PropertyExists(propertyRepo),
+        getOwnedPropertiesNoResponse = GetOwnedPropertiesNoResponse(propertyRepo),
+        getUserNoResponse = GetUserNoReponse(getUserRepo),
+        getAnnouncementsForManager = GetAnnouncementsForManager(propertyRepo),
         addAnnouncementToProperty = AddAnnouncementToProperty(propertyRepo),
         getUser = GetUserTest(getUserRepo),
         getOwnedProperties = GetOwnedProperties(propertyRepo),

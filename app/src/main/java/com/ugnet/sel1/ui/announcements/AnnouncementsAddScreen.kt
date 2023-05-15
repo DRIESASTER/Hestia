@@ -30,40 +30,39 @@ fun AnnouncementsAddScreen(
     var dialogVisible by remember { mutableStateOf(false) }
     var selectedProperty by remember { mutableStateOf(Property()) }
 
-    val propertiesResponse by viewModel.propertiesData.collectAsState(initial = Response.Loading)
+    Column(modifier = Modifier.fillMaxSize()) {
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            label = { Text("Announcement") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
 
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        elevation = 8.dp,
-        modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .fillMaxHeight(0.8f)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            TextField(
-                value = text,
-                onValueChange = { text = it },
-                label = { Text("Announcement") },
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            )
+        Text(
+            "Selected property: $selectedProperty",
+            modifier = Modifier.padding(16.dp)
+        )  // Display the selected property
 
-            Text("Selected property: $selectedProperty", modifier = Modifier.padding(16.dp))  // Display the selected property
+        Button(
+            onClick = { dialogVisible = true },  // Show the dialog when the button is clicked
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text("Select property")
+        }
 
-            Button(
-                onClick = { dialogVisible = true },  // Show the dialog when the button is clicked
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            ) {
-                Text("Select property")
-            }
+        Spacer(modifier = Modifier.weight(1f))
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            Button(
-                onClick = { viewModel.addAnnouncement(selectedProperty.propertyId!!, text) },
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            ) {
-                Text("Save")
-            }
+        Button(
+            onClick = { viewModel.addAnnouncement(selectedProperty.propertyId!!, text) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text("Save")
         }
     }
 
@@ -75,22 +74,27 @@ fun AnnouncementsAddScreen(
                     .size(200.dp)
                     .background(Color.White)
             ) {
-                when(val response = propertiesResponse){
-                    is Response.Success -> {
-                        if (response.data.isEmpty()) {
+                when (val uiState = viewModel.uiState.collectAsState().value) {
+                    AnnouncementUiState.Loading -> {
+                        // Show loading state UI
+                    }
+                    is AnnouncementUiState.Success -> {
+                        val properties = uiState.ownedProperties
+                        if (properties.isEmpty()) {
                             Text(text = "No properties found")
                         } else {
-                            PropertyList(properties = response.data, onPropertyClicked = { property ->
-                                selectedProperty = property
-                                dialogVisible = false
-                            })
+                            PropertyList(
+                                properties = properties,
+                                onPropertyClicked = { property ->
+                                    selectedProperty = property
+                                    dialogVisible = false
+                                }
+                            )
                         }
-                    }
-                    else -> {
-                        CircularProgressIndicator(backgroundColor = MainGroen,color = AccentLicht)
                     }
                 }
             }
         }
     }
 }
+

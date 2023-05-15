@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ugnet.sel1.navigation.MyDestinations
+import com.ugnet.sel1.ui.announcements.AnnouncementScreen
 import com.ugnet.sel1.ui.components.DrawerBody
 import com.ugnet.sel1.ui.components.DrawerHeader
 import com.ugnet.sel1.ui.components.MenuItem
@@ -85,5 +86,6 @@ fun GetCorrectDisplay(title:String = "Profile", vm:ResidentHomeVM, navigate: (St
         "Profile" -> ResidentProfileScreen(viewModel = vm)
         "Issues" -> ResidentIssueOverview(viewModel = vm, navigate = navigate, onIssueClicked = { route -> navigate(route) })
         "Logout" -> Text(text = "TODO: implement Logout")
+        //"Announcement" -> AnnouncementScreen(viewModel = hi, navigate = )
     }
 }

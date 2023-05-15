@@ -6,6 +6,8 @@
     <string name="login_error">incorrect email or password</string>
     <string name="add_issue_error">Please fill in all fields</string>
     <string name="account_created">Successfully created account</string>
+    <string name="property_doesnt_exist">Please select an existing property</string>
+    <string name="announcement_error">Announcement cannot be empty</string>
     <string name="app_name">sel1</string>
     <string name="web_client_id">690801049307-hqg6d16hir154253f0e92lj3nie9p32s.apps.googleusercontent.com</string>
 </resources>

@@ -88,13 +88,13 @@ fun TrySave(viewmodel: AddPropVM, navigate: (String) -> Unit) {
             } else {
                 when (val response = (if(viewmodel.propid=="newProperty") viewmodel.addPropertyResponse else viewmodel.updatePropertyResponse)) {
                     is Response.Success -> {
-
                         val route = if(viewmodel.isHouse) {
                             Log.d("viewmodel tenant", viewmodel.tenant)
                             "${MyDestinations.ROOM_EDIT_ROUTE_HOUSE}/${viewmodel.tenant}/${if(viewmodel.propid=="newProperty") response.data else viewmodel.propid}"
                         }else {
                             "${MyDestinations.ROOM_EDIT_ROUTE_APP}/ /${if(viewmodel.propid=="newProperty") response.data else viewmodel.propid}"
                         }
+                        Log.d("viewmodel tenant", route)
                         navigate(route)
                         Log.d("AddPropMainScreen", "navigate to room edit")
                         viewmodel.saveClicked=false

@@ -145,7 +145,7 @@ fun IssueDetailsScreen(
                         contentDescription = null,
                         modifier = Modifier.clip(RoundedCornerShape(20.dp)).padding(10.dp)
                             .fillMaxWidth()
-                            .height(250.dp),
+                            .fillMaxHeight(0.6f),
                         contentScale = ContentScale.Inside,
                     )
                 }

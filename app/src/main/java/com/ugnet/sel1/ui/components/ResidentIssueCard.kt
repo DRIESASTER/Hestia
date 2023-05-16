@@ -56,9 +56,9 @@ fun ResidentIssueCard(
             .background(MainGroen)
             .clip(RoundedCornerShape(10.dp))
             .wrapContentWidth()
-            .height(90.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            .height(90.dp), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(modifier = Modifier
-                .width(150.dp)
+                .wrapContentWidth()
                 .padding(5.dp)
             ) {
                 //left side

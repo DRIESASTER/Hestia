@@ -34,7 +34,7 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
     var isPopupVisible by remember { mutableStateOf(false) }
     when (val uiState = viewModel.uiState.collectAsState().value) {
         AnnouncementUiState.Loading -> {
-            // Show loading state UI
+            CircularProgressIndicator()
         }
         is AnnouncementUiState.Success -> {
             val user = uiState.currentUser
@@ -102,9 +102,12 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                     }
                     if(isPopupVisible) {
                         AlertDialog(
-                            modifier=Modifier.fillMaxWidth().wrapContentHeight(),
+                            modifier= Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
                             onDismissRequest = { isPopupVisible = false },
-                            text = { AnnouncementsAddScreen() }, buttons = {})
+                            text = { AnnouncementsAddScreen(onSave = { isPopupVisible = false }) }, buttons = {}
+                        )
                     }
                     }
             )
@@ -118,7 +121,7 @@ fun AnnouncementOverview(modifier: Modifier = Modifier, announcements:List<Annou
         LazyColumn (horizontalAlignment = Alignment.Start, modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.9f)){
-            itemsIndexed(announcements) { _, announcement ->
+            itemsIndexed(announcements.reversed()) { _, announcement ->
                 Card(backgroundColor = MainGroen, modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)

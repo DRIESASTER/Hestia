@@ -57,6 +57,7 @@ class IssueOverviewTest {
     @get:Rule
     val composeTestRule = createComposeRule()
     @Mock
+
     lateinit var useCases: UseCases
     lateinit var authrepo : AuthRepository
     lateinit var viewModel: ManagerHomeVM

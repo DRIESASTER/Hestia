@@ -38,14 +38,14 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     }
 
     composable(MyDestinations.SPLASH_ROUTE) {
-        SplashScreen(navigate = { route -> appState.navigate(route) }, viewModel)
+        SplashScreen(clearAndNavigate = { route -> appState.clearAndNavigate(route) }, viewModel)
     }
 
     composable(MyDestinations.LOGIN_ROUTE) {
         LoginScreen(navigate = { route -> appState.navigate(route) })
     }
-    
-    composable(MyDestinations.FORGOT_PASSWORD_ROUTE){
+
+    composable(MyDestinations.FORGOT_PASSWORD_ROUTE) {
         ForgotPasswordScreen(navigateTo = { route -> appState.navigate(route) })
     }
 
@@ -58,11 +58,14 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
 
     composable(MyDestinations.PROFILE_ROUTE) {
         UserProfileScreen(navController = appState.navController,
-        clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+            clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 
     composable(MyDestinations.MANAGER_HOME_ROUTE) {
-        ManagerHomeScreen(Data = hiltViewModel(), navigate = { route -> appState.navigate(route) }, navigateClear = { route -> appState.clearAndNavigate(route) })
+        ManagerHomeScreen(
+            Data = hiltViewModel(),
+            navigate = { route -> appState.navigate(route) },
+            navigateClear = { route -> appState.clearAndNavigate(route) })
     }
 
 
@@ -78,44 +81,52 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
         IssueRouteScreen(viewModel = hiltViewModel(), navigateBack = { appState.navigateBack() })
     }
 
-    composable(MyDestinations.ROOM_EDIT_ROUTE_HOUSE +  "/{email}/{propId}") {
+    composable(MyDestinations.ROOM_EDIT_ROUTE_HOUSE + "/{email}/{propId}") {
         Log.d("ROUTING Issue edit", "")
-        RoomeditScreenHouse(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) })
+        RoomeditScreenHouse(
+            viewModel = hiltViewModel(),
+            navigate = { route -> appState.navigate(route) })
     }
 
-    composable(MyDestinations.EDIT_PROPERTY_ROUTE + "/{propId}"){
+    composable(MyDestinations.EDIT_PROPERTY_ROUTE + "/{propId}") {
         AddPropMainScreen(navigate = { route -> appState.navigate(route) })
     }
 
-    composable(MyDestinations.PROPERTY_DETAILS_ROUTE +  "/{propId}"){
-        PropertyDetailRoute(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) }, navigateBack = { appState.navigateBack() })
+    composable(MyDestinations.PROPERTY_DETAILS_ROUTE + "/{propId}") {
+        PropertyDetailRoute(
+            viewModel = hiltViewModel(),
+            navigate = { route -> appState.navigate(route) },
+            navigateBack = { appState.navigateBack() })
     }
 
-    composable(MyDestinations.ANNOUNCEMENT_ROUTE){
-        AnnouncementScreen(viewModel = hiltViewModel(), navigate = { route -> appState.navigate(route) })
+    composable(MyDestinations.ANNOUNCEMENT_ROUTE) {
+        AnnouncementScreen(
+            viewModel = hiltViewModel(),
+            navigate = { route -> appState.navigate(route) })
     }
 
-    composable(MyDestinations.ANNOUNCEMENT_ADD_ROUTE){
-        AnnouncementsAddScreen(viewModel = hiltViewModel())
-    }
 
 
-    composable(MyDestinations.ADD_ISSUE_ROUTE){
-        AddIssueScreen(navigate = { route -> appState.navigate(route) }, viewModel = hiltViewModel())
+    composable(MyDestinations.ADD_ISSUE_ROUTE) {
+        AddIssueScreen(
+            navigate = { route -> appState.navigate(route) },
+            viewModel = hiltViewModel()
+        )
     }
 
     //composable(MyDestinations.)
 
 
     composable(MyDestinations.HIREE_HOME_ROUTE) {
-        ResidentHomeScreen(navigate =  { route -> appState.navigate(route) }, clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+        ResidentHomeScreen(
+            navigate = { route -> appState.navigate(route) },
+            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
     composable(MyDestinations.ADD_PROPERTY + "/{propId}") {
-        AddPropMainScreen(navigate =  { route -> appState.navigate(route) }
+        AddPropMainScreen(navigate = { route -> appState.navigate(route) }
         )
     }
-
 
 
     // roomeditscreen

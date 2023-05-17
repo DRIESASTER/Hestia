@@ -53,7 +53,7 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                     icon = Icons.Rounded.Home,
                 ),
                 MenuItem(name= "Logout",
-                    route = "logout",
+                    route = MyDestinations.ROLE_SELECTION_ROUTE,
                     icon = Icons.Rounded.ExitToApp),
 
                 MenuItem(
@@ -90,7 +90,10 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                 },
                 drawerContent = {
                     DrawerHeader()
-                    DrawerBody(items=drawerItems,onItemClick={item -> navigate(item.route)})
+                    DrawerBody(items=drawerItems,onItemClick={item ->
+                        viewModel.logout()
+                        navigate(item.route)
+                    })
                 },
                 content = { paddingValues ->
                     if (announcements.isEmpty()) {

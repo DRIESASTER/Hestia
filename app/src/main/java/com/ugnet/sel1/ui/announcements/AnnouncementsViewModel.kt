@@ -2,6 +2,7 @@ package com.ugnet.sel1.ui.announcements
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.common.snackbar.SnackbarManager
 import com.ugnet.sel1.domain.models.*
 import com.ugnet.sel1.domain.repository.Properties
@@ -14,7 +15,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.ugnet.sel1.R.string as AppText
 @HiltViewModel
-class AnnouncementsViewModel @Inject constructor(private val useCases: UseCases) : ViewModel() {
+class AnnouncementsViewModel @Inject constructor(
+    private val useCases: UseCases,
+    private val authRepo : AuthRepository
+    ) : ViewModel() {
 
     private val currentUser: Flow<User> = useCases.getUserNoResponse()
 
@@ -35,6 +39,8 @@ class AnnouncementsViewModel @Inject constructor(private val useCases: UseCases)
             }
         }
     }
+
+    fun logout() = authRepo.signOut()
 
     val uiState: StateFlow<AnnouncementUiState> = combine(
         currentUser,

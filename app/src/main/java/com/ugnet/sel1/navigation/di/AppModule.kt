@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ugnet.sel1.authentication.selection.AuthRepository
 import com.ugnet.sel1.data.repositories.*
 import com.ugnet.sel1.domain.repository.*
 import com.ugnet.sel1.domain.useCases.*
@@ -43,13 +44,17 @@ object AppModule {
         dbRef: FirebaseFirestore,
     ): UsersRepository = UsersRepositoryImpl(dbRef)
 
+
+
+
+
     @Provides
     fun provideUseCases(
         propertyRepo : PropertiesRepository,
         issuesRepo : IssuesRepository,
         roomsRepo: RoomsRepository,
         usersRepo: UsersRepository,
-        getUserRepo : GetUserRepository
+        getUserRepo : GetUserRepository,
     ) = UseCases(
         //getUser = GetUser(usersRepo),
         propertyExist = PropertyExists(propertyRepo),
@@ -82,6 +87,6 @@ object AppModule {
         editProperty = EditProperty(propertyRepo),
         getProperty = GetProperty(propertyRepo),
         getRoom = GetRoom(roomsRepo),
-        getImage = GetImage(issuesRepo),
+        getImage = GetImage(issuesRepo)
     )
 }

@@ -26,7 +26,7 @@ fun ChatWindowDialog(
             shape = RoundedCornerShape(8.dp),
             elevation = 8.dp,
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth()
                 .fillMaxHeight(0.8f)
         ) {
             ChatScreen(

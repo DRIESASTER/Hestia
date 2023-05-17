@@ -40,7 +40,7 @@ fun ResidentProfileScreen(viewModel: ResidentHomeVM) {
                 if (response.data.isEmpty()) {
                     Text(text = "You are currently not renting any properties", fontSize = 16.sp, color = Color.Gray.copy(alpha = 0.5f))
                 } else {
-                    LazyColumn(modifier= Modifier.fillMaxHeight(0.6f),content = {
+                    LazyColumn(modifier= Modifier.fillMaxHeight(),content = {
                         items(response.data.size) { index ->
                             viewModel.getAccesibleRoomsForProperty(response.data[index].propertyId!!).collectAsState(initial = Response.Loading).value.let {rooms ->
                                 when(rooms) {

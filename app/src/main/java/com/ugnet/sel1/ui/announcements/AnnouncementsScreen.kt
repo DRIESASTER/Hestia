@@ -76,7 +76,7 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                 ),
                 MenuItem(
                     name = "Issues",
-                    route = MyDestinations.HIREE_HOME_ROUTE.replace("${MyDestinations.hsArgs.tab}", "Issues"),
+                    route = "hiree_home/Issues",
                     icon = Icons.Rounded.Notifications,
                 ),
                 MenuItem(

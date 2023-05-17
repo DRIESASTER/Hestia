@@ -5,6 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.ugnet.sel1.AuthViewModel
 import com.ugnet.sel1.authentication.forgot_password.ForgotPasswordScreen
 import com.ugnet.sel1.navigation.SplashScreen
@@ -14,6 +15,7 @@ import com.ugnet.sel1.authentication.selection.RoleSelectionScreen
 import com.ugnet.sel1.authentication.signup.SignUpScreen
 import com.ugnet.sel1.navigation.AppState
 import com.ugnet.sel1.navigation.MyDestinations
+import com.ugnet.sel1.navigation.MyDestinations.HIREE_HOME_ROUTE
 import com.ugnet.sel1.ui.announcements.AnnouncementScreen
 import com.ugnet.sel1.ui.announcements.AnnouncementsAddScreen
 import com.ugnet.sel1.ui.manager.ManagerHomeScreen
@@ -117,16 +119,25 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     //composable(MyDestinations.)
 
 
-    composable(MyDestinations.HIREE_HOME_ROUTE) { backStackEntry ->
+    composable(
+        route = HIREE_HOME_ROUTE,
+        arguments = listOf(
+            navArgument(MyDestinations.hsArgs.tab) {
+                defaultValue = "Profile"
+            }
+        )
+    ) { backStackEntry ->
         val arguments = backStackEntry.arguments
-        val tab = arguments?.getString("tab") ?: "Profile"
-
+        var tab = arguments?.getString(MyDestinations.hsArgs.tab) ?: "Profile"
+        Log.d("HIRE ROUT", tab)
+        if(tab == "{tab}"){
+            tab = "Profile"
+        }
         ResidentHomeScreen(
             cScreen = tab,
             navigate = { route -> appState.navigate(route) },
             openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
-
     composable(MyDestinations.ADD_PROPERTY + "/{propId}") {
         AddPropMainScreen(navigate = { route -> appState.navigate(route) }
         )

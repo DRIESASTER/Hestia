@@ -63,10 +63,10 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
                                     else -> {
                                         CircularProgressIndicator(color = MainGroen)}
                                 }
-                                DropdownMenu(
-                                    onDismissRequest = { isPopupVisible = false },
-                                    expanded = isPopupVisible,
-                                ) {
+                                if (isPopupVisible){
+                                AlertDialog(modifier = modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(0.8f), onDismissRequest = {isPopupVisible=false},text= {
                                     AddRoomHousePopup(
                                         propid = propid,
                                         onClose = { isPopupVisible = false },
@@ -76,7 +76,7 @@ fun RoomeditScreenHouse(viewModel: RoomEditVM = hiltViewModel(), modifier: Modif
                                             //TODO: port to popupscreen for errorhandling and compose, work with boolean to check if save is clicked
 
                                         })
-                                }
+                                }, buttons = {})}
                             }
                             Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                                 Spacer(modifier = Modifier.height(10.dp))

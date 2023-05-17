@@ -116,7 +116,9 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                     if (user.accountType == "Manager") {
                         DrawerBody(items=drawerItems,onItemClick={
                                 item ->
+                            if (item.name == "Logout"){
                             viewModel.logout()
+                            }
                             navigate(item.route)})
                     } else {
                         DrawerBody(items=drawerItemsRenter,onItemClick={item -> navigate(item.route)})

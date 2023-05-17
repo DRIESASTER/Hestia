@@ -11,7 +11,7 @@ object MyDestinations {
     const val SIGN_UP_ROUTE = "sign_up/{role}"
     const val PROFILE_ROUTE = "profile"
     const val MANAGER_HOME_ROUTE = "manager_home"
-    const val HIREE_HOME_ROUTE = "hiree_home"
+    const val HIREE_HOME_ROUTE = "hiree_home/{${hsArgs.tab}}"
     const val EMAIL_VER_ROUTE = "email_ver"
     const val FORGOT_PASSWORD_ROUTE = "forgot_password"
     const val ROOM_EDIT_ROUTE_APP = "room_edit"
@@ -27,6 +27,11 @@ object MyDestinations {
         const val IssueId = "issueId"
         const val PropId = "propId"
     }
+
+    object hsArgs {
+        const val tab = "Profile"
+    }
+
     object RoomEditArgs {
         const val PropId = "propId"
     }

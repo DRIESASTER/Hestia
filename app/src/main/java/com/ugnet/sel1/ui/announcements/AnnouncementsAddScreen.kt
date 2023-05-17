@@ -21,7 +21,6 @@ fun AnnouncementsAddScreen(
     onSave: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
-    var dialogVisible by remember { mutableStateOf(false) }
     var selectedProperty by remember { mutableStateOf(Property()) }
 
     var propertyExpanded by remember { mutableStateOf(false) }
@@ -66,7 +65,7 @@ fun AnnouncementsAddScreen(
                     }
                     is AnnouncementUiState.Success -> {
                         val properties = uiState.ownedProperties
-                        if (properties.isNotEmpty()) {
+                        if (properties.isNotEmpty() && issuePropertyAddress == "Select Property") {
                             issuePropertyAddress = properties[0].straat!! + " " + properties[0].huisnummer!! + ", " + properties[0].postcode!! + " " + properties[0].stad!!
                             selectedProperty = properties[0]
                         }
@@ -74,6 +73,7 @@ fun AnnouncementsAddScreen(
                             for (property in properties) {
                                 val propertyAddress = property.straat!! + " " + property.huisnummer!! + ", " + property.postcode!! + " " + property.stad!!
                                 DropdownMenuItem(onClick = {
+                                    issuePropertyAddress = propertyAddress
                                     selectedProperty = property
                                     propertyExpanded = false
                                 }) {

@@ -93,7 +93,7 @@ fun AddIssueScreen(
             )
             when(val response = viewModel.allRentedPropertiesResponse) {
                 is Response.Success -> {
-                    if (response.data.isNotEmpty()) {
+                    if (response.data.isNotEmpty() && issuePropertyAddress == "Select Property") {
                         issuePropertyAddress =
                             response.data[0].straat!! + " " + response.data[0].huisnummer!! + ", " + response.data[0].postcode!! + " " + response.data[0].stad!!
                         issuePropertyId = response.data[0].propertyId!!

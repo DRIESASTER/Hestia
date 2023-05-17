@@ -117,8 +117,12 @@ fun NavGraphBuilder.hestiaGraph(appState: AppState, viewModel: AuthViewModel) {
     //composable(MyDestinations.)
 
 
-    composable(MyDestinations.HIREE_HOME_ROUTE) {
+    composable(MyDestinations.HIREE_HOME_ROUTE) { backStackEntry ->
+        val arguments = backStackEntry.arguments
+        val tab = arguments?.getString("tab") ?: "Profile"
+
         ResidentHomeScreen(
+            cScreen = tab,
             navigate = { route -> appState.navigate(route) },
             openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }

@@ -68,6 +68,29 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                 )
             )
 
+            val drawerItemsRenter = listOf(
+                MenuItem(
+                    name = "Profile",
+                    route = MyDestinations.HIREE_HOME_ROUTE,
+                    icon = Icons.Rounded.Person,
+                ),
+                MenuItem(
+                    name = "Issues",
+                    route = MyDestinations.ISSUE_ROUTE,
+                    icon = Icons.Rounded.Notifications,
+                ),
+                MenuItem(
+                    name = "Logout",
+                    route = MyDestinations.ROLE_SELECTION_ROUTE,
+                    icon = Icons.Rounded.Logout,
+                ),
+                MenuItem(
+                    name = "Announcements",
+                    route = MyDestinations.ANNOUNCEMENT_ROUTE,
+                    icon = Icons.Rounded.Announcement,
+                ),
+            )
+
             Scaffold(
                 modifier = Modifier.fillMaxSize(1.0f),
                 scaffoldState = scaffoldState,
@@ -90,10 +113,14 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                 },
                 drawerContent = {
                     DrawerHeader()
-                    DrawerBody(items=drawerItems,onItemClick={item ->
-                        viewModel.logout()
-                        navigate(item.route)
-                    })
+                    if (user.accountType == "Manager") {
+                        DrawerBody(items=drawerItems,onItemClick={
+                                item ->
+                            viewModel.logout()
+                            navigate(item.route)})
+                    } else {
+                        DrawerBody(items=drawerItemsRenter,onItemClick={item -> navigate(item.route)})
+                    }
                 },
                 content = { paddingValues ->
                     if (announcements.isEmpty()) {
@@ -112,7 +139,7 @@ fun AnnouncementScreen(viewModel: AnnouncementsViewModel, navigate: (String) -> 
                             text = { AnnouncementsAddScreen(onSave = { isPopupVisible = false }) }, buttons = {}
                         )
                     }
-                    }
+                }
             )
         }
     }
@@ -132,7 +159,7 @@ fun AnnouncementOverview(modifier: Modifier = Modifier, announcements:List<Annou
                         RoundedCornerShape(20.dp)
                     ),
                     elevation = 8.dp
-                    ) {
+                ) {
                     Column(modifier = Modifier
                         .clip(RoundedCornerShape(30.dp))
                         .padding(15.dp)
